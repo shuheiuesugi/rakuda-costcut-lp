@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAKUDA COSTCUT — ムダな出費、AIが見つけます</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1E293B;
+    --ink-secondary: #64748B;
+    --surface: #FFFFFF;
+    --canvas: #F9FAFB;
+    --border: #E2E8F0;
+    --accent: #1E3A5F;
+    --accent-hover: #152D4A;
+    --success: #059669;
+    --dark: #0F172A;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+    --danger: #DC2626;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif;
+    font-feature-settings: "palt";
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--surface);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.modal-open { overflow: hidden; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Header ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  nav a {
+    color: var(--ink-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: color 0.15s;
+  }
+  nav a:hover { color: var(--ink); }
+  .btn-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: var(--surface) !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+  }
+  .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-nav-secondary {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink) !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+  }
+  .btn-nav-secondary:hover { border-color: var(--accent); color: var(--accent) !important; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 0 24px; height: 44px; font-family: inherit; font-size: 15px; font-weight: 500;
+    border-radius: 8px; border: none; cursor: pointer; text-decoration: none;
+    white-space: nowrap; transition: all 0.2s ease;
+  }
+  .btn-accent { background: var(--accent); color: #fff; }
+  .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--ink-secondary); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+  .btn-full { width: 100%; }
+  .btn-lg { height: 52px; padding: 0 36px; font-size: 16px; border-radius: 10px; }
+
+  /* ── Fade-in ── */
+  .fade-in-section { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in-section.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 100px 0 80px;
+    background: var(--surface);
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero-sub {
+    font-size: clamp(15px, 2.5vw, 18px);
+    color: var(--ink-secondary);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+  .hero-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .trust-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--ink-secondary);
+  }
+  .trust-bar span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .trust-bar .dot {
+    width: 4px; height: 4px; border-radius: 50%; background: var(--border);
+  }
+
+  /* ── Section ── */
+  .section { padding: 80px 0; }
+  .section-canvas { background: var(--canvas); }
+  .section h2 {
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--ink-secondary);
+    margin-bottom: 48px;
+    max-width: 600px;
+    line-height: 1.8;
+  }
+
+  /* ── Problem cards ── */
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 680px;
+  }
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px 28px;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.7;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .problem-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .problem-card .number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(30,58,95,0.08);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* ── Steps ── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .step-card {
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .step-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .step-card p {
+    font-size: 14px;
+    color: var(--ink-secondary);
+    line-height: 1.7;
+  }
+
+  /* ── Numbers table ── */
+  .numbers-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .numbers-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .numbers-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--border);
+    background: var(--canvas);
+  }
+  .numbers-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+  }
+  .numbers-table tr:last-child td {
+    border-bottom: none;
+    font-weight: 700;
+  }
+  .numbers-table .num { text-align: right; }
+  .numbers-table .highlight {
+    color: var(--success);
+    font-weight: 700;
+  }
+  .numbers-table .total-row td {
+    background: rgba(5,150,105,0.04);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .numbers-caption {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--ink-secondary);
+    text-align: center;
+  }
+
+  /* ── FAQ ── */
+  .faq-list {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .faq-item:hover { box-shadow: var(--shadow-sm); }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-q svg {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    color: var(--ink-secondary);
+  }
+  .faq-item.open .faq-q svg { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+  .faq-item.open .faq-a {
+    max-height: 300px;
+  }
+  .faq-a-inner {
+    padding: 0 24px 20px;
+    font-size: 14px;
+    color: var(--ink-secondary);
+    line-height: 1.8;
+  }
+
+  /* ── CTA section ── */
+  .cta-section {
+    background: var(--dark);
+    padding: 80px 0;
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+  .cta-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-white { background: #fff; color: var(--ink); }
+  .btn-white:hover { background: #F1F5F9; transform: translateY(-1px); }
+  .btn-outline-white { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); }
+  .btn-outline-white:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+  /* ═══════════════════════════════════
+     MODAL (shared)
+  ═══════════════════════════════════ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: var(--surface); border-radius: 12px; max-width: 800px; width: 100%;
+    max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 32px; height: 32px;
+    border: none; background: var(--canvas); border-radius: 6px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--ink-secondary);
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--border); }
+  .modal-body { padding: 40px; }
+
+  /* Contact modal */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .contact-left h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .contact-left p { font-size: 14px; color: var(--ink-secondary); line-height: 1.7; margin-bottom: 16px; }
+  .contact-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .contact-features li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); }
+  .contact-features li .cf-icon { color: var(--success); flex-shrink: 0; }
+
+  /* Form */
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+  .form-group label .req { color: var(--danger); margin-left: 2px; }
+  .form-input {
+    width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 12px; font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-textarea {
+    width: 100%; min-height: 80px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 12px; font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+    resize: vertical; transition: border-color 0.15s;
+  }
+  .form-textarea:focus { border-color: var(--accent); }
+  .form-select {
+    width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 12px; font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+    background: var(--surface); transition: border-color 0.15s; -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+  }
+  .form-select:focus { border-color: var(--accent); }
+  .form-error { font-size: 11px; color: var(--danger); margin-top: 4px; display: none; }
+  .form-group.error .form-input,
+  .form-group.error .form-select,
+  .form-group.error .form-textarea { border-color: var(--danger); }
+  .form-group.error .form-error { display: block; }
+
+  /* Complete screen */
+  .complete-screen { text-align: center; padding: 60px 20px; }
+  .complete-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(5,150,105,0.1); display: inline-flex; align-items: center; justify-content: center; color: var(--success); margin-bottom: 20px; }
+  .complete-screen h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .complete-screen p { font-size: 14px; color: var(--ink-secondary); }
+
+  /* ═══════════════════════════════════
+     BOOKING MODAL
+  ═══════════════════════════════════ */
+  .booking-steps { display: flex; gap: 0; margin-bottom: 32px; }
+  .booking-step-indicator {
+    flex: 1; text-align: center; padding: 12px 8px; font-size: 12px; font-weight: 600;
+    color: var(--ink-secondary); border-bottom: 2px solid var(--border); transition: all 0.2s;
+  }
+  .booking-step-indicator.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .booking-step-indicator.done { color: var(--success); border-bottom-color: var(--success); }
+  .step-content { display: none; }
+  .step-content.active { display: block; }
+
+  /* Calendar */
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 24px; }
+  .cal-day-label { font-size: 11px; font-weight: 600; color: var(--ink-secondary); padding: 8px 0; }
+  .cal-day {
+    padding: 8px 0; font-size: 13px; border-radius: 6px; cursor: pointer; transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .cal-day:hover { background: var(--canvas); }
+  .cal-day.disabled { color: var(--border); pointer-events: none; }
+  .cal-day.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cal-day.today { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+  /* Time slots */
+  .time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
+  .time-slot {
+    padding: 10px; text-align: center; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+  }
+  .time-slot:hover { border-color: var(--accent); }
+  .time-slot.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Booking confirm */
+  .booking-summary { background: var(--canvas); border-radius: 8px; padding: 20px; margin-bottom: 24px; }
+  .booking-summary .sum-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+  .booking-summary .sum-label { color: var(--ink-secondary); }
+  .booking-summary .sum-val { font-weight: 600; color: var(--ink); }
+  .step-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+
+  /* ═══════════════════════════════════
+     CHATBOT
+  ═══════════════════════════════════ */
+  .chat-fab {
+    position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
+    border-radius: 50%; background: var(--accent); color: #fff; border: none;
+    cursor: pointer; z-index: 900; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(30,58,95,0.3); transition: transform 0.2s;
+  }
+  .chat-fab:hover { transform: scale(1.08); }
+  .chat-fab .fab-close { display: none; }
+  .chat-fab.open .fab-open { display: none; }
+  .chat-fab.open .fab-close { display: block; }
+
+  .chat-window {
+    display: none; position: fixed; bottom: 92px; right: 24px; width: 360px; max-height: 500px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12); z-index: 900; flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-window.open { display: flex; }
+  .chat-header {
+    padding: 16px 20px; background: var(--accent); color: #fff;
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .chat-header-dot { width: 8px; height: 8px; border-radius: 50%; background: #34D399; flex-shrink: 0; }
+  .chat-header h4 { font-size: 14px; font-weight: 600; }
+  .chat-header p { font-size: 11px; opacity: 0.8; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 280px; }
+  .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+  .chat-msg.bot { background: var(--canvas); color: var(--ink); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .chat-msg.user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chat-input-row {
+    display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+    border-top: 1px solid var(--border); flex-shrink: 0;
+  }
+  .chat-input {
+    flex: 1; height: 36px; border: 1px solid var(--border); border-radius: 18px;
+    padding: 0 14px; font-size: 13px; font-family: inherit; outline: none;
+  }
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-send {
+    width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--accent);
+    color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.15s;
+  }
+  .chat-send:hover { opacity: 0.85; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav a:not(.btn-nav) { display: none; }
+    .hero { padding: 64px 0 48px; }
+    .hero-buttons { flex-direction: column; }
+    .trust-bar { flex-direction: column; gap: 8px; }
+    .trust-bar .dot { display: none; }
+    .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .chat-window { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
+    .time-slots { grid-template-columns: repeat(2, 1fr); }
+    .modal-body { padding: 24px; }
+    .numbers-table { font-size: 13px; }
+    .numbers-table th, .numbers-table td { padding: 10px 8px; }
+    .section { padding: 56px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     HEADER
+════════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 40" height="20">
+        <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1a1a2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1a1a2e" letter-spacing="3">RAKUDA COSTCUT</text>
+      </svg>
+    </a>
+    <nav>
+      <a href="#steps">使い方</a>
+      <a href="#faq">よくある質問</a>
+      <a href="#" class="btn-nav-secondary" onclick="openContact();return false;">お問い合わせ</a>
+      <a href="#" class="btn-nav" onclick="openBooking();return false;">
+        無料で試してみる
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <h1>毎月の経費、ちゃんと見えていますか？</h1>
+    <p class="hero-sub">請求書をアップロードするだけ。<br>AIが「ここ、高いですよ」を教えてくれます。</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn btn-ghost btn-lg" onclick="openContact();return false;">まずは話を聞いてみる</a>
+      <a href="#" class="btn btn-accent btn-lg" onclick="openBooking();return false;">
+        無料で試してみる
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="trust-bar">
+      <span>初回相談は完全無料</span>
+      <span class="dot"></span>
+      <span>30分で完了</span>
+      <span class="dot"></span>
+      <span>成果報酬型だからリスクゼロ</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     PROBLEM
+════════════════════════════════ -->
+<section class="section section-canvas">
+  <div class="container fade-in-section">
+    <h2>こんなこと、ありませんか？</h2>
+    <p class="section-desc">経費のムダに気づいていても、忙しくて手が回らない。そんな声をたくさん聞きます。</p>
+    <div class="problem-list">
+      <div class="problem-card">
+        <span class="number">1</span>請求書がたまって、何にいくら使ったか正直わからない
+      </div>
+      <div class="problem-card">
+        <span class="number">2</span>「もっと安くできるはず」と思うけど、比較する時間がない
+      </div>
+      <div class="problem-card">
+        <span class="number">3</span>経理の人に聞いても「前からこの金額です」と言われて終わり
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     HOW IT WORKS
+════════════════════════════════ -->
+<section class="section" id="steps">
+  <div class="container fade-in-section">
+    <div style="text-align:center; margin-bottom:56px;">
+      <h2>3つのカンタンステップ</h2>
+      <p class="section-desc" style="margin:0 auto;">むずかしい設定は不要です。3つのステップで「ここが高い」がわかります。</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>請求書をポンと入れる</h3>
+        <p>PDFでもExcelでも写真でもOK。ドラッグ&ドロップするだけです。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>AIが自動でチェック</h3>
+        <p>業界の相場と比べて「ここが高い」「ここは適正」を判定します。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>削れるところが一覧で見える</h3>
+        <p>金額順に並ぶから、大きいところから手をつけられます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     NUMBERS
+════════════════════════════════ -->
+<section class="section section-canvas" id="numbers">
+  <div class="container fade-in-section">
+    <div style="text-align:center; margin-bottom:48px;">
+      <h2>実際の数字で見てみましょう</h2>
+      <p class="section-desc" style="margin:0 auto;">「本当にそんなに変わるの？」と思いますよね。<br>実際にあった削減例をお見せします。</p>
+    </div>
+    <div class="numbers-wrap">
+      <table class="numbers-table">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="num">今の金額</th>
+            <th class="num">適正価格</th>
+            <th class="num">差額（年間）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>オフィス清掃</td>
+            <td class="num">月15万円</td>
+            <td class="num">月9万円</td>
+            <td class="num highlight">72万円</td>
+          </tr>
+          <tr>
+            <td>印刷費</td>
+            <td class="num">月8万円</td>
+            <td class="num">月4.5万円</td>
+            <td class="num highlight">42万円</td>
+          </tr>
+          <tr>
+            <td>通信費</td>
+            <td class="num">月22万円</td>
+            <td class="num">月16万円</td>
+            <td class="num highlight">72万円</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>合計</strong></td>
+            <td class="num"></td>
+            <td class="num"></td>
+            <td class="num highlight"><strong>186万円/年</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="numbers-caption">※ 50名規模のIT企業の実例をもとに算出（個社により異なります）</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FAQ
+════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container fade-in-section">
+    <div style="text-align:center; margin-bottom:48px;">
+      <h2>よくある質問</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          うちみたいな小さい会社でも使えますか？
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">はい。従業員10名の会社さんでも使っています。月の経費が50万円以上あれば、削減余地が見つかることがほとんどです。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          AIって難しくないですか？
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">ファイルを入れるだけです。AIは裏側で動くので、パソコンが苦手な方でも大丈夫です。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          本当に無料ですか？
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">初回の診断レポートは完全無料です。その後もし「お願いしたい」となった場合のみ、削減できた金額の一部を成果報酬としていただきます。削減できなければ0円です。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          どれくらいで結果が出ますか？
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">請求書を入れてから最短3分で初回レポートが届きます。詳細な分析レポートは1営業日以内にお送りします。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FINAL CTA
+════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container fade-in-section">
+    <h2>まずは、無料でためしてみませんか？</h2>
+    <p>初回診断は完全無料。ムダが見つからなければ、それはそれでいいこと。</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-white btn-lg" onclick="openBooking();return false;">
+        無料で試してみる
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#" class="btn btn-outline-white btn-lg" onclick="openContact();return false;">まずは話を聞いてみる</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer style="border-top: 1px solid #E5E5E5; background: #fff; padding: 40px 24px;">
+  <div style="max-width: 960px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20">
+        <path d="M10,75 C10,75 22,25 38,25 C52,25 44,65 56,65 C68,65 60,20 74,20 C90,20 100,75 100,75" stroke="#1A1A2E" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span style="font-size: 14px; font-weight: 300; letter-spacing: 0.15em; color: #111;">RAKUDA AI</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
+      <div>
+        <h3 style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9CA3AF; margin-bottom: 12px;">ラクダシリーズ</h3>
+        <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px;">
+          <li><a href="https://hub.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダHub</a></li>
+          <li><a href="https://mail.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダMail</a></li>
+          <li><a href="https://reception.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダReception</a></li>
+          <li><a href="https://research.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダResearch</a></li>
+          <li><a href="https://invoice.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダInvoice</a></li>
+          <li><a href="https://buddy.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダBuddy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9CA3AF; margin-bottom: 12px;">サポート</h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+          <li><a href="mailto:info@rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">info@rakuda-ai.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #E5E5E5; padding-top: 24px; text-align: center; font-size: 12px; color: #9CA3AF;">
+      &copy; 2026 Rakuda AI Inc. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════
+     CONTACT MODAL
+════════════════════════════════ -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeContact()" aria-label="閉じる">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-body" id="contactBody">
+      <div class="contact-grid">
+        <div class="contact-left">
+          <h3>お気軽にご相談ください</h3>
+          <p>「うちの経費、もっと安くならないかな？」そんなご質問だけでも大歓迎です。担当者がわかりやすくお答えします。</p>
+          <ul class="contact-features">
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>相談は何度でも無料</li>
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>翌営業日までにご連絡</li>
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>あなたの会社専用の削減レポート</li>
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>200社以上のお手伝い実績</li>
+          </ul>
+        </div>
+        <div class="contact-right">
+          <form id="contactForm" onsubmit="submitContact(event)">
+            <div class="form-group"><label>会社名<span class="req">*</span></label><input type="text" class="form-input" id="cCompany" required><div class="form-error">会社名を入力してください</div></div>
+            <div class="form-group"><label>お名前<span class="req">*</span></label><input type="text" class="form-input" id="cName" required><div class="form-error">お名前を入力してください</div></div>
+            <div class="form-group"><label>メールアドレス<span class="req">*</span></label><input type="email" class="form-input" id="cEmail" required><div class="form-error">メールアドレスを入力してください</div></div>
+            <div class="form-group"><label>電話番号</label><input type="tel" class="form-input" id="cPhone" placeholder="03-1234-5678"></div>
+            <div class="form-group">
+              <label>従業員数<span class="req">*</span></label>
+              <select class="form-select" id="cScale" required>
+                <option value="">選んでください</option>
+                <option value="1-50">1〜50名</option>
+                <option value="51-200">51〜200名</option>
+                <option value="201-500">201〜500名</option>
+                <option value="501-1000">501〜1,000名</option>
+                <option value="1001+">1,001名以上</option>
+              </select>
+              <div class="form-error">従業員数を選んでください</div>
+            </div>
+            <div class="form-group"><label>聞きたいこと</label><textarea class="form-textarea" id="cMessage" rows="3" placeholder="例: 通信費が高いと感じている、経費全般を見直したい、など"></textarea></div>
+            <button type="submit" class="btn btn-accent btn-full" style="height:44px; font-size:15px;">送信する</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BOOKING MODAL
+════════════════════════════════ -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal-box" style="max-width:600px;">
+    <button class="modal-close" onclick="closeBooking()" aria-label="閉じる">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-body" id="bookingBody">
+      <h3 style="font-size:20px;font-weight:700;margin-bottom:4px;">無料で試してみる</h3>
+      <p style="font-size:13px;color:var(--ink-secondary);margin-bottom:24px;">30分のオンライン面談で、あなたの会社の経費をチェックします。<br><span style="font-size:12px;color:#64748B;">※ しつこい営業は一切しません</span></p>
+
+      <div class="booking-steps">
+        <div class="booking-step-indicator active" data-step="1">1. 日付を選ぶ</div>
+        <div class="booking-step-indicator" data-step="2">2. 時間・お名前</div>
+        <div class="booking-step-indicator" data-step="3">3. 確認</div>
+      </div>
+
+      <!-- Step 1: Calendar -->
+      <div class="step-content active" id="bookStep1">
+        <div class="cal-header">
+          <button onclick="calNav(-1)" style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-secondary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h4 id="calMonth" style="font-size:15px;font-weight:700;"></h4>
+          <button onclick="calNav(1)" style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-secondary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="step-nav" style="justify-content:flex-end;">
+          <button class="btn btn-accent" id="btnToStep2" onclick="goBookStep(2)" disabled>次へ</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Time + form -->
+      <div class="step-content" id="bookStep2">
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;">ご都合のいい時間を選んでください</div>
+          <div class="time-slots" id="timeSlots">
+            <div class="time-slot" onclick="selectTime(this)">09:00</div>
+            <div class="time-slot" onclick="selectTime(this)">09:30</div>
+            <div class="time-slot" onclick="selectTime(this)">10:00</div>
+            <div class="time-slot" onclick="selectTime(this)">10:30</div>
+            <div class="time-slot" onclick="selectTime(this)">11:00</div>
+            <div class="time-slot" onclick="selectTime(this)">11:30</div>
+            <div class="time-slot" onclick="selectTime(this)">13:00</div>
+            <div class="time-slot" onclick="selectTime(this)">13:30</div>
+            <div class="time-slot" onclick="selectTime(this)">14:00</div>
+            <div class="time-slot" onclick="selectTime(this)">14:30</div>
+            <div class="time-slot" onclick="selectTime(this)">15:00</div>
+            <div class="time-slot" onclick="selectTime(this)">15:30</div>
+            <div class="time-slot" onclick="selectTime(this)">16:00</div>
+            <div class="time-slot" onclick="selectTime(this)">16:30</div>
+            <div class="time-slot" onclick="selectTime(this)">17:00</div>
+          </div>
+        </div>
+        <div class="form-group"><label>お名前<span class="req">*</span></label><input type="text" class="form-input" id="bName"></div>
+        <div class="form-group"><label>メールアドレス<span class="req">*</span></label><input type="email" class="form-input" id="bEmail"></div>
+        <div class="form-group"><label>会社名</label><input type="text" class="form-input" id="bCompany"></div>
+        <div class="step-nav">
+          <button class="btn btn-outline" onclick="goBookStep(1)">戻る</button>
+          <button class="btn btn-accent" id="btnToStep3" onclick="goBookStep(3)" disabled>次へ</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Confirm -->
+      <div class="step-content" id="bookStep3">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">この内容でよろしいですか？</div>
+        <div class="booking-summary" id="bookingSummary"></div>
+        <div class="step-nav">
+          <button class="btn btn-outline" onclick="goBookStep(2)">戻る</button>
+          <button class="btn btn-accent" onclick="confirmBooking()">この内容で予約する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CHATBOT
+════════════════════════════════ -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">
+  <span class="fab-open"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+  <span class="fab-close"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+</button>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <div>
+      <h4>ラクダサポート</h4>
+      <p>オンライン</p>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">こんにちは！ラクダCOSTCUTです。経費のことで気になることはありますか？
+
+お気軽にどうぞ：
+・「料金」「値段」
+・「使い方」
+・「無料」
+・「削減」「コスト」</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力..." onkeydown="if(event.key==='Enter'&&(event.metaKey||event.ctrlKey)){event.preventDefault();sendChat()}">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════ -->
+<script>
+(function() {
+
+  /* ── Fade-in observer ── */
+  var fadeEls = document.querySelectorAll('.fade-in-section');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(function(el) { obs.observe(el); });
+
+  /* ── FAQ accordion ── */
+  window.toggleFaq = function(btn) {
+    var item = btn.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    // Close all others
+    document.querySelectorAll('.faq-item').forEach(function(fi) { fi.classList.remove('open'); });
+    if (!isOpen) item.classList.add('open');
+  };
+
+  /* ═══════════════════════════════════
+     1. CONTACT MODAL
+  ═══════════════════════════════════ */
+  window.openContact = function() {
+    document.getElementById('contactModal').classList.add('active');
+    document.body.classList.add('modal-open');
+    var form = document.getElementById('contactForm');
+    if (form) form.reset();
+    var groups = form ? form.querySelectorAll('.form-group') : [];
+    groups.forEach(function(g){ g.classList.remove('error'); });
+  };
+  window.closeContact = function() {
+    document.getElementById('contactModal').classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.submitContact = function(e) {
+    e.preventDefault();
+    var valid = true;
+    var fields = [
+      {id: 'cCompany', req: true},
+      {id: 'cName', req: true},
+      {id: 'cEmail', req: true, type: 'email'},
+      {id: 'cScale', req: true}
+    ];
+    fields.forEach(function(f) {
+      var el = document.getElementById(f.id);
+      var group = el ? el.closest('.form-group') : null;
+      if (!el || !group) return;
+      group.classList.remove('error');
+      if (f.req && !el.value.trim()) { group.classList.add('error'); valid = false; }
+      if (f.type === 'email' && el.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)) { group.classList.add('error'); valid = false; }
+    });
+    if (!valid) return;
+
+    document.getElementById('contactBody').innerHTML =
+      '<div class="complete-screen">' +
+      '<div class="complete-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+      '<h3>送信できました</h3>' +
+      '<p>お問い合わせありがとうございます。<br>翌営業日までに担当者からご連絡いたします。</p>' +
+      '<button class="btn btn-outline" style="margin-top:24px;" onclick="closeContact()">閉じる</button>' +
+      '</div>';
+  };
+
+  document.getElementById('contactModal').addEventListener('click', function(e) {
+    if (e.target === this) closeContact();
+  });
+
+  /* ═══════════════════════════════════
+     2. BOOKING MODAL
+  ═══════════════════════════════════ */
+  var bookState = { date: null, time: null, month: new Date().getMonth(), year: new Date().getFullYear() };
+
+  window.openBooking = function() {
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.classList.add('modal-open');
+    bookState = { date: null, time: null, month: new Date().getMonth(), year: new Date().getFullYear() };
+    goBookStep(1);
+    renderCalendar();
+  };
+  window.closeBooking = function() {
+    document.getElementById('bookingModal').classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+  document.getElementById('bookingModal').addEventListener('click', function(e) {
+    if (e.target === this) closeBooking();
+  });
+
+  function renderCalendar() {
+    var y = bookState.year, m = bookState.month;
+    var monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    document.getElementById('calMonth').textContent = y + '年 ' + monthNames[m];
+    var grid = document.getElementById('calGrid');
+    var dayLabels = ['日','月','火','水','木','金','土'];
+    var html = '';
+    dayLabels.forEach(function(d){ html += '<div class="cal-day-label">' + d + '</div>'; });
+
+    var first = new Date(y, m, 1);
+    var lastDay = new Date(y, m+1, 0).getDate();
+    var startDow = first.getDay();
+    var today = new Date(); today.setHours(0,0,0,0);
+
+    for (var i = 0; i < startDow; i++) html += '<div class="cal-day disabled"></div>';
+    for (var d = 1; d <= lastDay; d++) {
+      var dt = new Date(y, m, d);
+      var isPast = dt < today;
+      var isWeekend = dt.getDay() === 0 || dt.getDay() === 6;
+      var isToday = dt.getTime() === today.getTime();
+      var sel = bookState.date && bookState.date.getTime() === dt.getTime();
+      var cls = 'cal-day';
+      if (isPast || isWeekend) cls += ' disabled';
+      if (isToday) cls += ' today';
+      if (sel) cls += ' selected';
+      html += '<div class="' + cls + '" data-date="' + y + '-' + (m+1) + '-' + d + '" onclick="selectDate(this)">' + d + '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  window.calNav = function(dir) {
+    bookState.month += dir;
+    if (bookState.month > 11) { bookState.month = 0; bookState.year++; }
+    if (bookState.month < 0) { bookState.month = 11; bookState.year--; }
+    renderCalendar();
+  };
+
+  window.selectDate = function(el) {
+    if (el.classList.contains('disabled')) return;
+    document.querySelectorAll('#calGrid .cal-day').forEach(function(d){ d.classList.remove('selected'); });
+    el.classList.add('selected');
+    var parts = el.getAttribute('data-date').split('-');
+    bookState.date = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+    document.getElementById('btnToStep2').disabled = false;
+  };
+
+  window.selectTime = function(el) {
+    if (el.classList.contains('disabled')) return;
+    document.querySelectorAll('.time-slot').forEach(function(s){ s.classList.remove('selected'); });
+    el.classList.add('selected');
+    bookState.time = el.textContent;
+    checkStep2Valid();
+  };
+
+  function checkStep2Valid() {
+    var name = document.getElementById('bName').value.trim();
+    var email = document.getElementById('bEmail').value.trim();
+    var hasTime = bookState.time;
+    document.getElementById('btnToStep3').disabled = !(hasTime && name && email);
+  }
+
+  window.goBookStep = function(n) {
+    for (var i = 1; i <= 3; i++) {
+      document.getElementById('bookStep'+i).classList.remove('active');
+      var ind = document.querySelector('.booking-step-indicator[data-step="'+i+'"]');
+      ind.classList.remove('active','done');
+      if (i < n) ind.classList.add('done');
+      if (i === n) ind.classList.add('active');
+    }
+    document.getElementById('bookStep'+n).classList.add('active');
+
+    if (n === 2) {
+      ['bName','bEmail'].forEach(function(id){
+        var el = document.getElementById(id);
+        el.removeEventListener('input', checkStep2Valid);
+        el.addEventListener('input', checkStep2Valid);
+      });
+    }
+
+    if (n === 3) {
+      var ds = bookState.date;
+      var dateStr = ds.getFullYear() + '年' + (ds.getMonth()+1) + '月' + ds.getDate() + '日';
+      var sum = document.getElementById('bookingSummary');
+      sum.innerHTML =
+        '<div class="sum-row"><span class="sum-label">日付</span><span class="sum-val">' + dateStr + '</span></div>' +
+        '<div class="sum-row"><span class="sum-label">時間</span><span class="sum-val">' + bookState.time + '</span></div>' +
+        '<div class="sum-row"><span class="sum-label">お名前</span><span class="sum-val">' + document.getElementById('bName').value + '</span></div>' +
+        '<div class="sum-row"><span class="sum-label">メール</span><span class="sum-val">' + document.getElementById('bEmail').value + '</span></div>' +
+        (document.getElementById('bCompany').value ? '<div class="sum-row"><span class="sum-label">会社名</span><span class="sum-val">' + document.getElementById('bCompany').value + '</span></div>' : '');
+    }
+  };
+
+  window.confirmBooking = function() {
+    document.getElementById('bookingBody').innerHTML =
+      '<div class="complete-screen">' +
+      '<div class="complete-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+      '<h3>予約できました</h3>' +
+      '<p>面談のご予約ありがとうございます。<br>確認メールをお送りしましたので、ご確認ください。</p>' +
+      '<button class="btn btn-outline" style="margin-top:24px;" onclick="closeBooking()">閉じる</button>' +
+      '</div>';
+  };
+
+  /* ═══════════════════════════════════
+     3. CHATBOT
+  ═══════════════════════════════════ */
+  window.toggleChat = function() {
+    var fab = document.getElementById('chatFab');
+    var win = document.getElementById('chatWindow');
+    fab.classList.toggle('open');
+    win.classList.toggle('open');
+  };
+
+  var chatResponses = {
+    '料金|値段|いくら|費用|価格': 'うちの初回診断は完全無料です！その後もし「お願いしたい」となった場合は、実際に削減できた金額の一部だけいただく成果報酬型です。削減できなかったら0円なので、リスクはありません。',
+    '使い方|やり方|始め方|どうやって': '使い方はカンタンです！\n1. 請求書をアップロード（PDF、Excel、写真なんでもOK）\n2. AIが自動でチェック\n3. 削れるところが一覧で見える\nファイルを入れるだけなので、パソコンが苦手でも大丈夫ですよ。',
+    '無料|タダ|お金': '初回の診断レポートは完全無料です。その後も成果報酬型なので、経費が安くならなければ料金は一切かかりません。安心してお試しください！',
+    '削減|コスト|節約|安く': '導入いただいた企業さんでは、平均して年間15〜22%の経費削減ができています。例えば50名規模の会社さんで年間186万円の削減実績もありますよ！',
+    '面談|相談|予約|アポ': '初回面談は30分のオンラインで、もちろん無料です。画面上部の「無料で試してみる」ボタンから予約できますよ！',
+    'ありがとう|感謝|サンキュー': 'こちらこそありがとうございます！他に気になることがあれば、いつでも聞いてくださいね。'
+  };
+
+  window.sendChat = function() {
+    var input = document.getElementById('chatInput');
+    var msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    addChatMsg(msg, 'user');
+
+    setTimeout(function() {
+      var reply = null;
+      var keys = Object.keys(chatResponses);
+      for (var i = 0; i < keys.length; i++) {
+        var patterns = keys[i].split('|');
+        for (var j = 0; j < patterns.length; j++) {
+          if (msg.indexOf(patterns[j]) !== -1) { reply = chatResponses[keys[i]]; break; }
+        }
+        if (reply) break;
+      }
+      if (!reply) reply = 'ご質問ありがとうございます！詳しい内容は担当者がお答えしますね。「お問い合わせ」フォームからご連絡いただくか、以下のキーワードでお試しください：\n・「料金」「使い方」「無料」「削減」';
+      addChatMsg(reply, 'bot');
+    }, 500);
+  };
+
+  function addChatMsg(text, type) {
+    var container = document.getElementById('chatMessages');
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + type;
+    div.textContent = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+})();
+</script>
+</body>
+</html>
