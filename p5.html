@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAKUDA — Smart Procurement Marketplace</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0A0A0B;
+    --ink-secondary: #6B7280;
+    --surface: #FFFFFF;
+    --canvas: #FAFAFA;
+    --border: #E5E7EB;
+    --accent: #2563EB;
+    --success: #059669;
+    --dark: #111113;
+    --dark-surface: #1C1C1F;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif; font-feature-settings: "palt";
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--surface);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 64px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+
+  .header-inner {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header-search {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+  }
+
+  .header-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-secondary);
+    pointer-events: none;
+  }
+
+  .header-search input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px 0 40px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .header-search input:focus {
+    border-color: var(--accent);
+  }
+
+  .header-search input::placeholder {
+    color: var(--ink-secondary);
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+  }
+
+  .header-nav a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .header-nav a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 20px;
+    height: 38px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-accent:hover { opacity: 0.9; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover { border-color: var(--ink); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-secondary);
+    padding: 0;
+    height: auto;
+  }
+
+  .btn-ghost:hover { color: var(--ink); }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--dark);
+    padding: 120px 0 80px;
+  }
+
+  .hero-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.6);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .hero-search-wrap {
+    max-width: 560px;
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 6px 6px 6px 20px;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    margin-bottom: 16px;
+  }
+
+  .hero-search-wrap input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: transparent;
+  }
+
+  .hero-search-wrap input::placeholder {
+    color: var(--ink-secondary);
+  }
+
+  .hero-search-wrap .btn {
+    height: 40px;
+    padding: 0 24px;
+    font-size: 14px;
+  }
+
+  .hero-hint {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── Section wrapper ── */
+  .section {
+    padding: 96px 0;
+  }
+
+  .section-dark {
+    background: var(--dark);
+    padding: 96px 0;
+  }
+
+  .section-canvas {
+    background: var(--canvas);
+    padding: 96px 0;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .section-label-dark {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .section h2 {
+    font-size: clamp(26px, 3.5vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 48px;
+  }
+
+  .section-dark h2,
+  .section-dark .section-label {
+    /* overridden inline */
+  }
+
+  /* ── Price Comparison Cards ── */
+  .product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .product-card {
+    display: grid;
+    grid-template-columns: 260px 1fr 160px;
+    align-items: center;
+    gap: 32px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-color: #D1D5DB;
+  }
+
+  .product-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .product-img {
+    width: 64px;
+    height: 64px;
+    background: var(--canvas);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .product-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .product-sku {
+    font-size: 12px;
+    color: var(--ink-secondary);
+  }
+
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .price-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .price-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .price-table td {
+    padding: 8px 0;
+    font-size: 14px;
+  }
+
+  .price-table .platform-name {
+    color: var(--ink-secondary);
+    font-weight: 500;
+    width: 180px;
+  }
+
+  .price-table .price-val {
+    font-weight: 700;
+    font-size: 15px;
+    text-align: right;
+    padding-right: 12px;
+  }
+
+  .price-table .price-val.best {
+    color: var(--success);
+  }
+
+  .price-table .tag-best {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--success);
+    background: rgba(5, 150, 105, 0.08);
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .platform-name.best {
+    color: var(--success);
+    font-weight: 700;
+  }
+
+  .product-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .saving-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--success);
+    text-align: right;
+  }
+
+  .saving-label {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-secondary);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ── AI Analysis Section ── */
+  .ai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .ai-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .ai-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .ai-step-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .ai-step-body h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .ai-step-body p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+
+  /* Dashboard Card */
+  .dashboard-card {
+    background: var(--dark-surface);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 32px;
+  }
+
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .dashboard-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dashboard-date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .kpi-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .kpi-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .kpi-value.success { color: var(--success); }
+
+  .kpi-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 6px;
+  }
+
+  /* ── Category Section ── */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .category-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    background: var(--surface);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .category-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .category-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-secondary);
+    flex-shrink: 0;
+  }
+
+  .category-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .category-count {
+    font-size: 13px;
+    color: var(--ink-secondary);
+  }
+
+  /* ── Pricing ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .pricing-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .pricing-card.featured {
+    border-color: var(--ink);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .pricing-tier {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    margin-bottom: 12px;
+  }
+
+  .pricing-tier.featured-label {
+    color: var(--accent);
+  }
+
+  .pricing-price {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .pricing-price span {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    letter-spacing: 0;
+  }
+
+  .pricing-desc {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .pricing-features li .check-icon {
+    color: var(--success);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pricing-features li .minus-icon {
+    color: var(--border);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .btn-full { width: 100%; }
+
+  .btn-dark {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .btn-dark:hover { opacity: 0.9; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--dark);
+    padding: 96px 0;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 40px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .btn-lg {
+    height: 48px;
+    padding: 0 32px;
+    font-size: 15px;
+  }
+
+  .btn-outline-white {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .btn-outline-white:hover {
+    border-color: rgba(255,255,255,0.4);
+    color: #fff;
+    opacity: 1;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 56px 0 32px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 200px repeat(3, 1fr);
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-col ul li a {
+    font-size: 14px;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-col ul li a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-bottom p {
+    font-size: 13px;
+    color: var(--ink-secondary);
+  }
+
+  /* ── Divider / Utility ── */
+  .text-center { text-align: center; }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-48 { margin-bottom: 48px; }
+
+  /* Single animation: hero search bar focus pulse */
+  @keyframes borderPulse {
+    0%   { border-color: var(--accent); box-shadow: 0 0 0 0 rgba(37,99,235,0.15); }
+    100% { border-color: var(--accent); box-shadow: 0 0 0 6px rgba(37,99,235,0); }
+  }
+
+  .hero-search-wrap:focus-within {
+    animation: borderPulse 0.6s ease-out forwards;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     HEADER
+════════════════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">RAKUDA</a>
+    <div class="header-search">
+      <span class="header-search-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </span>
+      <input type="text" placeholder="品名・型番で検索...">
+    </div>
+    <nav class="header-nav">
+      <a href="#">価格比較</a>
+      <a href="#">AI分析</a>
+      <a href="#">料金</a>
+      <a href="#" class="btn btn-accent">無料相談</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-label">Smart Procurement</span>
+    <h1>買うだけで、<br>コストが下がる。</h1>
+    <p class="hero-subtitle">Monotaro・Amazon Business・Askulの価格を一括比較。購買データからAIが自動でコスト分析。</p>
+    <div class="hero-search-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#6B7280;flex-shrink:0;">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" placeholder="品名・型番で検索...">
+      <a href="#" class="btn btn-accent">検索</a>
+    </div>
+    <p class="hero-hint">オフィス用品、IT機器、MRO、清掃用品 他</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     PRICE COMPARISON
+════════════════════════════════ -->
+<section class="section" style="background:var(--surface);">
+  <div class="container">
+    <span class="section-label">Price Comparison</span>
+    <h2>3プラットフォームを一括比較</h2>
+
+    <div class="product-list">
+
+      <!-- Product 1: コピー用紙 -->
+      <div class="product-card">
+        <div class="product-meta">
+          <div class="product-img"></div>
+          <div class="product-info">
+            <h3>コピー用紙A4<br>5000枚</h3>
+            <span class="product-sku">SKU: CP-A4-5000</span>
+          </div>
+        </div>
+
+        <table class="price-table">
+          <tr>
+            <td class="platform-name">Monotaro</td>
+            <td class="price-val">¥2,480</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="platform-name best">Amazon Business</td>
+            <td class="price-val best">¥2,180</td>
+            <td><span class="tag-best">最安</span></td>
+          </tr>
+          <tr>
+            <td class="platform-name">Askul</td>
+            <td class="price-val">¥2,380</td>
+            <td></td>
+          </tr>
+        </table>
+
+        <div class="product-action">
+          <div>
+            <span class="saving-label">Amazon で最大</span>
+            <div class="saving-text">¥300 節約</div>
+          </div>
+          <a href="#" class="btn btn-accent">購入 →</a>
+        </div>
+      </div>
+
+      <!-- Product 2: トナーカートリッジ -->
+      <div class="product-card">
+        <div class="product-meta">
+          <div class="product-img"></div>
+          <div class="product-info">
+            <h3>トナーカートリッジ<br>HP互換</h3>
+            <span class="product-sku">SKU: TN-HP-BK</span>
+          </div>
+        </div>
+
+        <table class="price-table">
+          <tr>
+            <td class="platform-name">Monotaro</td>
+            <td class="price-val">¥4,980</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="platform-name best">Amazon Business</td>
+            <td class="price-val best">¥3,890</td>
+            <td><span class="tag-best">最安</span></td>
+          </tr>
+          <tr>
+            <td class="platform-name">Askul</td>
+            <td class="price-val">¥5,200</td>
+            <td></td>
+          </tr>
+        </table>
+
+        <div class="product-action">
+          <div>
+            <span class="saving-label">Amazon で最大</span>
+            <div class="saving-text">¥1,310 節約</div>
+          </div>
+          <a href="#" class="btn btn-accent">購入 →</a>
+        </div>
+      </div>
+
+      <!-- Product 3: ゴム手袋 -->
+      <div class="product-card">
+        <div class="product-meta">
+          <div class="product-img"></div>
+          <div class="product-info">
+            <h3>ゴム手袋<br>100枚入</h3>
+            <span class="product-sku">SKU: GL-NBR-100</span>
+          </div>
+        </div>
+
+        <table class="price-table">
+          <tr>
+            <td class="platform-name best">Monotaro</td>
+            <td class="price-val best">¥890</td>
+            <td><span class="tag-best">最安</span></td>
+          </tr>
+          <tr>
+            <td class="platform-name">Amazon Business</td>
+            <td class="price-val">¥980</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="platform-name">Askul</td>
+            <td class="price-val">¥920</td>
+            <td></td>
+          </tr>
+        </table>
+
+        <div class="product-action">
+          <div>
+            <span class="saving-label">Monotaro で最大</span>
+            <div class="saving-text">¥90 節約</div>
+          </div>
+          <a href="#" class="btn btn-accent">購入 →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     AI ANALYSIS
+════════════════════════════════ -->
+<section class="section-dark">
+  <div class="container">
+    <div class="ai-grid">
+
+      <!-- Left: Text -->
+      <div>
+        <span class="section-label-dark">Auto Analysis</span>
+        <h2 style="font-size:clamp(26px,3.5vw,36px);font-weight:700;letter-spacing:-0.025em;line-height:1.2;color:#fff;">購買するだけで<br>AIが自動分析</h2>
+
+        <div class="ai-steps">
+          <div class="ai-step">
+            <div class="ai-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div class="ai-step-body">
+              <h4>購入データ自動蓄積</h4>
+              <p>3プラットフォームの購入履歴を自動で収集・整理</p>
+            </div>
+          </div>
+
+          <div class="ai-step">
+            <div class="ai-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17h7M17.5 14v7"/>
+              </svg>
+            </div>
+            <div class="ai-step-body">
+              <h4>AIがカテゴリ分類</h4>
+              <p>消耗品・IT機器・MROを自動でタグ付け・分類</p>
+            </div>
+          </div>
+
+          <div class="ai-step">
+            <div class="ai-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="ai-step-body">
+              <h4>ベンチマーク比較</h4>
+              <p>同規模企業の平均コストと自社を自動比較</p>
+            </div>
+          </div>
+
+          <div class="ai-step">
+            <div class="ai-step-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <div class="ai-step-body">
+              <h4>改善提案レポート</h4>
+              <p>月次でコスト削減アクションを自動レポート出力</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Dashboard -->
+      <div>
+        <div class="dashboard-card">
+          <div class="dashboard-header">
+            <span class="dashboard-title">Monthly Summary</span>
+            <span class="dashboard-date">2026年3月</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-item">
+              <div class="kpi-label">今月購買額</div>
+              <div class="kpi-value">¥342万</div>
+              <div class="kpi-sub">先月比 +8%</div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-label">AI削減提案</div>
+              <div class="kpi-value success">¥48万</div>
+              <div class="kpi-sub">削減余地 14%</div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-label">最安値購入率</div>
+              <div class="kpi-value">73%</div>
+              <div class="kpi-sub">目標: 85%</div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-label">前月比</div>
+              <div class="kpi-value success">+5%↑</div>
+              <div class="kpi-sub">改善トレンド継続</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CATEGORY
+════════════════════════════════ -->
+<section class="section-canvas">
+  <div class="container">
+    <h2 class="mb-48">カテゴリから探す</h2>
+    <div class="category-grid">
+
+      <a href="#" class="category-card">
+        <div class="category-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </div>
+        <div class="category-info">
+          <h3>オフィス用品</h3>
+          <span class="category-count">12,400 アイテム</span>
+        </div>
+      </a>
+
+      <a href="#" class="category-card">
+        <div class="category-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <div class="category-info">
+          <h3>IT機器</h3>
+          <span class="category-count">8,700 アイテム</span>
+        </div>
+      </a>
+
+      <a href="#" class="category-card">
+        <div class="category-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="category-info">
+          <h3>MRO</h3>
+          <span class="category-count">31,200 アイテム</span>
+        </div>
+      </a>
+
+      <a href="#" class="category-card">
+        <div class="category-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="category-info">
+          <h3>清掃・衛生</h3>
+          <span class="category-count">5,800 アイテム</span>
+        </div>
+      </a>
+
+      <a href="#" class="category-card">
+        <div class="category-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="category-info">
+          <h3>梱包・物流</h3>
+          <span class="category-count">9,100 アイテム</span>
+        </div>
+      </a>
+
+      <a href="#" class="category-card">
+        <div class="category-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="category-info">
+          <h3>安全用品</h3>
+          <span class="category-count">4,300 アイテム</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     PRICING
+════════════════════════════════ -->
+<section class="section" style="background:var(--surface);">
+  <div class="container">
+    <div class="text-center mb-48">
+      <span class="section-label">Pricing</span>
+      <h2 style="margin-bottom:8px;">シンプルな料金体系</h2>
+      <p style="font-size:15px;color:var(--ink-secondary);">全プランで価格比較機能は無料。AI分析で差がつく。</p>
+      <p style="font-size:13px;color:var(--ink-secondary);margin-top:8px;">プロダクト開発のご相談も承ります</p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Free</div>
+        <div class="pricing-price">¥0<span> / 月</span></div>
+        <p class="pricing-desc">小規模チームの価格比較に</p>
+        <ul class="pricing-features">
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            価格比較（月100件）
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            3プラットフォーム対応
+          </li>
+          <li>
+            <svg class="minus-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span style="color:var(--ink-secondary);">AI分析レポート</span>
+          </li>
+          <li>
+            <svg class="minus-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span style="color:var(--ink-secondary);">購買データ連携</span>
+          </li>
+        </ul>
+        <a href="#" class="btn btn-outline btn-full btn-lg">無料相談を受ける</a>
+      </div>
+
+      <!-- Standard -->
+      <div class="pricing-card featured">
+        <div class="pricing-tier featured-label">Standard</div>
+        <div class="pricing-price">¥49,800<span> / 月</span></div>
+        <p class="pricing-desc">購買コスト削減を支援</p>
+        <ul class="pricing-features">
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            価格比較（無制限）
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            3プラットフォーム対応
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            月次AI分析レポート
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            購買データ自動連携
+          </li>
+        </ul>
+        <a href="#" class="btn btn-dark btn-full btn-lg">無料相談を予約</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Enterprise</div>
+        <div class="pricing-price" style="font-size:28px;letter-spacing:-0.02em;">要相談</div>
+        <p class="pricing-desc">大企業・複数拠点の一元管理に</p>
+        <ul class="pricing-features">
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Standard 全機能
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            専任CSM
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            ERP / SAP 連携
+          </li>
+          <li>
+            <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            カスタムレポート
+          </li>
+        </ul>
+        <a href="#" class="btn btn-outline btn-full btn-lg">お問い合わせ</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CTA
+════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <h2>まずは購買コストの<br>無料診断から</h2>
+    <p>オンライン完結 · 最短翌営業日対応</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-accent btn-lg">無料相談を予約</a>
+      <a href="#" class="btn btn-outline-white btn-lg">デモを見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">RAKUDA</div>
+        <p>購買コストの可視化から削減支援まで。<br>AIとコンサルタントが伴走します。</p>
+      </div>
+      <div class="footer-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="#">価格比較</a></li>
+          <li><a href="#">AI分析</a></li>
+          <li><a href="#">購買管理</a></li>
+          <li><a href="#">APIドキュメント</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>会社</h4>
+        <ul>
+          <li><a href="#">会社概要</a></li>
+          <li><a href="#">ブログ</a></li>
+          <li><a href="#">採用情報</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>法務</h4>
+        <ul>
+          <li><a href="#">利用規約</a></li>
+          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="#">セキュリティ</a></li>
+          <li><a href="#">特定商取引法</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 RAKUDA, Inc. All rights reserved.</p>
+      <p style="font-size:12px;color:var(--ink-secondary);">Made in Japan</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

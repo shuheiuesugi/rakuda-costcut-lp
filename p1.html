@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAKUDA — ファイルを入れるだけで、コストの無駄が見える。</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #0A0A0B;
+      --ink-secondary: #6B7280;
+      --surface: #FFFFFF;
+      --canvas: #FAFAFA;
+      --border: #E5E7EB;
+      --accent: #2563EB;
+      --accent-hover: #1D4ED8;
+      --success: #059669;
+      --dark: #111113;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif; font-feature-settings: "palt";
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--ink-secondary);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--ink); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.9; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: var(--dark);
+      padding: 160px 0 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ドットグリッドパターン（右半分） */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      max-width: 680px;
+      margin-bottom: 24px;
+      white-space: pre-line;
+    }
+
+    .hero-subtitle {
+      font-size: 1.0625rem;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-solid {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn-hero-solid:hover { opacity: 0.9; }
+
+    .btn-text-link {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    /* ===== LOGO BAND ===== */
+    .logo-band {
+      background: var(--surface);
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-band-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-band-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink-secondary);
+    }
+
+    .logo-placeholders {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .logo-placeholder {
+      width: 80px;
+      height: 28px;
+      background: #E5E7EB;
+      border-radius: 4px;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-it-works {
+      background: var(--canvas);
+      padding: 96px 0;
+    }
+
+    .how-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 40px;
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .step-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 32px;
+      letter-spacing: -0.04em;
+    }
+
+    .step-content {}
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+
+    /* Upload UI Mock */
+    .upload-card {
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 56px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .upload-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .upload-icon-wrap {
+      width: 64px;
+      height: 64px;
+      background: var(--canvas);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+
+    .upload-main-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .upload-sub-text {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      text-align: center;
+    }
+
+    .upload-formats {
+      font-size: 12px;
+      color: var(--ink-secondary);
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 12px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ===== ANALYSIS RESULTS ===== */
+    .analysis {
+      background: var(--dark);
+      padding: 96px 0;
+    }
+
+    .analysis-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .analysis-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .analysis-h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    .analysis-subtitle {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 12px;
+    }
+
+    /* 2カラム + 1ワイド レイアウト */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+
+    .analysis-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .analysis-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 24px;
+    }
+
+    /* SVG Charts */
+    .chart-container {
+      width: 100%;
+    }
+
+    /* AI Action Table */
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .action-table th {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 0 0 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .action-table td {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      vertical-align: middle;
+    }
+
+    .action-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .action-category {
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .savings-amount {
+      color: #34D399;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+
+    .status-high {
+      background: rgba(37,99,235,0.15);
+      color: #60A5FA;
+    }
+
+    .status-med {
+      background: rgba(251, 191, 36, 0.12);
+      color: #FBD43F;
+    }
+
+    .status-low {
+      background: rgba(52, 211, 153, 0.12);
+      color: #34D399;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing {
+      background: var(--canvas);
+      padding: 96px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .pricing-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .pricing-h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .pricing-subtitle {
+      font-size: 15px;
+      color: var(--ink-secondary);
+      margin-top: 12px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 36px 32px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--accent);
+    }
+
+    .plan-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .plan-name-featured {
+      color: var(--accent);
+    }
+
+    .plan-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .plan-price-sub {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      margin-bottom: 28px;
+    }
+
+    .plan-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .plan-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--ink-secondary);
+    }
+
+    .plan-feature svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--success);
+    }
+
+    .plan-cta {
+      display: block;
+      text-align: center;
+      margin-top: 28px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .plan-cta-free {
+      background: var(--canvas);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+
+    .plan-cta-free:hover { opacity: 0.8; }
+
+    .plan-cta-paid {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    .plan-cta-paid:hover { opacity: 0.9; }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      background: var(--dark);
+      padding: 80px 0;
+    }
+
+    .cta-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      text-align: center;
+    }
+
+    .cta-h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+    }
+
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 32px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn-cta-white:hover { opacity: 0.9; }
+
+    .cta-note {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 16px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+    }
+
+    .footer-brand .logo {
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul li a {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-col ul li a:hover { color: var(--ink); }
+
+    .footer-bottom {
+      max-width: 1120px;
+      margin: 32px auto 0;
+      padding: 24px 32px 0;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--ink-secondary);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .how-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .analysis-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .analysis-card.wide {
+        grid-column: auto;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">RAKUDA</a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#docs">Docs</a>
+        <a href="#" class="btn-primary">無料相談</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-label">コスト削減プラットフォーム</span>
+      <h1>ファイルを入れるだけで、
+コストの無駄が見える。</h1>
+      <p class="hero-subtitle">Excel・PDF・CSVをアップロード。AIが30秒で分析し、削減可能額をレポートします。</p>
+      <div class="hero-cta">
+        <a href="#" class="btn-hero-solid">
+          無料で相談する
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <span class="btn-text-link">デモを見る</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LOGO BAND ===== -->
+  <section class="logo-band">
+    <div class="logo-band-inner">
+      <p class="logo-band-label">1,200社以上が利用</p>
+      <div class="logo-placeholders">
+        <div class="logo-placeholder"></div>
+        <div class="logo-placeholder"></div>
+        <div class="logo-placeholder"></div>
+        <div class="logo-placeholder"></div>
+        <div class="logo-placeholder"></div>
+        <div class="logo-placeholder"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how-it-works" id="features">
+    <div class="how-inner">
+      <!-- Left: テキスト列 -->
+      <div>
+        <span class="section-label">How it works</span>
+        <h2 class="section-h2">3ステップ、30秒で完了</h2>
+        <ol class="steps-list">
+          <li class="step-item">
+            <span class="step-number">1</span>
+            <div class="step-content">
+              <p class="step-title">ファイルをドロップ</p>
+              <p class="step-desc">Excel, PDF, CSVに対応。複数ファイルの一括アップロードも可能です。</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <span class="step-number">2</span>
+            <div class="step-content">
+              <p class="step-title">AIが自動解析</p>
+              <p class="step-desc">科目分類・ベンチマーク比較を自動実行。業界データと照合して異常値を検出します。</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <span class="step-number">3</span>
+            <div class="step-content">
+              <p class="step-title">レポート受取</p>
+              <p class="step-desc">削減余地をハイライト。優先度・削減見込額・推奨アクションを一覧で確認できます。</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Right: Upload UI Mock -->
+      <div class="upload-card" role="button" tabindex="0">
+        <div class="upload-icon-wrap">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <p class="upload-main-text">ファイルをドロップ、またはクリック</p>
+        <p class="upload-sub-text">複数ファイルを一度にアップロード可能</p>
+        <span class="upload-formats">.xlsx &nbsp;.pdf &nbsp;.csv 対応</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ANALYSIS RESULTS ===== -->
+  <section class="analysis">
+    <div class="analysis-inner">
+      <div class="analysis-header">
+        <h2 class="analysis-h2">アップロードするだけで、ここまで見える</h2>
+        <p class="analysis-subtitle">AIが自動分類・比較・優先度付けまで完了します</p>
+      </div>
+
+      <div class="analysis-grid">
+        <!-- 左上: テールスペンド分析 -->
+        <div class="analysis-card">
+          <p class="card-label">Tail Spend Analysis</p>
+          <p class="card-title">テールスペンド分析</p>
+          <div class="chart-container">
+            <svg width="100%" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+              <!-- Y軸ガイドライン -->
+              <line x1="0" y1="110" x2="320" y2="110" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="0" y1="82" x2="320" y2="82" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="0" y1="54" x2="320" y2="54" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="0" y1="26" x2="320" y2="26" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+              <!-- バー（5本、それぞれ高さが異なる） -->
+              <!-- バー1: 高い -->
+              <rect x="16" y="26" width="36" height="84" rx="3" fill="#2563EB" opacity="0.9"/>
+              <!-- バー2: やや高い -->
+              <rect x="72" y="48" width="36" height="62" rx="3" fill="rgba(255,255,255,0.2)"/>
+              <!-- バー3: 中程度 -->
+              <rect x="128" y="62" width="36" height="48" rx="3" fill="rgba(255,255,255,0.2)"/>
+              <!-- バー4: 低め -->
+              <rect x="184" y="78" width="36" height="32" rx="3" fill="rgba(255,255,255,0.2)"/>
+              <!-- バー5: 最低 -->
+              <rect x="240" y="88" width="36" height="22" rx="3" fill="rgba(255,255,255,0.2)"/>
+              <!-- ベースライン -->
+              <line x1="0" y1="110" x2="320" y2="110" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+              <!-- ラベル -->
+              <text x="34" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">消耗品</text>
+              <text x="90" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">物流費</text>
+              <text x="146" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">通信費</text>
+              <text x="202" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">備品</text>
+              <text x="258" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">その他</text>
+
+              <!-- 削減余地ラベル -->
+              <text x="34" y="20" text-anchor="middle" font-size="9" fill="#60A5FA" font-family="system-ui, sans-serif" font-weight="500">削減余地大</text>
+            </svg>
+            <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">消耗品カテゴリに削減余地あり — 推定 <span style="color:#34D399; font-weight:700;">¥2.4M/年</span></p>
+          </div>
+        </div>
+
+        <!-- 右上: 販管費ベンチマーク -->
+        <div class="analysis-card">
+          <p class="card-label">SG&amp;A Benchmark</p>
+          <p class="card-title">販管費ベンチマーク比較</p>
+          <div class="chart-container">
+            <svg width="100%" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+              <!-- 横棒グラフ: 自社 -->
+              <text x="0" y="30" font-size="10" fill="rgba(255,255,255,0.5)" font-family="system-ui, sans-serif">自社</text>
+              <rect x="56" y="16" width="220" height="20" rx="3" fill="#2563EB" opacity="0.85"/>
+              <text x="284" y="30" font-size="10" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-weight="500">32%</text>
+
+              <!-- 横棒グラフ: 業界平均 -->
+              <text x="0" y="74" font-size="10" fill="rgba(255,255,255,0.5)" font-family="system-ui, sans-serif">業界平均</text>
+              <rect x="56" y="60" width="148" height="20" rx="3" fill="rgba(255,255,255,0.18)"/>
+              <text x="212" y="74" font-size="10" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-weight="500">21%</text>
+
+              <!-- 差分ブレース -->
+              <line x1="204" y1="36" x2="204" y2="60" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3,2"/>
+              <line x1="276" y1="36" x2="276" y2="60" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3,2"/>
+
+              <!-- 差分ラベル -->
+              <text x="162" y="96" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.4)" font-family="system-ui, sans-serif">+11pt 超過</text>
+              <rect x="56" y="90" width="72" height="16" rx="3" fill="rgba(37,99,235,0.15)"/>
+              <text x="92" y="102" text-anchor="middle" font-size="9" fill="#60A5FA" font-family="system-ui, sans-serif" font-weight="500">業界比 超過分</text>
+            </svg>
+            <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">販管費率が業界平均を 11pt 上回っています — 要注意</p>
+          </div>
+        </div>
+
+        <!-- 下ワイドカード: AI推奨アクション -->
+        <div class="analysis-card wide">
+          <p class="card-label">AI Recommendations</p>
+          <p class="card-title">AI推奨アクション</p>
+          <table class="action-table">
+            <thead>
+              <tr>
+                <th style="width:18%">カテゴリ</th>
+                <th style="width:42%">推奨アクション</th>
+                <th style="width:18%">削減見込</th>
+                <th style="width:22%">優先度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="action-category">消耗品調達</td>
+                <td>発注先を1社に集約しボリュームディスカウントを交渉。スポット購買を廃止</td>
+                <td class="savings-amount">¥2.4M/年</td>
+                <td><span class="status-badge status-high">優先度 高</span></td>
+              </tr>
+              <tr>
+                <td class="action-category">SaaS費用</td>
+                <td>未使用ライセンス14件を解約。重複機能ツール3種を1つに統合</td>
+                <td class="savings-amount">¥1.8M/年</td>
+                <td><span class="status-badge status-high">優先度 高</span></td>
+              </tr>
+              <tr>
+                <td class="action-category">外注費</td>
+                <td>定常業務の一部を内製化。発注単価の相見積もりを実施</td>
+                <td class="savings-amount">¥900K/年</td>
+                <td><span class="status-badge status-med">優先度 中</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:space-between;">
+            <p style="font-size:12px; color:rgba(255,255,255,0.3);">3件のアクション | 合計削減見込</p>
+            <p style="font-size:1.25rem; font-weight:700; color:#34D399; letter-spacing:-0.03em;">¥5.1M / 年</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-inner">
+      <div class="pricing-header">
+        <h2 class="pricing-h2">シンプルな料金体系</h2>
+        <p class="pricing-subtitle">まずは無料で始める。スケールアップは後から。</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- 無料診断 プラン -->
+        <div class="pricing-card">
+          <p class="plan-name">無料診断</p>
+          <p class="plan-price">¥0</p>
+          <p class="plan-price-sub">月3回まで無料</p>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              月3回まで分析
+            </li>
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              サマリーレポート
+            </li>
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              PDF出力
+            </li>
+            <li class="plan-feature" style="opacity:0.4;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              ERP連携
+            </li>
+            <li class="plan-feature" style="opacity:0.4;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              ベンチマーク比較
+            </li>
+          </ul>
+          <a href="#" class="plan-cta plan-cta-free">無料診断を受ける</a>
+        </div>
+
+        <!-- コンサルティングプラン -->
+        <div class="pricing-card featured">
+          <p class="plan-name plan-name-featured">コンサルティングプラン</p>
+          <p class="plan-price">¥49,800</p>
+          <p class="plan-price-sub">月額 / 税別 · 初期分析レポート込み</p>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              無制限分析
+            </li>
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              詳細レポート + AI推奨
+            </li>
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              ERP連携（SAP / freee）
+            </li>
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              業界ベンチマーク比較
+            </li>
+            <li class="plan-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              チームメンバー 無制限
+            </li>
+          </ul>
+          <a href="#" class="plan-cta plan-cta-paid">無料相談を予約</a>
+        </div>
+      </div>
+      <p style="text-align:center; font-size:13px; color:var(--ink-secondary); margin-top:24px;">プロダクト開発のご相談も承ります</p>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-h2">まずは無料相談から</h2>
+      <a href="#" class="btn-cta-white">
+        無料相談を予約
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <p class="cta-note">オンライン完結 · 最短翌営業日対応</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">RAKUDA</a>
+        <p>AIとコンサルタントが、御社のコスト構造を診断し、<br>削減の最短経路を提案します。</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 RAKUDA Inc. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>

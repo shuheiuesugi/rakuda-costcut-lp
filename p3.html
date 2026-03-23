@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAKUDA COSTCUT — コスト体質診断</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0A0A0B;
+  --ink-secondary: #6B7280;
+  --surface: #FFFFFF;
+  --canvas: #FAFAFA;
+  --border: #E5E7EB;
+  --accent: #2563EB;
+  --accent-hover: #1D4ED8;
+  --success: #059669;
+  --dark: #111113;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif; font-feature-settings: "palt";
+  background: var(--canvas);
+  color: var(--ink);
+  line-height: 1.6;
+  font-weight: 400;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+}
+
+.header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--dark);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+
+.logo-text span {
+  color: var(--accent);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+nav a {
+  color: var(--ink-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+
+nav a:hover { color: var(--ink); }
+
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: var(--surface) !important;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 6px;
+  transition: opacity 0.15s;
+  margin-left: 8px;
+}
+
+.btn-nav:hover { opacity: 0.9; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--dark);
+  padding: 140px 32px 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hero-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  color: var(--surface);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+}
+
+.hero-sub {
+  font-size: clamp(15px, 2vw, 17px);
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.btn-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 36px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.btn-hero:hover { opacity: 0.9; }
+
+.hero-proof {
+  margin-top: 36px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 400;
+}
+
+/* ── DIAGNOSIS SECTION ── */
+.diagnosis-section {
+  background: var(--surface);
+  padding: 96px 32px;
+}
+
+.diagnosis-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.section-sub {
+  font-size: 15px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+}
+
+/* Progress Indicator */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 48px;
+}
+
+.progress-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progress-circle.state-active {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.progress-circle.state-done {
+  background: var(--success);
+  color: var(--surface);
+}
+
+.progress-circle.state-idle {
+  background: var(--surface);
+  color: var(--ink-secondary);
+  border: 1.5px solid var(--border);
+}
+
+.progress-node-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+}
+
+.progress-node-label.is-active { color: var(--accent); }
+
+.progress-line {
+  width: 72px;
+  height: 1.5px;
+  background: var(--border);
+  margin: 0 4px;
+  margin-bottom: 26px;
+  flex-shrink: 0;
+}
+
+.progress-line.is-filled { background: var(--success); }
+
+/* Progress bar — animation allowed */
+.progress-bar-wrap {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Step Container */
+.step-block {
+  margin-bottom: 32px;
+}
+
+.step-block-head {
+  margin-bottom: 24px;
+}
+
+.step-tag {
+  display: inline-block;
+  background: rgba(37,99,235,0.08);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.step-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.step-sub {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+}
+
+/* Industry Grid — 3x2 */
+.industry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.sel-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 14px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+
+.sel-card:hover {
+  border-color: rgba(37,99,235,0.5);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.sel-card.is-selected {
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.sel-card-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.sel-card.is-selected .sel-card-check {
+  display: flex;
+}
+
+.sel-card-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--ink-secondary);
+  margin-bottom: 10px;
+}
+
+.sel-card.is-selected .sel-card-icon {
+  color: var(--accent);
+}
+
+.sel-card-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* Revenue — 4 cards horizontal */
+.revenue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.rev-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  user-select: none;
+}
+
+.rev-card:hover {
+  border-color: rgba(37,99,235,0.5);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.rev-card.is-selected {
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.rev-card-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.rev-card.is-selected .rev-card-check { display: flex; }
+
+.rev-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.rev-card.is-selected .rev-amount { color: var(--accent); }
+
+.rev-desc {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Cost Issues — 3x2 */
+.cost-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.cost-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 14px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+
+.cost-card:hover {
+  border-color: rgba(37,99,235,0.5);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.cost-card.is-selected {
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.cost-card-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--accent);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.cost-card.is-selected .cost-card-check { display: flex; }
+
+.cost-card-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--ink-secondary);
+  margin-bottom: 10px;
+}
+
+.cost-card.is-selected .cost-card-icon { color: var(--accent); }
+
+.cost-card-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.cost-card-desc {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Diagnose Button */
+.btn-diagnose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 32px;
+  transition: opacity 0.15s;
+}
+
+.btn-diagnose:hover { opacity: 0.9; }
+
+/* Divider */
+.step-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+/* ── RESULT SECTION ── */
+.result-section {
+  background: var(--canvas);
+  padding: 96px 32px;
+}
+
+.result-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* Score + Context header */
+.result-header-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.score-display {
+  text-align: center;
+}
+
+.score-rank {
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.score-pts {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  margin-top: 4px;
+}
+
+.score-context {
+  padding-left: 8px;
+}
+
+.score-context-tag {
+  display: inline-block;
+  background: rgba(5,150,105,0.08);
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.score-context-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.score-context-desc {
+  font-size: 15px;
+  color: var(--ink-secondary);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* Two-col layout: radar + improvements */
+.result-body {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+/* Radar */
+.radar-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.radar-block-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.radar-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+}
+
+.legend-line {
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+/* Improvements */
+.improvements-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.improvements-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.improvement-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.improvement-row:last-child { border-bottom: none; }
+
+.imp-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.imp-status.red { background: #EF4444; }
+.imp-status.yellow { background: #F59E0B; }
+.imp-status.green { background: var(--success); }
+
+.imp-body { flex: 1; }
+
+.imp-category {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.imp-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.imp-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.imp-badge.red { background: rgba(239,68,68,0.08); color: #EF4444; }
+.imp-badge.yellow { background: rgba(245,158,11,0.08); color: #B45309; }
+.imp-badge.green { background: rgba(5,150,105,0.08); color: var(--success); }
+
+/* Freemium Wall */
+.freemium-wall {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.freemium-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.freemium-icon-wrap {
+  width: 48px;
+  height: 48px;
+  background: var(--canvas);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: var(--accent);
+}
+
+.freemium-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.freemium-sub {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.email-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.email-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.email-input::placeholder { color: var(--ink-secondary); }
+.email-input:focus { border-color: var(--accent); }
+
+.btn-report {
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.btn-report:hover { opacity: 0.9; }
+
+.freemium-note {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+}
+
+/* ── PRICING SECTION ── */
+.pricing-section {
+  background: var(--surface);
+  padding: 96px 32px;
+}
+
+.pricing-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.pricing-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 56px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.plan-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  position: relative;
+  transition: box-shadow 0.15s;
+}
+
+.plan-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+.plan-card.is-featured {
+  border-color: var(--accent);
+  border-width: 2px;
+  background: var(--dark);
+}
+
+.plan-badge {
+  position: absolute;
+  top: -13px;
+  left: 24px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+}
+
+.plan-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.plan-card.is-featured .plan-name { color: rgba(255,255,255,0.5); }
+
+.plan-price {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.plan-card.is-featured .plan-price { color: var(--surface); }
+
+.plan-price-unit {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-secondary);
+}
+
+.plan-card.is-featured .plan-price-unit { color: rgba(255,255,255,0.4); }
+
+.plan-desc {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+  margin: 12px 0 24px;
+  line-height: 1.5;
+}
+
+.plan-card.is-featured .plan-desc { color: rgba(255,255,255,0.45); }
+
+.plan-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.plan-card.is-featured .plan-features li { color: rgba(255,255,255,0.8); }
+
+.feat-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feat-icon.ok { background: rgba(5,150,105,0.1); color: var(--success); }
+.feat-icon.ok-accent { background: rgba(37,99,235,0.1); color: var(--accent); }
+.feat-icon.no { background: var(--canvas); color: var(--border); }
+
+.btn-plan {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.btn-plan-free {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+.btn-plan-free:hover { border-color: var(--ink-secondary); }
+
+.btn-plan-paid {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.btn-plan-paid:hover { opacity: 0.9; }
+
+.pricing-note {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--dark);
+  padding: 96px 32px;
+  text-align: center;
+}
+
+.cta-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  color: var(--surface);
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  margin-bottom: 16px;
+}
+
+.cta-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 36px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.btn-cta:hover { opacity: 0.9; }
+
+.cta-note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  font-weight: 400;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #0D0D10;
+  padding: 40px 32px;
+}
+
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+}
+
+.footer-logo span { color: var(--accent); }
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  font-weight: 400;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav a:not(.btn-nav) { display: none; }
+  .hero { padding: 100px 24px 80px; }
+  .industry-grid { grid-template-columns: repeat(2, 1fr); }
+  .revenue-grid { grid-template-columns: repeat(2, 1fr); }
+  .cost-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-header-row { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+  .result-body { grid-template-columns: 1fr; }
+  .pricing-layout { grid-template-columns: 1fr; }
+  .email-row { flex-direction: column; }
+  .btn-report { width: 100%; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 500px) {
+  .progress-line { width: 32px; }
+  .revenue-grid { grid-template-columns: 1fr; }
+  .cost-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+      </div>
+      <div class="logo-text">RAKUDA <span>COSTCUT</span></div>
+    </a>
+    <nav>
+      <a href="#">機能</a>
+      <a href="#pricing">料金</a>
+      <a href="#">事例</a>
+      <a href="#">ログイン</a>
+      <a href="#diagnosis" class="btn-nav">
+        診断を始める
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">COST HEALTH CHECK</div>
+    <h1>30秒で、コスト体質を診断。</h1>
+    <p class="hero-sub">3つの質問に答えるだけ。AIが業界データと比較し、<br>改善ポイントを特定します。</p>
+    <a href="#diagnosis" class="btn-hero">
+      診断スタート
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+    <p class="hero-proof">8,500社が診断済み</p>
+  </div>
+</section>
+
+<!-- ═══ DIAGNOSIS ═══ -->
+<section class="diagnosis-section" id="diagnosis">
+  <div class="diagnosis-inner">
+    <div class="section-header">
+      <div class="section-label">SELF-DIAGNOSIS</div>
+      <h2 class="section-title">3ステップで完了するコスト診断</h2>
+      <p class="section-sub">質問に答えるだけで、御社のコスト体質スコアをAIが算出します。</p>
+    </div>
+
+    <!-- Progress indicator -->
+    <div class="progress-wrap">
+      <div class="progress-node">
+        <div class="progress-circle state-done">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="progress-node-label">業種選択</div>
+      </div>
+      <div class="progress-line is-filled"></div>
+      <div class="progress-node">
+        <div class="progress-circle state-done">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="progress-node-label">年商規模</div>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-node">
+        <div class="progress-circle state-active">3</div>
+        <div class="progress-node-label is-active">コスト課題</div>
+      </div>
+    </div>
+
+    <!-- Progress bar (animation permitted per rules) -->
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="diagProgressBar" style="width:66%"></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step-block">
+      <div class="step-block-head">
+        <div class="step-tag">STEP 1 / 3 — 選択済み</div>
+        <div class="step-title">業種を選んでください</div>
+        <div class="step-sub">最も近い業種を1つ選択してください</div>
+      </div>
+      <div class="industry-grid">
+
+        <!-- 製造業 -->
+        <div class="sel-card is-selected" data-group="industry" onclick="selectCard(this,'industry')">
+          <div class="sel-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="sel-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            <line x1="12" y1="12" x2="12" y2="16"/>
+            <line x1="10" y1="14" x2="14" y2="14"/>
+          </svg>
+          <div class="sel-card-label">製造業</div>
+        </div>
+
+        <!-- IT・通信 -->
+        <div class="sel-card" data-group="industry" onclick="selectCard(this,'industry')">
+          <div class="sel-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="sel-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          <div class="sel-card-label">IT・通信</div>
+        </div>
+
+        <!-- 小売・卸売 -->
+        <div class="sel-card" data-group="industry" onclick="selectCard(this,'industry')">
+          <div class="sel-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="sel-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <div class="sel-card-label">小売・卸売</div>
+        </div>
+
+        <!-- 建設・不動産 -->
+        <div class="sel-card" data-group="industry" onclick="selectCard(this,'industry')">
+          <div class="sel-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="sel-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <div class="sel-card-label">建設・不動産</div>
+        </div>
+
+        <!-- 医療・介護 -->
+        <div class="sel-card" data-group="industry" onclick="selectCard(this,'industry')">
+          <div class="sel-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="sel-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+          <div class="sel-card-label">医療・介護</div>
+        </div>
+
+        <!-- その他 -->
+        <div class="sel-card" data-group="industry" onclick="selectCard(this,'industry')">
+          <div class="sel-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="sel-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div class="sel-card-label">その他</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="step-divider"></div>
+
+    <!-- STEP 2 -->
+    <div class="step-block">
+      <div class="step-block-head">
+        <div class="step-tag">STEP 2 / 3 — 選択済み</div>
+        <div class="step-title">年商の規模を教えてください</div>
+        <div class="step-sub">概算で問題ありません</div>
+      </div>
+      <div class="revenue-grid">
+
+        <div class="rev-card" data-group="revenue" onclick="selectCard(this,'revenue')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">〜5億円</div>
+          <div class="rev-desc">中小・スタートアップ</div>
+        </div>
+
+        <div class="rev-card" data-group="revenue" onclick="selectCard(this,'revenue')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">5〜20億円</div>
+          <div class="rev-desc">成長期・中堅企業</div>
+        </div>
+
+        <div class="rev-card is-selected" data-group="revenue" onclick="selectCard(this,'revenue')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">20〜100億円</div>
+          <div class="rev-desc">中規模企業</div>
+        </div>
+
+        <div class="rev-card" data-group="revenue" onclick="selectCard(this,'revenue')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">100億円〜</div>
+          <div class="rev-desc">大企業・上場企業</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="step-divider"></div>
+
+    <!-- STEP 3 -->
+    <div class="step-block">
+      <div class="step-block-head">
+        <div class="step-tag">STEP 3 / 3 — 複数選択可</div>
+        <div class="step-title">コスト課題はどれですか？</div>
+        <div class="step-sub">当てはまるものをすべて選んでください</div>
+      </div>
+      <div class="cost-grid">
+
+        <!-- 間接材 -->
+        <div class="cost-card is-selected" onclick="toggleCost(this)">
+          <div class="cost-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="cost-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+          <div class="cost-card-label">間接材が高い</div>
+          <div class="cost-card-desc">消耗品・備品・MRO等</div>
+        </div>
+
+        <!-- 外注費 -->
+        <div class="cost-card" onclick="toggleCost(this)">
+          <div class="cost-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="cost-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <div class="cost-card-label">外注費が多い</div>
+          <div class="cost-card-desc">業務委託・外注依存</div>
+        </div>
+
+        <!-- 人件費 -->
+        <div class="cost-card" onclick="toggleCost(this)">
+          <div class="cost-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="cost-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          <div class="cost-card-label">人件費率が高い</div>
+          <div class="cost-card-desc">売上比で人件費が重い</div>
+        </div>
+
+        <!-- 販管費 -->
+        <div class="cost-card" onclick="toggleCost(this)">
+          <div class="cost-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="cost-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <div class="cost-card-label">販管費増加傾向</div>
+          <div class="cost-card-desc">年々販管費率が上昇</div>
+        </div>
+
+        <!-- エネルギー -->
+        <div class="cost-card" onclick="toggleCost(this)">
+          <div class="cost-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="cost-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          <div class="cost-card-label">エネルギーコスト</div>
+          <div class="cost-card-desc">電気・ガス・燃料費</div>
+        </div>
+
+        <!-- 把握できていない -->
+        <div class="cost-card" onclick="toggleCost(this)">
+          <div class="cost-card-check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <svg class="cost-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <div class="cost-card-label">把握できていない</div>
+          <div class="cost-card-desc">まず全体を可視化したい</div>
+        </div>
+
+      </div>
+
+      <button class="btn-diagnose" onclick="document.getElementById('result').scrollIntoView({behavior:'smooth'})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        診断する
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ RESULT SECTION ═══ -->
+<section class="result-section" id="result">
+  <div class="result-inner">
+
+    <!-- Score header row -->
+    <div class="result-header-row">
+      <div class="score-display">
+        <div class="score-rank">B+</div>
+        <div class="score-pts">72 / 100</div>
+      </div>
+      <div class="score-context">
+        <div class="score-context-tag">DIAGNOSIS COMPLETE</div>
+        <div class="score-context-title">製造業・年商20〜100億円のうち<br>上位32%に位置します</div>
+        <div class="score-context-desc">AIが業界ベンチマーク3,200社のデータと比較しました。間接材コストに改善余地があり、適切な対策で年間800万円の削減が見込まれます。</div>
+      </div>
+    </div>
+
+    <!-- Radar + Improvements -->
+    <div class="result-body">
+
+      <!-- Radar Chart -->
+      <div class="radar-block">
+        <div class="radar-block-title">コスト効率 5軸レーダー（業界平均との比較）</div>
+        <svg width="100%" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(150,145)">
+
+            <!-- Grid rings -->
+            <polygon points="0,-90 85.6,-27.8 52.9,72.6 -52.9,72.6 -85.6,-27.8"
+              fill="rgba(250,250,250,0.4)" stroke="#E5E7EB" stroke-width="1"/>
+            <polygon points="0,-67.5 64.2,-20.8 39.7,54.5 -39.7,54.5 -64.2,-20.8"
+              fill="none" stroke="#E5E7EB" stroke-width="1"/>
+            <polygon points="0,-45 42.8,-13.9 26.5,36.3 -26.5,36.3 -42.8,-13.9"
+              fill="none" stroke="#E5E7EB" stroke-width="1"/>
+            <polygon points="0,-22.5 21.4,-6.95 13.2,18.15 -13.2,18.15 -21.4,-6.95"
+              fill="none" stroke="#E5E7EB" stroke-width="1"/>
+
+            <!-- Axis lines -->
+            <line x1="0" y1="0" x2="0" y2="-90" stroke="#D1D5DB" stroke-width="1"/>
+            <line x1="0" y1="0" x2="85.6" y2="-27.8" stroke="#D1D5DB" stroke-width="1"/>
+            <line x1="0" y1="0" x2="52.9" y2="72.6" stroke="#D1D5DB" stroke-width="1"/>
+            <line x1="0" y1="0" x2="-52.9" y2="72.6" stroke="#D1D5DB" stroke-width="1"/>
+            <line x1="0" y1="0" x2="-85.6" y2="-27.8" stroke="#D1D5DB" stroke-width="1"/>
+
+            <!-- Industry average: 72% -->
+            <polygon
+              points="0,-64.8 61.6,-20 38.1,52.3 -38.1,52.3 -61.6,-20"
+              fill="rgba(107,114,128,0.08)"
+              stroke="#9CA3AF"
+              stroke-width="1.5"
+              stroke-dasharray="4 3"/>
+
+            <!-- You: 間接材60%, 販管費72%, 外注78%, 人件費88%, 調達58% -->
+            <polygon
+              points="0,-54 61.6,-20 41.3,56.7 -46.5,63.9 -49.6,-16.1"
+              fill="rgba(37,99,235,0.1)"
+              stroke="#2563EB"
+              stroke-width="2"/>
+
+            <!-- Dots -->
+            <circle cx="0" cy="-54" r="3.5" fill="#2563EB"/>
+            <circle cx="61.6" cy="-20" r="3.5" fill="#2563EB"/>
+            <circle cx="41.3" cy="56.7" r="3.5" fill="#2563EB"/>
+            <circle cx="-46.5" cy="63.9" r="3.5" fill="#2563EB"/>
+            <circle cx="-49.6" cy="-16.1" r="3.5" fill="#2563EB"/>
+
+            <!-- Axis Labels -->
+            <text x="0" y="-98" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">間接材効率</text>
+            <text x="98" y="-23" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">販管費率</text>
+            <text x="62" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">外注活用</text>
+            <text x="-62" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">人件費効率</text>
+            <text x="-98" y="-23" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">調達戦略</text>
+          </g>
+        </svg>
+        <div class="radar-legend">
+          <div class="legend-item">
+            <div class="legend-line" style="background:#9CA3AF; border: 1px dashed #9CA3AF; height:0;"></div>
+            <span>業界平均</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-line" style="background:#2563EB;"></div>
+            <span>あなたの会社</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Improvement Points -->
+      <div class="improvements-block">
+        <div class="improvements-title">改善ポイント（優先度順）</div>
+
+        <div class="improvement-row">
+          <div class="imp-status red"></div>
+          <div class="imp-body">
+            <div class="imp-category">間接材</div>
+            <div class="imp-text">Monotaro依存度が高い。比較購買で年間800万円削減見込</div>
+          </div>
+          <div class="imp-badge red">要対策</div>
+        </div>
+
+        <div class="improvement-row">
+          <div class="imp-status yellow"></div>
+          <div class="imp-body">
+            <div class="imp-category">外注費</div>
+            <div class="imp-text">業界平均並み。内製化で10%改善余地</div>
+          </div>
+          <div class="imp-badge yellow">要検討</div>
+        </div>
+
+        <div class="improvement-row">
+          <div class="imp-status green"></div>
+          <div class="imp-body">
+            <div class="imp-category">人件費</div>
+            <div class="imp-text">効率的。現状維持推奨</div>
+          </div>
+          <div class="imp-badge green">現状維持</div>
+        </div>
+
+        <div class="improvement-row">
+          <div class="imp-status yellow"></div>
+          <div class="imp-body">
+            <div class="imp-category">調達戦略</div>
+            <div class="imp-text">サプライヤー集中リスクあり。分散調達で5〜8%コスト改善</div>
+          </div>
+          <div class="imp-badge yellow">要検討</div>
+        </div>
+
+        <div class="improvement-row">
+          <div class="imp-status green"></div>
+          <div class="imp-body">
+            <div class="imp-category">販管費率</div>
+            <div class="imp-text">業界平均以下。管理水準は良好</div>
+          </div>
+          <div class="imp-badge green">良好</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Freemium Wall -->
+    <div class="freemium-wall">
+      <div class="freemium-inner">
+        <div class="freemium-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <div class="freemium-title">詳細レポート + 改善提案を受け取る</div>
+        <div class="freemium-sub">コンサルタントによる改善施策の具体的ステップ・類似事例・ROIシミュレーションをPDFで送付します。無料・スパムなし。</div>
+        <div class="email-row">
+          <input class="email-input" type="email" placeholder="ビジネスメールアドレスを入力">
+          <button class="btn-report">無料レポートを受け取る
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-left:4px">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </div>
+        <div class="freemium-note">いつでも配信停止可能。個人情報は第三者に提供しません。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div style="text-align:center;">
+      <div class="section-label">PRICING</div>
+      <h2 class="section-title">シンプルな料金プラン</h2>
+      <p class="section-sub">まず無料で診断。効果を確認してからアップグレード。</p>
+    </div>
+    <div class="pricing-layout">
+
+      <!-- Free -->
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">¥0<span class="plan-price-unit"> / 月</span></div>
+        <div class="plan-desc">コスト体質を把握する最初の一歩</div>
+        <ul class="plan-features">
+          <li>
+            <div class="feat-icon ok">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            月1回の簡易診断
+          </li>
+          <li>
+            <div class="feat-icon ok">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            S〜Dランクスコア表示
+          </li>
+          <li>
+            <div class="feat-icon ok">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            業界ランキング参照
+          </li>
+          <li>
+            <div class="feat-icon ok">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            改善ポイント3項目
+          </li>
+          <li>
+            <div class="feat-icon no">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <span style="color:var(--ink-secondary)">詳細レポートPDF</span>
+          </li>
+          <li>
+            <div class="feat-icon no">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <span style="color:var(--ink-secondary)">改善トラッキング</span>
+          </li>
+        </ul>
+        <button class="btn-plan btn-plan-free">無料診断を受ける</button>
+      </div>
+
+      <!-- Standard (featured) -->
+      <div class="plan-card is-featured">
+        <div class="plan-badge">おすすめ</div>
+        <div class="plan-name">コンサルティングプラン</div>
+        <div class="plan-price">¥49,800<span class="plan-price-unit"> / 月</span></div>
+        <div class="plan-desc">プロの分析で本格的なコスト改善を</div>
+        <ul class="plan-features">
+          <li>
+            <div class="feat-icon ok-accent">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            無制限の診断実施
+          </li>
+          <li>
+            <div class="feat-icon ok-accent">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            詳細レポートPDF（毎月）
+          </li>
+          <li>
+            <div class="feat-icon ok-accent">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            改善トラッキング機能
+          </li>
+          <li>
+            <div class="feat-icon ok-accent">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            複数部門・拠点比較
+          </li>
+          <li>
+            <div class="feat-icon ok-accent">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            業界ベンチマーク詳細
+          </li>
+          <li>
+            <div class="feat-icon ok-accent">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            専任CSサポート
+          </li>
+        </ul>
+        <button class="btn-plan btn-plan-paid">無料相談を予約</button>
+      </div>
+
+    </div>
+    <div class="pricing-note">プロダクト開発のご相談も承ります</div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-title">今すぐ無料診断を<br>始める</h2>
+    <p class="cta-sub">8,500社が活用するAIコスト診断。<br>登録不要・30秒で完了。</p>
+    <button class="btn-cta" onclick="document.getElementById('diagnosis').scrollIntoView({behavior:'smooth'})">
+      診断スタート
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </button>
+    <p class="cta-note">クレジットカード不要・メール登録任意</p>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">RAKUDA <span>COSTCUT</span></div>
+    <div class="footer-links">
+      <a href="#">利用規約</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">お問い合わせ</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 RAKUDA COSTCUT. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // Single-select for industry and revenue
+  function selectCard(el, group) {
+    document.querySelectorAll('[data-group="' + group + '"]').forEach(function(c) {
+      c.classList.remove('is-selected');
+    });
+    el.classList.add('is-selected');
+  }
+
+  // Multi-select for cost issues
+  function toggleCost(el) {
+    el.classList.toggle('is-selected');
+  }
+
+  // Progress bar responds to diagnosis interactions
+  var progressBar = document.getElementById('diagProgressBar');
+
+  document.querySelectorAll('[data-group="industry"]').forEach(function(c) {
+    c.addEventListener('click', function() { updateProgress(); });
+  });
+
+  document.querySelectorAll('[data-group="revenue"]').forEach(function(c) {
+    c.addEventListener('click', function() { updateProgress(); });
+  });
+
+  document.querySelectorAll('.cost-card').forEach(function(c) {
+    c.addEventListener('click', function() { updateProgress(); });
+  });
+
+  function updateProgress() {
+    var hasIndustry = document.querySelector('[data-group="industry"].is-selected') ? 1 : 0;
+    var hasRevenue  = document.querySelector('[data-group="revenue"].is-selected') ? 1 : 0;
+    var hasCost     = document.querySelector('.cost-card.is-selected') ? 1 : 0;
+    var pct = Math.round(((hasIndustry + hasRevenue + hasCost) / 3) * 100);
+    progressBar.style.width = pct + '%';
+  }
+</script>
+</body>
+</html>

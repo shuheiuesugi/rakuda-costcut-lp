@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAKUDA COSTCUT | コスト分析ダッシュボード デモ</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #0A0A0B;
+      --ink-secondary: #6B7280;
+      --surface: #FFFFFF;
+      --canvas: #FAFAFA;
+      --border: #E5E7EB;
+      --accent: #2563EB;
+      --success: #059669;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --dark: #111113;
+      --dark-surface: #1A1A1F;
+      --dark-border: rgba(255,255,255,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif; font-feature-settings: "palt";
+      background: var(--canvas);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+      font-weight: 400;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+    }
+    .logo-text span { color: var(--accent); }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--ink-secondary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-link:hover { color: var(--ink); }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    /* ========== HERO ========== */
+    .hero {
+      background: var(--dark);
+      padding: 100px 32px 80px;
+      text-align: center;
+    }
+    .hero-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-hero-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--ink);
+      border: none;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-hero-white:hover { opacity: 0.9; }
+    .btn-hero-text {
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-hero-text:hover { color: #fff; }
+
+    /* ========== DEMO SECTION ========== */
+    .demo-section {
+      background: var(--canvas);
+      padding: 72px 32px;
+    }
+    .demo-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    /* ダッシュボード大カード */
+    .dashboard-card {
+      background: var(--dark);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* 上部バー */
+    .dash-topbar {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .dash-company {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+    }
+    .dash-period {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* タブ行 */
+    .dash-tabs {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .dash-tab {
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+      transition: color 0.15s;
+    }
+    .dash-tab:hover { color: rgba(255,255,255,0.7); }
+    .dash-tab.active {
+      color: #fff;
+      border-bottom-color: var(--accent);
+    }
+
+    /* ダッシュボード本体 */
+    .dash-body {
+      padding: 24px;
+    }
+
+    /* KPIカード */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .kpi-value.accent { color: var(--accent); }
+    .kpi-change {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .kpi-change-val {
+      font-weight: 500;
+    }
+    .kpi-change-val.success { color: var(--success); }
+    .kpi-change-val.accent { color: var(--accent); }
+    .kpi-change-sub {
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* チャートエリア */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 40%;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .chart-card {
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .chart-heading {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 2px;
+    }
+    .chart-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 16px;
+    }
+
+    /* SVG棒グラフ */
+    .bar-chart-svg-wrap {
+      position: relative;
+    }
+    .bar-chart-svg-wrap svg {
+      display: block;
+      width: 100%;
+    }
+    .bar-y-labels {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: calc(100% - 24px);
+    }
+    .chart-legend-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* SVGドーナツチャート */
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .donut-svg-wrap {
+      flex-shrink: 0;
+    }
+    .donut-legend {
+      flex: 1;
+    }
+    .donut-legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .donut-legend-item:last-child { border-bottom: none; }
+    .donut-legend-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .donut-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .donut-name {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+    .donut-pct {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* アクションテーブル */
+    .table-card {
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .table-topbar {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--dark-border);
+    }
+    .table-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+    }
+    .table-see-all {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+    .table-see-all:hover { color: rgba(255,255,255,0.8); }
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .dash-table thead tr {
+      background: rgba(255,255,255,0.05);
+    }
+    .dash-table th {
+      padding: 10px 16px;
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .dash-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      border-bottom: 1px solid var(--dark-border);
+      vertical-align: middle;
+    }
+    .dash-table tr:last-child td { border-bottom: none; }
+    .dash-table tbody tr:hover td { background: rgba(255,255,255,0.03); }
+
+    /* 優先度 dot + テキスト */
+    .priority-cell {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ステータス テキストのみ */
+    .status-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .status-active { color: var(--accent); }
+    .status-done { color: var(--success); }
+    .status-pending { color: rgba(255,255,255,0.35); }
+
+    .savings-val {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--success);
+      text-align: right;
+    }
+    .category-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ========== FEATURES SECTION ========== */
+    .features-section {
+      background: var(--surface);
+      padding: 96px 32px;
+    }
+    .section-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .features-list {
+      list-style: none;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .feature-item:first-child { border-top: 1px solid var(--border); }
+    .feature-icon-wrap {
+      width: 40px;
+      height: 40px;
+      background: #F3F4F6;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .feature-body p {
+      font-size: 14px;
+      color: var(--ink-secondary);
+      line-height: 1.65;
+    }
+
+    /* ========== COMPARISON SECTION ========== */
+    .comparison-section {
+      background: var(--canvas);
+      padding: 96px 32px;
+    }
+    .comparison-table-wrap {
+      overflow-x: auto;
+      margin-top: 36px;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .comparison-table th {
+      padding: 16px 24px;
+      text-align: left;
+      font-weight: 700;
+    }
+    .comparison-table th.col-item {
+      color: var(--ink-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+    }
+    .comparison-table th.col-before {
+      background: #F9FAFB;
+      color: var(--ink-secondary);
+      font-size: 14px;
+      border-bottom: 2px solid var(--border);
+    }
+    .comparison-table th.col-after {
+      background: #fff;
+      color: var(--ink);
+      font-size: 14px;
+      border-left: 2px solid var(--accent);
+      border-bottom: 2px solid var(--border);
+    }
+    .comparison-table td {
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-secondary);
+      vertical-align: middle;
+    }
+    .comparison-table td.col-item {
+      font-weight: 500;
+      color: var(--ink);
+      font-size: 13px;
+      background: #fff;
+    }
+    .comparison-table td.col-before {
+      background: #F9FAFB;
+    }
+    .comparison-table td.col-after {
+      background: #fff;
+      border-left: 2px solid var(--accent);
+    }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .col-after-text {
+      font-weight: 500;
+      color: var(--success);
+    }
+    .col-before-text {
+      color: #9CA3AF;
+    }
+
+    /* ========== PRICING ========== */
+    .pricing-section {
+      background: var(--surface);
+      padding: 96px 32px;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 900px;
+      margin: 36px auto 0;
+    }
+    .pricing-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      background: var(--canvas);
+    }
+    .pricing-card.featured {
+      background: var(--dark);
+      border-color: transparent;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+    .pricing-plan {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .pricing-card.featured .pricing-plan { color: rgba(255,255,255,0.5); }
+    .pricing-amount {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+    }
+    .pricing-card.featured .pricing-amount { color: #fff; }
+    .pricing-unit {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      font-weight: 400;
+    }
+    .pricing-card.featured .pricing-unit { color: rgba(255,255,255,0.45); }
+    .pricing-desc {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      margin: 10px 0 20px;
+      line-height: 1.6;
+    }
+    .pricing-card.featured .pricing-desc { color: rgba(255,255,255,0.5); }
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--ink-secondary);
+      padding: 5px 0;
+    }
+    .pricing-card.featured .pricing-features li { color: rgba(255,255,255,0.65); }
+    .pricing-features li::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 14px;
+      background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 7L5.5 10.5L12 4' stroke='%23059669' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .pricing-btn {
+      display: block;
+      text-align: center;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+    .pricing-btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+    .pricing-btn-outline:hover { border-color: var(--ink); }
+    .pricing-btn-accent {
+      background: var(--accent);
+      color: #fff;
+    }
+    .pricing-btn-accent:hover { opacity: 0.9; }
+    .pricing-btn-white {
+      background: #fff;
+      color: var(--ink);
+    }
+    .pricing-btn-white:hover { opacity: 0.9; }
+
+    /* ========== CTA ========== */
+    .cta-section {
+      background: var(--dark);
+      padding: 96px 32px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+    }
+    .cta-section p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      max-width: 440px;
+      margin: 0 auto 32px;
+    }
+    .cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      color: var(--ink);
+      border: none;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-cta-white:hover { opacity: 0.9; }
+    .btn-cta-ghost {
+      display: inline-flex;
+      align-items: center;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-cta-ghost:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+    }
+    .cta-meta {
+      margin-top: 18px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: #0A0A0B;
+      padding: 48px 32px 24px;
+    }
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .footer-logo-mark {
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 5px;
+    }
+    .footer-logo-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .footer-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.65;
+    }
+    .footer-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+    }
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 960px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .chart-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 720px) {
+      .header-nav .nav-link { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
+    }
+    @media (max-width: 540px) {
+      .hero { padding: 72px 20px 60px; }
+      .demo-section { padding: 48px 16px; }
+      .dash-body { padding: 16px; }
+      .kpi-grid { gap: 8px; }
+      .chart-grid { gap: 8px; }
+      .features-section, .comparison-section, .pricing-section, .cta-section { padding: 64px 20px; }
+      .footer { padding: 40px 20px 20px; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+
+    /* アニメーション: ヒーロー「LIVE DEMO」ドット点滅のみ */
+    @keyframes blink-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .live-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-right: 6px;
+      animation: blink-dot 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <!-- ラクダ SVGアイコン（簡略化） -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 17c0-3 1.5-5 4-6v-2c0-1 .5-2 2-2s2 1 2 2v1h1c1.5 0 3 1 3 3v4"/>
+          <path d="M4 17h12"/>
+          <circle cx="7" cy="19" r="1"/>
+          <circle cx="14" cy="19" r="1"/>
+        </svg>
+      </div>
+      <span class="logo-text">RAKUDA <span>COSTCUT</span></span>
+    </a>
+    <nav class="header-nav">
+      <a href="#features" class="nav-link">機能</a>
+      <a href="#comparison" class="nav-link">比較</a>
+      <a href="#pricing" class="nav-link">料金</a>
+      <a href="#demo" class="btn-primary">デモを試す</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <p class="hero-label"><span class="live-dot"></span>LIVE DEMO</p>
+  <h1>画面で体験してください。</h1>
+  <p>サンプル企業データで、コスト分析ダッシュボードを操作できます</p>
+  <div class="hero-btns">
+    <a href="#demo" class="btn-hero-white">デモを開始 →</a>
+    <a href="#features" class="btn-hero-text">機能を見る</a>
+  </div>
+</section>
+
+<!-- ========== DASHBOARD DEMO ========== -->
+<section class="demo-section" id="demo">
+  <div class="demo-inner">
+    <div class="dashboard-card">
+
+      <!-- 上部バー -->
+      <div class="dash-topbar">
+        <span class="dash-company">サンプル株式会社</span>
+        <span class="dash-period">2025年4月 — 2026年3月</span>
+      </div>
+
+      <!-- タブ行 -->
+      <div class="dash-tabs">
+        <div class="dash-tab active" data-tab="summary">サマリー</div>
+        <div class="dash-tab" data-tab="tail">テールスペンド</div>
+        <div class="dash-tab" data-tab="sga">販管費</div>
+        <div class="dash-tab" data-tab="dept">部門別</div>
+      </div>
+
+      <!-- ダッシュボード本体 -->
+      <div class="dash-body">
+
+        <!-- KPIカード 4枚 -->
+        <div class="kpi-grid">
+          <!-- 総コスト -->
+          <div class="kpi-card">
+            <div class="kpi-label">総コスト（今期）</div>
+            <div class="kpi-value">¥8.4億</div>
+            <div class="kpi-change">
+              <span class="kpi-change-val success">↓ 3.2%</span>
+              <span class="kpi-change-sub">前期比</span>
+            </div>
+          </div>
+          <!-- 削減済み -->
+          <div class="kpi-card">
+            <div class="kpi-label">削減済み（今期実績）</div>
+            <div class="kpi-value">¥1,840万</div>
+            <div class="kpi-change">
+              <span class="kpi-change-sub">12施策 完了</span>
+            </div>
+          </div>
+          <!-- 削減余地 -->
+          <div class="kpi-card">
+            <div class="kpi-label">削減余地（AI推定）</div>
+            <div class="kpi-value accent">¥4,200万</div>
+            <div class="kpi-change">
+              <span class="kpi-change-sub">総コスト比 5.0%</span>
+            </div>
+          </div>
+          <!-- 効率スコア -->
+          <div class="kpi-card">
+            <div class="kpi-label">効率スコア</div>
+            <div class="kpi-value">72<span style="font-size:16px;font-weight:400;color:rgba(255,255,255,0.35)">/100</span></div>
+            <div class="kpi-change">
+              <span class="kpi-change-val success">↑ 8pt</span>
+              <span class="kpi-change-sub">前期比</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- チャートエリア -->
+        <div class="chart-grid">
+
+          <!-- 左: 月次コスト推移 SVG棒グラフ -->
+          <div class="chart-card">
+            <div class="chart-heading">月次コスト推移</div>
+            <div class="chart-sub">前期比較 / 単位: 百万円</div>
+            <svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;overflow:visible;">
+              <!-- Y軸グリッドライン -->
+              <line x1="36" y1="10" x2="556" y2="10" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="36" y1="45" x2="556" y2="45" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="36" y1="80" x2="556" y2="80" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="36" y1="115" x2="556" y2="115" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <!-- Y軸ラベル -->
+              <text x="0" y="14" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif">100</text>
+              <text x="8" y="49" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif">75</text>
+              <text x="8" y="84" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif">50</text>
+              <text x="8" y="119" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif">25</text>
+
+              <!-- 月データ: 前期(薄)と今期(アクセント)を並べる -->
+              <!-- 各月: 幅38px, グループ間隔4px, 棒間隔2px -->
+              <!-- 4月 -->
+              <rect x="40" y="54" width="17" height="66" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="59" y="58" width="17" height="62" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="52" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">4月</text>
+              <!-- 5月 -->
+              <rect x="82" y="48" width="17" height="72" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="101" y="52" width="17" height="68" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="94" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">5月</text>
+              <!-- 6月 -->
+              <rect x="124" y="44" width="17" height="76" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="143" y="48" width="17" height="72" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="136" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">6月</text>
+              <!-- 7月 -->
+              <rect x="166" y="40" width="17" height="80" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="185" y="44" width="17" height="76" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="178" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">7月</text>
+              <!-- 8月 -->
+              <rect x="208" y="36" width="17" height="84" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="227" y="41" width="17" height="79" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="220" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">8月</text>
+              <!-- 9月 -->
+              <rect x="250" y="28" width="17" height="92" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="269" y="34" width="17" height="86" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="262" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">9月</text>
+              <!-- 10月 -->
+              <rect x="292" y="24" width="17" height="96" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="311" y="30" width="17" height="90" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="304" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">10月</text>
+              <!-- 11月 -->
+              <rect x="334" y="20" width="17" height="100" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="353" y="26" width="17" height="94" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="346" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">11月</text>
+              <!-- 12月 -->
+              <rect x="376" y="10" width="17" height="110" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="395" y="16" width="17" height="104" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="388" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">12月</text>
+              <!-- 1月 -->
+              <rect x="418" y="30" width="17" height="90" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="437" y="36" width="17" height="84" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="430" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">1月</text>
+              <!-- 2月 -->
+              <rect x="460" y="36" width="17" height="84" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="479" y="42" width="17" height="78" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="472" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">2月</text>
+              <!-- 3月 -->
+              <rect x="502" y="40" width="17" height="80" rx="2" fill="rgba(255,255,255,0.12)"/>
+              <rect x="521" y="46" width="17" height="74" rx="2" fill="#2563EB" opacity="0.85"/>
+              <text x="514" y="155" font-size="9" fill="rgba(255,255,255,0.3)" font-family="system-ui, sans-serif" text-anchor="middle">3月</text>
+
+              <!-- ベースライン -->
+              <line x1="36" y1="120" x2="556" y2="120" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            </svg>
+            <div class="chart-legend-row">
+              <div class="legend-item">
+                <div class="legend-dot" style="background:rgba(255,255,255,0.2);"></div>
+                前期
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#2563EB;"></div>
+                今期
+              </div>
+              <div style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3);">平均削減率 <span style="color:#059669;font-weight:500;">-8.4%</span></div>
+            </div>
+          </div>
+
+          <!-- 右: コスト内訳 SVGドーナツ -->
+          <div class="chart-card">
+            <div class="chart-heading">コスト内訳</div>
+            <div class="chart-sub">カテゴリ別構成比（今期）</div>
+            <div class="donut-wrap">
+              <div class="donut-svg-wrap">
+                <!-- SVG circle + stroke-dasharray によるドーナツ -->
+                <!-- circumference = 2π×52 ≈ 326.7 -->
+                <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                  <!-- 背景 -->
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="16"/>
+                  <!-- 人件費 42% = 137.2 -->
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#2563EB" stroke-width="16"
+                    stroke-dasharray="137.2 189.5"
+                    stroke-dashoffset="0"
+                    transform="rotate(-90 60 60)"/>
+                  <!-- 外注費 23% = 75.1 offset=137.2 -->
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#3B82F6" stroke-width="16"
+                    stroke-dasharray="75.1 251.6"
+                    stroke-dashoffset="-137.2"
+                    transform="rotate(-90 60 60)"/>
+                  <!-- 間接材 18% = 58.8 offset=212.3 -->
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#8B5CF6" stroke-width="16"
+                    stroke-dasharray="58.8 267.9"
+                    stroke-dashoffset="-212.3"
+                    transform="rotate(-90 60 60)"/>
+                  <!-- その他 17% = 55.5 offset=271.1 -->
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#10B981" stroke-width="16"
+                    stroke-dasharray="55.5 271.2"
+                    stroke-dashoffset="-271.1"
+                    transform="rotate(-90 60 60)"/>
+                  <!-- 中央 -->
+                  <circle cx="60" cy="60" r="36" fill="#111113"/>
+                  <text x="60" y="57" font-size="11" fill="#fff" font-family="system-ui, sans-serif" font-weight="700" text-anchor="middle">¥8.4億</text>
+                  <text x="60" y="69" font-size="8" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif" text-anchor="middle">総コスト</text>
+                </svg>
+              </div>
+              <div class="donut-legend">
+                <div class="donut-legend-item">
+                  <div class="donut-legend-left">
+                    <div class="donut-dot" style="background:#2563EB;"></div>
+                    <span class="donut-name">人件費</span>
+                  </div>
+                  <span class="donut-pct">42%</span>
+                </div>
+                <div class="donut-legend-item">
+                  <div class="donut-legend-left">
+                    <div class="donut-dot" style="background:#3B82F6;"></div>
+                    <span class="donut-name">外注費</span>
+                  </div>
+                  <span class="donut-pct">23%</span>
+                </div>
+                <div class="donut-legend-item">
+                  <div class="donut-legend-left">
+                    <div class="donut-dot" style="background:#8B5CF6;"></div>
+                    <span class="donut-name">間接材</span>
+                  </div>
+                  <span class="donut-pct">18%</span>
+                </div>
+                <div class="donut-legend-item">
+                  <div class="donut-legend-left">
+                    <div class="donut-dot" style="background:#10B981;"></div>
+                    <span class="donut-name">その他</span>
+                  </div>
+                  <span class="donut-pct">17%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /chart-grid -->
+
+        <!-- アクションテーブル -->
+        <div class="table-card">
+          <div class="table-topbar">
+            <span class="table-title">AI推奨アクション — TOP 5</span>
+            <button class="table-see-all">全件を見る →</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th style="width:72px;">優先度</th>
+                  <th style="width:80px;">カテゴリ</th>
+                  <th>アクション</th>
+                  <th style="width:110px;text-align:right;">削減見込</th>
+                  <th style="width:80px;">ステータス</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="priority-cell">
+                      <span class="priority-dot" style="background:#DC2626;"></span>
+                      High
+                    </div>
+                  </td>
+                  <td><span class="category-label">間接材</span></td>
+                  <td>Monotaro → Amazon Business 切替</td>
+                  <td><div class="savings-val">¥840万</div></td>
+                  <td><span class="status-text status-pending">未着手</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="priority-cell">
+                      <span class="priority-dot" style="background:#DC2626;"></span>
+                      High
+                    </div>
+                  </td>
+                  <td><span class="category-label">外注費</span></td>
+                  <td>A社 → B社 ベンダー切替</td>
+                  <td><div class="savings-val">¥620万</div></td>
+                  <td><span class="status-text status-pending">検討中</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="priority-cell">
+                      <span class="priority-dot" style="background:#D97706;"></span>
+                      Med
+                    </div>
+                  </td>
+                  <td><span class="category-label">販管費</span></td>
+                  <td>広告費配分の最適化（デジタルシフト）</td>
+                  <td><div class="savings-val">¥380万</div></td>
+                  <td><span class="status-text status-active">実行中</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="priority-cell">
+                      <span class="priority-dot" style="background:#D97706;"></span>
+                      Med
+                    </div>
+                  </td>
+                  <td><span class="category-label">間接材</span></td>
+                  <td>まとめ買いによるボリューム交渉</td>
+                  <td><div class="savings-val">¥240万</div></td>
+                  <td><span class="status-text status-pending">未着手</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="priority-cell">
+                      <span class="priority-dot" style="background:#059669;"></span>
+                      Low
+                    </div>
+                  </td>
+                  <td><span class="category-label">その他</span></td>
+                  <td>未使用サブスクリプションの整理・解約</td>
+                  <td><div class="savings-val">¥120万</div></td>
+                  <td><span class="status-text status-done">完了</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div><!-- /table-card -->
+
+      </div><!-- /dash-body -->
+    </div><!-- /dashboard-card -->
+  </div><!-- /demo-inner -->
+</section>
+
+<!-- ========== FEATURES SECTION ========== -->
+<section class="features-section" id="features">
+  <div class="section-inner">
+    <h2 class="section-title">ダッシュボードでできること</h2>
+    <ul class="features-list">
+      <!-- リアルタイム分析 -->
+      <li class="feature-item">
+        <div class="feature-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <h3>リアルタイム分析</h3>
+          <p>ERP・会計ソフトとのAPI連携で購買データを自動取得。毎日最新のコスト状況を可視化します。</p>
+        </div>
+      </li>
+      <!-- AI推奨アクション -->
+      <li class="feature-item">
+        <div class="feature-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <h3>AI推奨アクション</h3>
+          <p>機械学習が業界ベンチマークと自社データを比較し、削減効果の高い施策を優先度付きで自動提案します。</p>
+        </div>
+      </li>
+      <!-- 効果トラッキング -->
+      <li class="feature-item">
+        <div class="feature-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <h3>効果トラッキング</h3>
+          <p>施策の実行状況と削減効果を継続モニタリング。ROIを数値で可視化し、経営報告にすぐ使える形で出力します。</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== COMPARISON SECTION ========== -->
+<section class="comparison-section" id="comparison">
+  <div class="section-inner">
+    <h2 class="section-title">Excel管理 vs RAKUDA</h2>
+    <div class="comparison-table-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="col-item" style="width:200px;">比較項目</th>
+            <th class="col-before">Excel管理（従来）</th>
+            <th class="col-after">RAKUDA COSTCUT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-item">データ集計</td>
+            <td class="col-before"><span class="col-before-text">手作業・月1回程度</span></td>
+            <td class="col-after"><span class="col-after-text">自動・リアルタイム</span></td>
+          </tr>
+          <tr>
+            <td class="col-item">削減施策の発見</td>
+            <td class="col-before"><span class="col-before-text">担当者の経験・勘頼み</span></td>
+            <td class="col-after"><span class="col-after-text">AIが自動で優先度付き提案</span></td>
+          </tr>
+          <tr>
+            <td class="col-item">ベンダー比較</td>
+            <td class="col-before"><span class="col-before-text">個別見積・比較に数日</span></td>
+            <td class="col-after"><span class="col-after-text">業界ベンチマークと即座に比較</span></td>
+          </tr>
+          <tr>
+            <td class="col-item">効果測定</td>
+            <td class="col-before"><span class="col-before-text">施策後の追跡が困難</span></td>
+            <td class="col-after"><span class="col-after-text">施策ごとにROIを自動追跡</span></td>
+          </tr>
+          <tr>
+            <td class="col-item">部門横断管理</td>
+            <td class="col-before"><span class="col-before-text">ファイル分散・バージョン混乱</span></td>
+            <td class="col-after"><span class="col-after-text">全社統合ダッシュボード</span></td>
+          </tr>
+          <tr>
+            <td class="col-item">経営報告</td>
+            <td class="col-before"><span class="col-before-text">レポート作成に半日</span></td>
+            <td class="col-after"><span class="col-after-text">ワンクリックでPDF出力</span></td>
+          </tr>
+          <tr>
+            <td class="col-item">導入コスト</td>
+            <td class="col-before"><span class="col-before-text">人件費（月数十万相当）</span></td>
+            <td class="col-after"><span class="col-after-text">¥49,800/月〜</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRICING SECTION ========== -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner" style="text-align:center;">
+    <h2 class="section-title">シンプルな料金体系</h2>
+    <div class="pricing-grid">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="pricing-plan">Free</div>
+        <div style="margin-bottom:6px;">
+          <span class="pricing-amount">無料</span>
+        </div>
+        <div class="pricing-desc">サンプルデータでダッシュボードを体験。機能の確認に最適。</div>
+        <ul class="pricing-features">
+          <li>サンプルデータ閲覧</li>
+          <li>全タブ・画面の操作体験</li>
+          <li>AI推奨アクション（デモ）</li>
+        </ul>
+        <a href="#demo" class="pricing-btn pricing-btn-outline">デモを試す</a>
+      </div>
+      <!-- Standard -->
+      <div class="pricing-card featured">
+        <div class="pricing-plan">コンサルティングプラン ¥49,800/月</div>
+        <div style="margin-bottom:6px;">
+          <span class="pricing-amount">¥49,800</span>
+          <span class="pricing-unit">/月</span>
+        </div>
+        <div class="pricing-desc">自社データの分析からコスト削減施策の実行支援まで</div>
+        <ul class="pricing-features">
+          <li>自社データ接続（ERP/会計ソフト）</li>
+          <li>リアルタイム分析</li>
+          <li>AI推奨アクション（本番）</li>
+          <li>効果トラッキング</li>
+          <li>月次レポート自動生成</li>
+          <li>メールサポート</li>
+        </ul>
+        <a href="#cta" class="pricing-btn pricing-btn-accent">無料相談を予約</a>
+      </div>
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="pricing-plan">Enterprise</div>
+        <div style="margin-bottom:6px;">
+          <span class="pricing-amount">カスタム</span>
+        </div>
+        <div class="pricing-desc">グループ会社・大規模組織向けのカスタム導入。</div>
+        <ul class="pricing-features">
+          <li>Standardの全機能</li>
+          <li>複数法人・部門対応</li>
+          <li>カスタムダッシュボード</li>
+          <li>専任CSサポート</li>
+          <li>SLA保証</li>
+        </ul>
+        <a href="#cta" class="pricing-btn pricing-btn-outline">お問い合わせ</a>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:12px;color:var(--ink-secondary);">プロダクト開発のご相談も承ります</p>
+  </div>
+</section>
+
+<!-- ========== CTA SECTION ========== -->
+<section class="cta-section" id="cta">
+  <h2>まずは無料相談から</h2>
+  <p>平均的な導入企業は、初月から年間コストの5〜8%相当の削減余地を発見しています</p>
+  <div class="cta-btns">
+    <a href="#pricing" class="btn-cta-white">無料相談を予約 →</a>
+    <a href="#demo" class="btn-cta-ghost">デモに戻る</a>
+  </div>
+  <p class="cta-meta">オンライン完結 &nbsp;·&nbsp; 最短翌営業日対応 &nbsp;·&nbsp; 専任コンサルタント付き</p>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-logo">
+          <div class="footer-logo-mark"></div>
+          <span class="footer-logo-text">RAKUDA COSTCUT</span>
+        </div>
+        <p class="footer-tagline">AIが照らす、コスト削減の<br>最短ルート。</p>
+      </div>
+      <div>
+        <div class="footer-col-title">プロダクト</div>
+        <ul class="footer-links">
+          <li><a href="#">機能一覧</a></li>
+          <li><a href="#">料金プラン</a></li>
+          <li><a href="#">連携一覧</a></li>
+          <li><a href="#">セキュリティ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">サポート</div>
+        <ul class="footer-links">
+          <li><a href="#">導入ガイド</a></li>
+          <li><a href="#">APIドキュメント</a></li>
+          <li><a href="#">よくある質問</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">会社情報</div>
+        <ul class="footer-links">
+          <li><a href="#">会社概要</a></li>
+          <li><a href="#">採用情報</a></li>
+          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="#">利用規約</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 RAKUDA COSTCUT. All rights reserved.</p>
+      <div class="footer-status">
+        <span class="status-dot"></span>
+        全サービス正常稼働中
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // タブ切替
+  document.querySelectorAll('.dash-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.dash-tab').forEach(function(t) {
+        t.classList.remove('active');
+      });
+      tab.classList.add('active');
+    });
+  });
+
+  // スムーススクロール
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
