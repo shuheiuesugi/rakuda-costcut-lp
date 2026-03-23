@@ -519,14 +519,54 @@
     .analysis {
       background: var(--dark);
       padding: 120px 0;
-      display: none;
+      position: relative;
     }
-    .analysis.is-visible {
-      display: block;
+    /* Locked preview state: blurred with overlay */
+    .analysis:not(.is-visible) .analysis-inner {
+      filter: blur(6px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .analysis-lock-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      background: rgba(15,23,42,0.4);
+      transition: opacity 0.5s ease;
+    }
+    .analysis-lock-overlay .lock-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .analysis-lock-overlay .lock-text {
+      font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px;
+    }
+    .analysis-lock-overlay .lock-sub {
+      font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px;
+    }
+    .analysis-lock-overlay .lock-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 8px; border: none;
+      background: #1E3A5F; color: #fff; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+      font-family: inherit;
+    }
+    .analysis-lock-overlay .lock-btn:hover { background: #162E4A; }
+    /* Unlocked state */
+    .analysis.is-visible .analysis-lock-overlay { opacity: 0; pointer-events: none; }
+    .analysis.is-visible .analysis-inner {
+      filter: none;
+      pointer-events: auto;
       animation: analysisFadeIn 0.8s ease forwards;
     }
     @keyframes analysisFadeIn {
-      from { opacity: 0; transform: translateY(40px); }
+      from { opacity: 0.5; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -1786,10 +1826,22 @@
 
   <!-- ===== ANALYSIS RESULTS ===== -->
   <section class="analysis" id="analysis">
+    <!-- Lock overlay (shown until upload completes) -->
+    <div class="analysis-lock-overlay" id="analysisLockOverlay">
+      <div class="lock-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="lock-text">ファイルをアップロードすると分析結果が表示されます</div>
+      <div class="lock-sub">サンプルデータによるプレビューを表示中</div>
+      <button class="lock-btn" onclick="document.getElementById('fileInput').click()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        ファイルをアップロード
+      </button>
+    </div>
     <div class="analysis-inner">
       <div class="analysis-header">
-        <h2 class="analysis-h2">分析結果</h2>
-        <p class="analysis-subtitle">AIがコスト構造を分析し、削減ポイントを特定しました</p>
+        <h2 class="analysis-h2" id="analysisTitle">分析結果サンプル</h2>
+        <p class="analysis-subtitle" id="analysisSubtitle">御社のファイルをアップロードすると、実データに基づく分析結果が表示されます</p>
       </div>
 
       <div class="analysis-grid">
@@ -2677,8 +2729,10 @@ function handleFiles(files) {
         uploadStatusText.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 分析完了';
         uploadMainText.textContent = '分析が完了しました';
 
-        // Show analysis section
+        // Unlock analysis section
         const analysisSection = document.getElementById('analysis');
+        document.getElementById('analysisTitle').textContent = '分析結果';
+        document.getElementById('analysisSubtitle').textContent = 'AIがコスト構造を分析し、削減ポイントを特定しました';
         analysisSection.classList.add('is-visible');
 
         // Scroll to analysis section
