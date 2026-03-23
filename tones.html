@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RAKUDA COSTCUT — Tone Comparison v3 Full Preview</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic Medium','Yu Gothic',Meiryo,sans-serif; background:#E5E7EB; color:#1A1A1A; -webkit-font-smoothing:antialiased; font-feature-settings:"palt"; }
@@ -452,7 +453,7 @@ function renderLP(id) {
           <button class="btn-p">無料で診断する →</button>
         </div>
         <div class="lp-footer">
-          <span>© 2026 RAKUDA Inc.</span>
+          <span>© 2026 Rakuda AI Inc.</span>
           <span>プライバシー　利用規約　お問い合わせ</span>
         </div>
       </div>
@@ -465,6 +466,39 @@ const container = document.createElement('div');
 container.innerHTML = tones.map(t => renderLP(t)).join('');
 document.body.appendChild(container);
 </script>
+
+<footer style="border-top: 1px solid #E5E5E5; background: #fff; padding: 40px 24px;">
+  <div style="max-width: 960px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20">
+        <path d="M10,75 C10,75 22,25 38,25 C52,25 44,65 56,65 C68,65 60,20 74,20 C90,20 100,75 100,75" stroke="#1A1A2E" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span style="font-size: 14px; font-weight: 300; letter-spacing: 0.15em; color: #111;">RAKUDA AI</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
+      <div>
+        <h3 style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9CA3AF; margin-bottom: 12px;">ラクダシリーズ</h3>
+        <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px;">
+          <li><a href="https://hub.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダHub</a></li>
+          <li><a href="https://mail.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダMail</a></li>
+          <li><a href="https://reception.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダReception</a></li>
+          <li><a href="https://research.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダResearch</a></li>
+          <li><a href="https://invoice.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダInvoice</a></li>
+          <li><a href="https://buddy.rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">ラクダBuddy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9CA3AF; margin-bottom: 12px;">サポート</h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+          <li><a href="mailto:info@rakuda-ai.com" style="font-size: 14px; color: #6B7280; text-decoration: none;">info@rakuda-ai.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #E5E5E5; padding-top: 24px; text-align: center; font-size: 12px; color: #9CA3AF;">
+      &copy; 2026 Rakuda AI Inc. All rights reserved.
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
