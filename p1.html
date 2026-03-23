@@ -519,15 +519,15 @@
     .analysis {
       background: var(--dark);
       padding: 120px 0;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      pointer-events: none;
+      display: none;
     }
     .analysis.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      display: block;
+      animation: analysisFadeIn 0.8s ease forwards;
+    }
+    @keyframes analysisFadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .analysis-inner {
@@ -1692,7 +1692,7 @@
         <a href="#features">機能</a>
         <a href="#" class="btn-nav-secondary" onclick="openContactModal();return false;">お問い合わせ</a>
         <a href="#" class="btn-nav" onclick="openBookingModal();return false;">
-          初回面談を予約
+          無料で相談する
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/>
             <polyline points="12 5 19 12 12 19"/>
@@ -2020,8 +2020,8 @@
       <button class="modal-close" onclick="closeBookingModal()" aria-label="閉じる">&times;</button>
 
       <div class="booking-header">
-        <h2 id="bookingModalTitle">初回面談を予約する</h2>
-        <p>ご都合の良い日時をお選びください</p>
+        <h2 id="bookingModalTitle">無料で相談する</h2>
+        <p>ご都合の良い日時をお選びください<br><span style="font-size:12px;color:#64748B;">※ 営業電話は一切しません</span></p>
       </div>
 
       <!-- Progress bar -->
