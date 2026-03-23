@@ -17,6 +17,9 @@
   --accent-hover: #1D4ED8;
   --success: #059669;
   --dark: #111113;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
 }
 
 html { scroll-behavior: smooth; }
@@ -109,15 +112,15 @@ nav a:hover { color: var(--ink); }
   font-weight: 500;
   padding: 8px 18px;
   border-radius: 6px;
-  transition: opacity 0.15s;
+  transition: all 0.2s ease;
   margin-left: 8px;
 }
 
-.btn-nav:hover { opacity: 0.9; }
+.btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 
 /* ── HERO ── */
 .hero {
-  background: var(--dark);
+  background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
   padding: 140px 32px 100px;
   text-align: center;
   position: relative;
@@ -128,7 +131,7 @@ nav a:hover { color: var(--ink); }
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.12) 0%, transparent 70%);
+  background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -179,11 +182,11 @@ nav a:hover { color: var(--ink); }
   border: none;
   cursor: pointer;
   font-family: inherit;
-  transition: opacity 0.15s;
+  transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
-.btn-hero:hover { opacity: 0.9; }
+.btn-hero:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .hero-proof {
   margin-top: 36px;
@@ -195,7 +198,7 @@ nav a:hover { color: var(--ink); }
 /* ── DIAGNOSIS SECTION ── */
 .diagnosis-section {
   background: var(--surface);
-  padding: 96px 32px;
+  padding: 120px 32px;
 }
 
 .diagnosis-inner {
@@ -550,10 +553,10 @@ nav a:hover { color: var(--ink); }
   cursor: pointer;
   font-family: inherit;
   margin-top: 32px;
-  transition: opacity 0.15s;
+  transition: all 0.2s ease;
 }
 
-.btn-diagnose:hover { opacity: 0.9; }
+.btn-diagnose:hover { opacity: 0.9; transform: translateY(-1px); }
 
 /* Divider */
 .step-divider {
@@ -565,7 +568,7 @@ nav a:hover { color: var(--ink); }
 /* ── RESULT SECTION ── */
 .result-section {
   background: var(--canvas);
-  padding: 96px 32px;
+  padding: 80px 32px;
 }
 
 .result-inner {
@@ -647,7 +650,7 @@ nav a:hover { color: var(--ink); }
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 28px 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-md);
 }
 
 .radar-block-title {
@@ -686,7 +689,7 @@ nav a:hover { color: var(--ink); }
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 28px 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-md);
 }
 
 .improvements-title {
@@ -755,7 +758,7 @@ nav a:hover { color: var(--ink); }
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 40px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-md);
 }
 
 .freemium-inner {
@@ -826,10 +829,10 @@ nav a:hover { color: var(--ink); }
   cursor: pointer;
   font-family: inherit;
   white-space: nowrap;
-  transition: opacity 0.15s;
+  transition: all 0.2s ease;
 }
 
-.btn-report:hover { opacity: 0.9; }
+.btn-report:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .freemium-note {
   font-size: 12px;
@@ -840,7 +843,7 @@ nav a:hover { color: var(--ink); }
 /* ── PRICING SECTION ── */
 .pricing-section {
   background: var(--surface);
-  padding: 96px 32px;
+  padding: 72px 32px;
 }
 
 .pricing-inner {
@@ -867,12 +870,13 @@ nav a:hover { color: var(--ink); }
   transition: box-shadow 0.15s;
 }
 
-.plan-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.plan-card:hover { box-shadow: var(--shadow-lg); }
 
 .plan-card.is-featured {
   border-color: var(--accent);
   border-width: 2px;
   background: var(--dark);
+  border-top: 3px solid var(--accent);
 }
 
 .plan-badge {
@@ -973,7 +977,7 @@ nav a:hover { color: var(--ink); }
   cursor: pointer;
   text-decoration: none;
   border: none;
-  transition: opacity 0.15s, border-color 0.15s;
+  transition: all 0.2s ease;
 }
 
 .btn-plan-free {
@@ -982,14 +986,14 @@ nav a:hover { color: var(--ink); }
   border: 1px solid var(--border);
 }
 
-.btn-plan-free:hover { border-color: var(--ink-secondary); }
+.btn-plan-free:hover { border-color: var(--ink-secondary); transform: translateY(-1px); }
 
 .btn-plan-paid {
   background: var(--accent);
   color: var(--surface);
 }
 
-.btn-plan-paid:hover { opacity: 0.9; }
+.btn-plan-paid:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
 
 /* ── CTA SECTION ── */
 .cta-section {
@@ -1034,10 +1038,10 @@ nav a:hover { color: var(--ink); }
   border: none;
   cursor: pointer;
   font-family: inherit;
-  transition: opacity 0.15s;
+  transition: all 0.2s ease;
 }
 
-.btn-cta:hover { opacity: 0.9; }
+.btn-cta:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
 
 .cta-note {
   margin-top: 16px;
@@ -1111,6 +1115,82 @@ footer {
   .revenue-grid { grid-template-columns: 1fr; }
   .cost-grid { grid-template-columns: 1fr; }
 }
+
+/* ── FADE-IN SCROLL ANIMATION ── */
+.fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in-section.visible { opacity: 1; transform: translateY(0); }
+
+/* ── LOGO BAND ── */
+.logo-band {
+  background: var(--canvas);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 32px;
+  text-align: center;
+}
+
+.logo-band-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin-bottom: 20px;
+}
+
+.logo-band-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.logo-text-item {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  letter-spacing: 0.3px;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+/* ── SOCIAL PROOF STATS ── */
+.social-proof-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-number {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--surface);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.12);
+}
 </style>
 </head>
 <body>
@@ -1161,6 +1241,18 @@ footer {
     <p class="hero-proof">8,500社が診断済み</p>
   </div>
 </section>
+
+<!-- ═══ LOGO BAND ═══ -->
+<div class="logo-band">
+  <div class="logo-band-label">導入企業 300社以上</div>
+  <div class="logo-band-items">
+    <span class="logo-text-item">freee</span>
+    <span class="logo-text-item">SmartHR</span>
+    <span class="logo-text-item">ラクス</span>
+    <span class="logo-text-item">MoneyForward</span>
+    <span class="logo-text-item">Sansan</span>
+  </div>
+</div>
 
 <!-- ═══ DIAGNOSIS ═══ -->
 <section class="diagnosis-section" id="diagnosis">
@@ -1723,6 +1815,22 @@ footer {
   <div class="cta-inner">
     <h2 class="cta-title">今すぐ無料診断を<br>始める</h2>
     <p class="cta-sub">8,500社が活用するAIコスト診断。<br>登録不要・30秒で完了。</p>
+    <div class="social-proof-stats">
+      <div class="stat-item">
+        <div class="stat-number">8,500+</div>
+        <div class="stat-label">診断実施企業</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">平均12%</div>
+        <div class="stat-label">コスト削減率</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">30秒</div>
+        <div class="stat-label">診断所要時間</div>
+      </div>
+    </div>
     <button class="btn-cta" onclick="document.getElementById('diagnosis').scrollIntoView({behavior:'smooth'})">
       診断スタート
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1783,6 +1891,16 @@ footer {
     var pct = Math.round(((hasIndustry + hasRevenue + hasCost) / 3) * 100);
     progressBar.style.width = pct + '%';
   }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('section:not(.hero):not(.diagnosis-section)').forEach(s => s.classList.add('fade-in-section'));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-section').forEach(s => obs.observe(s));
+});
 </script>
 </body>
 </html>

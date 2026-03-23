@@ -19,6 +19,9 @@
       --dark: #111113;
       --dark-surface: #1A1A1F;
       --dark-border: rgba(255,255,255,0.08);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
     }
     html { scroll-behavior: smooth; }
     body {
@@ -100,13 +103,23 @@
       text-decoration: none;
       font-family: inherit;
     }
-    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary { transition: all 0.2s ease; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* ========== HERO ========== */
     .hero {
-      background: var(--dark);
+      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
       padding: 100px 32px 80px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
+      pointer-events: none;
     }
     .hero-label {
       font-size: 12px;
@@ -152,7 +165,8 @@
       text-decoration: none;
       font-family: inherit;
     }
-    .btn-hero-white:hover { opacity: 0.9; }
+    .btn-hero-white { transition: all 0.2s ease; }
+    .btn-hero-white:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-hero-text {
       color: rgba(255,255,255,0.6);
       font-size: 14px;
@@ -165,7 +179,7 @@
     /* ========== DEMO SECTION ========== */
     .demo-section {
       background: var(--canvas);
-      padding: 72px 32px;
+      padding: 120px 32px;
     }
     .demo-inner {
       max-width: 1120px;
@@ -178,6 +192,7 @@
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: var(--shadow-lg);
     }
 
     /* 上部バー */
@@ -215,12 +230,16 @@
       cursor: pointer;
       white-space: nowrap;
       user-select: none;
-      transition: color 0.15s;
+      transition: all 0.2s ease;
     }
-    .dash-tab:hover { color: rgba(255,255,255,0.7); }
+    .dash-tab:hover {
+      color: rgba(255,255,255,0.7);
+      box-shadow: inset 0 -2px 0 rgba(255,255,255,0.15);
+    }
     .dash-tab.active {
       color: #fff;
       border-bottom-color: var(--accent);
+      box-shadow: inset 0 -2px 0 var(--accent);
     }
 
     /* ダッシュボード本体 */
@@ -240,6 +259,7 @@
       border: 1px solid var(--dark-border);
       border-radius: 8px;
       padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
     }
     .kpi-label {
       font-size: 12px;
@@ -283,6 +303,7 @@
       border: 1px solid var(--dark-border);
       border-radius: 8px;
       padding: 20px;
+      box-shadow: var(--shadow-sm);
     }
     .chart-heading {
       font-size: 13px;
@@ -518,7 +539,7 @@
     /* ========== COMPARISON SECTION ========== */
     .comparison-section {
       background: var(--canvas);
-      padding: 96px 32px;
+      padding: 80px 32px;
     }
     .comparison-table-wrap {
       overflow-x: auto;
@@ -601,11 +622,13 @@
       border-radius: 12px;
       padding: 28px;
       background: var(--canvas);
+      box-shadow: var(--shadow-sm);
     }
     .pricing-card.featured {
       background: var(--dark);
       border-color: transparent;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      border-top: 3px solid var(--accent);
+      box-shadow: var(--shadow-lg);
     }
     .pricing-plan {
       font-size: 11px;
@@ -682,17 +705,19 @@
       background: var(--accent);
       color: #fff;
     }
-    .pricing-btn-accent:hover { opacity: 0.9; }
+    .pricing-btn-accent { transition: all 0.2s ease; }
+    .pricing-btn-accent:hover { opacity: 0.9; transform: translateY(-1px); }
     .pricing-btn-white {
       background: #fff;
       color: var(--ink);
+      transition: all 0.2s ease;
     }
-    .pricing-btn-white:hover { opacity: 0.9; }
+    .pricing-btn-white:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* ========== CTA ========== */
     .cta-section {
       background: var(--dark);
-      padding: 96px 32px;
+      padding: 80px 32px;
       text-align: center;
     }
     .cta-section h2 {
@@ -729,7 +754,8 @@
       text-decoration: none;
       font-family: inherit;
     }
-    .btn-cta-white:hover { opacity: 0.9; }
+    .btn-cta-white { transition: all 0.2s ease; }
+    .btn-cta-white:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-cta-ghost {
       display: inline-flex;
       align-items: center;
@@ -743,10 +769,12 @@
       cursor: pointer;
       text-decoration: none;
       font-family: inherit;
+      transition: all 0.2s ease;
     }
     .btn-cta-ghost:hover {
       color: #fff;
       border-color: rgba(255,255,255,0.5);
+      transform: translateY(-1px);
     }
     .cta-meta {
       margin-top: 18px;
@@ -832,6 +860,34 @@
       background: var(--success);
     }
 
+    /* ========== LOGO BAND ========== */
+    .logo-band {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      text-align: center;
+    }
+    .logo-band-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .logo-band-items {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .logo-band-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #C0C4CC;
+    }
+
     /* ========== RESPONSIVE ========== */
     @media (max-width: 960px) {
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
@@ -852,6 +908,17 @@
       .features-section, .comparison-section, .pricing-section, .cta-section { padding: 64px 20px; }
       .footer { padding: 40px 20px 20px; }
       .footer-top { grid-template-columns: 1fr; }
+    }
+
+    /* ========== SCROLL FADE-IN ========== */
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in-section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* アニメーション: ヒーロー「LIVE DEMO」ドット点滅のみ */
@@ -910,6 +977,18 @@
     <a href="#features" class="btn-hero-text">機能を見る</a>
   </div>
 </section>
+
+<!-- ========== LOGO BAND ========== -->
+<div class="logo-band">
+  <div class="logo-band-label">導入企業 300社以上</div>
+  <div class="logo-band-items">
+    <span class="logo-band-text">freee</span>
+    <span class="logo-band-text">SmartHR</span>
+    <span class="logo-band-text">ラクス</span>
+    <span class="logo-band-text">Money Forward</span>
+    <span class="logo-band-text">Sansan</span>
+  </div>
+</div>
 
 <!-- ========== DASHBOARD DEMO ========== -->
 <section class="demo-section" id="demo">
@@ -1380,6 +1459,7 @@
 <section class="cta-section" id="cta">
   <h2>自社データで分析を始める</h2>
   <p>平均的な導入企業は、初月から年間コストの5〜8%相当の削減余地を発見しています</p>
+  <p style="font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px;">月間利用企業 <strong style="color:#fff;">300社</strong> ｜ 平均コスト削減率 <strong style="color:#fff;">18%</strong></p>
   <div class="cta-btns">
     <a href="#pricing" class="btn-cta-white">14日間無料トライアル →</a>
     <a href="#demo" class="btn-cta-ghost">デモに戻る</a>
@@ -1456,6 +1536,24 @@
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
+  });
+</script>
+
+<script>
+  // スクロールフェードイン（hero・demo-section除外）
+  document.querySelectorAll('section:not(.hero):not(.demo-section)').forEach(function(sec) {
+    sec.classList.add('fade-in-section');
+  });
+  var fadeObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-section').forEach(function(el) {
+    fadeObserver.observe(el);
   });
 </script>
 

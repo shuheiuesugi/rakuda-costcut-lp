@@ -26,6 +26,9 @@
       --accent-hover: #1D4ED8;
       --success: #059669;
       --dark: #111113;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     /* ===== TYPOGRAPHY ===== */
@@ -97,13 +100,13 @@
       font-weight: 500;
       text-decoration: none;
       border-radius: 6px;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
-    .btn-header:hover { opacity: 0.9; }
+    .btn-header:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* ===== HERO ===== */
     .hero {
-      background: var(--dark);
+      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
       padding: 140px 0 100px;
       position: relative;
       overflow: hidden;
@@ -114,7 +117,7 @@
       top: 0; right: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(ellipse at 80% 20%, rgba(37,99,235,0.07) 0%, transparent 60%);
+      background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
       pointer-events: none;
     }
     .hero-inner {
@@ -159,9 +162,9 @@
       font-weight: 700;
       text-decoration: none;
       border-radius: 6px;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
-    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-text-link {
       font-size: 0.9375rem;
       font-weight: 500;
@@ -174,7 +177,7 @@
     /* ===== CHAT DEMO SECTION ===== */
     .chat-section {
       background: var(--canvas);
-      padding: 96px 0;
+      padding: 120px 0;
     }
     .chat-section-inner {
       display: grid;
@@ -237,7 +240,11 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .chat-card:hover {
+      box-shadow: var(--shadow-md);
     }
     .chat-card-header {
       display: flex;
@@ -367,14 +374,14 @@
       border: none;
       cursor: pointer;
       flex-shrink: 0;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
-    .chat-send-btn:hover { opacity: 0.9; }
+    .chat-send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* ===== USE CASES ===== */
     .usecases-section {
       background: var(--surface);
-      padding: 96px 0;
+      padding: 80px 0;
     }
     .section-header {
       margin-bottom: 56px;
@@ -431,7 +438,7 @@
     /* ===== PRICING ===== */
     .pricing-section {
       background: var(--canvas);
-      padding: 96px 0;
+      padding: 80px 0 96px;
     }
     .pricing-grid {
       display: grid;
@@ -447,10 +454,21 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 32px 28px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .plan-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
     .plan-card.featured {
       border-color: var(--ink);
       border-width: 2px;
+      border-top: 3px solid var(--accent);
+      box-shadow: var(--shadow-md);
+    }
+    .plan-card.featured:hover {
+      box-shadow: var(--shadow-lg);
     }
     .plan-label {
       font-size: 0.75rem;
@@ -512,19 +530,19 @@
       font-size: 0.9375rem;
       font-weight: 700;
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
     .btn-plan-dark {
       background: var(--ink);
       color: #fff;
     }
-    .btn-plan-dark:hover { opacity: 0.9; }
+    .btn-plan-dark:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
     .btn-plan-outline {
       background: transparent;
       color: var(--ink);
       border: 1px solid var(--border);
     }
-    .btn-plan-outline:hover { border-color: #9CA3AF; }
+    .btn-plan-outline:hover { border-color: #9CA3AF; transform: translateY(-1px); }
 
     /* ===== CTA SECTION ===== */
     .cta-section {
@@ -616,6 +634,39 @@
       .pricing-section { padding: 64px 0; }
       .cta-section { padding: 64px 0; }
     }
+
+    /* ===== LOGO BAND ===== */
+    .logo-band {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .logo-band-inner {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .logo-band-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .logo-band-logos {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+    .logo-text { font-size: 14px; font-weight: 600; color: #C0C4CC; letter-spacing: 0.02em; }
+
+    /* ===== SCROLL FADE-IN ===== */
+    .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in-section.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -654,6 +705,22 @@
       </div>
     </div>
   </section>
+
+  <!-- LOGO BAND -->
+  <div class="logo-band">
+    <div class="container">
+      <div class="logo-band-inner">
+        <span class="logo-band-label">導入企業 300社以上</span>
+        <div class="logo-band-logos">
+          <span class="logo-text">freee</span>
+          <span class="logo-text">SmartHR</span>
+          <span class="logo-text">ラクス</span>
+          <span class="logo-text">MoneyForward</span>
+          <span class="logo-text">Sansan</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- CHAT DEMO SECTION -->
   <section class="chat-section" id="demo">
@@ -958,6 +1025,7 @@
       <div class="cta-inner">
         <h2>今日から、AIが<br>コストを診断する。</h2>
         <p>御社のコスト削減、AIが今日から動きます。</p>
+        <p style="font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px;">月間利用企業 <strong style="color:#fff;">300社</strong> ｜ 平均コスト削減率 <strong style="color:#fff;">18%</strong></p>
         <a href="#" class="btn-primary" style="background:#2563EB; color:#fff;">
           相談を始める
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1012,5 +1080,15 @@
     </div>
   </footer>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('section:not(.hero)').forEach(s => s.classList.add('fade-in-section'));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-section').forEach(s => obs.observe(s));
+});
+</script>
 </body>
 </html>

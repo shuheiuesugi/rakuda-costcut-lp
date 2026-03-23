@@ -21,6 +21,9 @@
       --accent-hover: #1D4ED8;
       --success: #059669;
       --dark: #111113;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     html { scroll-behavior: smooth; }
@@ -94,20 +97,19 @@
       border: none;
       cursor: pointer;
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
 
-    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* ===== HERO ===== */
     .hero {
-      background: var(--dark);
+      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
       padding: 160px 0 120px;
       position: relative;
       overflow: hidden;
     }
 
-    /* ドットグリッドパターン（右半分） */
     .hero::after {
       content: '';
       position: absolute;
@@ -115,10 +117,7 @@
       right: 0;
       width: 55%;
       height: 100%;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
-      background-size: 28px 28px;
-      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
-      mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -177,10 +176,10 @@
       padding: 14px 28px;
       border-radius: 6px;
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
 
-    .btn-hero-solid:hover { opacity: 0.9; }
+    .btn-hero-solid:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
     .btn-text-link {
       font-size: 14px;
@@ -222,17 +221,17 @@
       justify-content: center;
     }
 
-    .logo-placeholder {
-      width: 80px;
-      height: 28px;
-      background: #E5E7EB;
-      border-radius: 4px;
+    .logo-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #C0C4CC;
+      letter-spacing: 0.02em;
     }
 
     /* ===== HOW IT WORKS ===== */
     .how-it-works {
       background: var(--canvas);
-      padding: 96px 0;
+      padding: 80px 0;
     }
 
     .how-inner {
@@ -278,12 +277,19 @@
     }
 
     .step-number {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 600;
       color: var(--accent);
       line-height: 1;
-      min-width: 32px;
-      letter-spacing: -0.04em;
+      min-width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(37,99,235,0.08);
+      border-radius: 50%;
+      letter-spacing: 0;
+      flex-shrink: 0;
     }
 
     .step-content {}
@@ -312,14 +318,14 @@
       align-items: center;
       justify-content: center;
       gap: 16px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow-sm);
       cursor: pointer;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .upload-card:hover {
       border-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: var(--shadow-md);
     }
 
     .upload-icon-wrap {
@@ -359,7 +365,7 @@
     /* ===== ANALYSIS RESULTS ===== */
     .analysis {
       background: var(--dark);
-      padding: 96px 0;
+      padding: 120px 0;
     }
 
     .analysis-inner {
@@ -400,6 +406,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
       padding: 28px;
+      box-shadow: var(--shadow-sm);
     }
 
     .analysis-card.wide {
@@ -493,7 +500,7 @@
     /* ===== PRICING ===== */
     .pricing {
       background: var(--canvas);
-      padding: 96px 0;
+      padding: 80px 0 96px;
       border-top: 1px solid var(--border);
     }
 
@@ -534,11 +541,19 @@
       border-radius: 16px;
       padding: 36px 32px;
       border: 1px solid var(--border);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .pricing-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
 
     .pricing-card.featured {
       border: 2px solid var(--accent);
+      border-top: 3px solid var(--accent);
+      box-shadow: var(--shadow-md);
     }
 
     .plan-name {
@@ -605,7 +620,7 @@
       font-size: 14px;
       font-weight: 500;
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
 
     .plan-cta-free {
@@ -621,7 +636,7 @@
       color: #FFFFFF;
     }
 
-    .plan-cta-paid:hover { opacity: 0.9; }
+    .plan-cta-paid:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
 
     /* ===== CTA SECTION ===== */
     .cta-section {
@@ -655,10 +670,10 @@
       padding: 14px 32px;
       border-radius: 6px;
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: all 0.2s ease;
     }
 
-    .btn-cta-white:hover { opacity: 0.9; }
+    .btn-cta-white:hover { opacity: 0.9; transform: translateY(-1px); }
 
     .cta-note {
       font-size: 13px;
@@ -753,6 +768,16 @@
 
       nav { display: none; }
     }
+
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -792,14 +817,13 @@
   <!-- ===== LOGO BAND ===== -->
   <section class="logo-band">
     <div class="logo-band-inner">
-      <p class="logo-band-label">1,200社以上が利用</p>
+      <p class="logo-band-label">導入企業 300社以上</p>
       <div class="logo-placeholders">
-        <div class="logo-placeholder"></div>
-        <div class="logo-placeholder"></div>
-        <div class="logo-placeholder"></div>
-        <div class="logo-placeholder"></div>
-        <div class="logo-placeholder"></div>
-        <div class="logo-placeholder"></div>
+        <span class="logo-text">freee</span>
+        <span class="logo-text">SmartHR</span>
+        <span class="logo-text">ラクス</span>
+        <span class="logo-text">MoneyForward</span>
+        <span class="logo-text">Sansan</span>
       </div>
     </div>
   </section>
@@ -1073,6 +1097,7 @@
   <section class="cta-section">
     <div class="cta-inner">
       <h2 class="cta-h2">今すぐ無料で試す</h2>
+      <p style="font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px; letter-spacing:0.02em;">月間利用企業 <strong style="color:#fff;">300社</strong> ｜ 平均コスト削減率 <strong style="color:#fff;">18%</strong></p>
       <a href="#" class="btn-cta-white">
         アカウント作成
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1123,5 +1148,15 @@
     </div>
   </footer>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('section:not(.hero)').forEach(s => s.classList.add('fade-in-section'));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-section').forEach(s => obs.observe(s));
+});
+</script>
 </body>
 </html>

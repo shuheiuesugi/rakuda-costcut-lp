@@ -17,6 +17,9 @@
     --success: #059669;
     --dark: #111113;
     --dark-surface: #1C1C1F;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
   }
 
   html { scroll-behavior: smooth; }
@@ -137,7 +140,7 @@
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
-    transition: opacity 0.15s;
+    transition: all 0.2s ease;
   }
 
   .btn-accent {
@@ -145,7 +148,7 @@
     color: #fff;
   }
 
-  .btn-accent:hover { opacity: 0.9; }
+  .btn-accent:hover { opacity: 0.9; transform: translateY(-1px); }
 
   .btn-outline {
     background: transparent;
@@ -153,7 +156,7 @@
     border: 1px solid var(--border);
   }
 
-  .btn-outline:hover { border-color: var(--ink); }
+  .btn-outline:hover { border-color: var(--ink); transform: translateY(-1px); }
 
   .btn-ghost {
     background: transparent;
@@ -166,8 +169,18 @@
 
   /* ── Hero ── */
   .hero {
-    background: var(--dark);
+    background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
     padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
+    pointer-events: none;
   }
 
   .hero-label {
@@ -241,12 +254,16 @@
 
   .section-dark {
     background: var(--dark);
-    padding: 96px 0;
+    padding: 120px 0;
   }
 
   .section-canvas {
     background: var(--canvas);
-    padding: 96px 0;
+    padding: 80px 0;
+  }
+
+  .section-pricing {
+    padding: 80px 0;
   }
 
   .section-label {
@@ -298,12 +315,13 @@
     border-radius: 12px;
     padding: 24px;
     background: var(--surface);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    transition: box-shadow 0.2s, border-color 0.2s;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
   }
 
   .product-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
     border-color: #D1D5DB;
   }
 
@@ -580,12 +598,13 @@
     border-radius: 12px;
     padding: 32px;
     background: var(--surface);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    box-shadow: var(--shadow-sm);
   }
 
   .pricing-card.featured {
     border-color: var(--ink);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    border-top: 3px solid var(--accent);
+    box-shadow: var(--shadow-lg);
   }
 
   .pricing-tier {
@@ -660,7 +679,7 @@
     color: #fff;
   }
 
-  .btn-dark:hover { opacity: 0.9; }
+  .btn-dark:hover { opacity: 0.9; transform: translateY(-1px); }
 
   /* ── CTA ── */
   .cta-section {
@@ -783,6 +802,54 @@
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
+
+  /* ── Scroll fade-in ── */
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Logo band ── */
+  .logo-band {
+    background: var(--canvas);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 0;
+  }
+
+  .logo-band-inner {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .logo-band-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  .logo-band-items {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .logo-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #C0C4CC;
+  }
 </style>
 </head>
 <body>
@@ -833,9 +900,27 @@
 </section>
 
 <!-- ════════════════════════════════
+     LOGO BAND
+════════════════════════════════ -->
+<div class="logo-band">
+  <div class="container">
+    <div class="logo-band-inner">
+      <span class="logo-band-label">導入企業 300社以上</span>
+      <div class="logo-band-items">
+        <span class="logo-text">freee</span>
+        <span class="logo-text">SmartHR</span>
+        <span class="logo-text">ラクス</span>
+        <span class="logo-text">MoneyForward</span>
+        <span class="logo-text">Sansan</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
      PRICE COMPARISON
 ════════════════════════════════ -->
-<section class="section" style="background:var(--surface);">
+<section class="section fade-in-section" style="background:var(--surface); padding: 120px 0;">
   <div class="container">
     <span class="section-label">Price Comparison</span>
     <h2>3プラットフォームを一括比較</h2>
@@ -960,7 +1045,7 @@
 <!-- ════════════════════════════════
      AI ANALYSIS
 ════════════════════════════════ -->
-<section class="section-dark">
+<section class="section-dark fade-in-section">
   <div class="container">
     <div class="ai-grid">
 
@@ -971,11 +1056,7 @@
 
         <div class="ai-steps">
           <div class="ai-step">
-            <div class="ai-step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-            </div>
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">1</div>
             <div class="ai-step-body">
               <h4>購入データ自動蓄積</h4>
               <p>3プラットフォームの購入履歴を自動で収集・整理</p>
@@ -983,11 +1064,7 @@
           </div>
 
           <div class="ai-step">
-            <div class="ai-step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17h7M17.5 14v7"/>
-              </svg>
-            </div>
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">2</div>
             <div class="ai-step-body">
               <h4>AIがカテゴリ分類</h4>
               <p>消耗品・IT機器・MROを自動でタグ付け・分類</p>
@@ -995,11 +1072,7 @@
           </div>
 
           <div class="ai-step">
-            <div class="ai-step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-            </div>
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">3</div>
             <div class="ai-step-body">
               <h4>ベンチマーク比較</h4>
               <p>同規模企業の平均コストと自社を自動比較</p>
@@ -1007,11 +1080,7 @@
           </div>
 
           <div class="ai-step">
-            <div class="ai-step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-              </svg>
-            </div>
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">4</div>
             <div class="ai-step-body">
               <h4>改善提案レポート</h4>
               <p>月次でコスト削減アクションを自動レポート出力</p>
@@ -1059,7 +1128,7 @@
 <!-- ════════════════════════════════
      CATEGORY
 ════════════════════════════════ -->
-<section class="section-canvas">
+<section class="section-canvas fade-in-section">
   <div class="container">
     <h2 class="mb-48">カテゴリから探す</h2>
     <div class="category-grid">
@@ -1143,7 +1212,7 @@
 <!-- ════════════════════════════════
      PRICING
 ════════════════════════════════ -->
-<section class="section" style="background:var(--surface);">
+<section class="section section-pricing fade-in-section" style="background:var(--surface);">
   <div class="container">
     <div class="text-center mb-48">
       <span class="section-label">Pricing</span>
@@ -1238,10 +1307,11 @@
 <!-- ════════════════════════════════
      CTA
 ════════════════════════════════ -->
-<section class="cta-section">
+<section class="cta-section fade-in-section">
   <div class="container">
     <h2>今すぐ購買コストを<br>可視化する</h2>
     <p>クレジットカード不要。14日間、全機能を無料でお試しいただけます。</p>
+    <p style="font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px;">月間利用企業 <strong style="color:#fff;">300社</strong> ｜ 平均コスト削減率 <strong style="color:#fff;">18%</strong></p>
     <div class="cta-buttons">
       <a href="#" class="btn btn-accent btn-lg">無料でアカウント作成</a>
       <a href="#" class="btn btn-outline-white btn-lg">デモを見る</a>
@@ -1294,5 +1364,19 @@
   </div>
 </footer>
 
+<script>
+  (function() {
+    var els = document.querySelectorAll('.fade-in-section');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function(el) { observer.observe(el); });
+  })();
+</script>
 </body>
 </html>
