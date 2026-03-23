@@ -14,18 +14,22 @@
     --canvas: #FAFAFA;
     --border: #E5E7EB;
     --accent: #2563EB;
+    --accent-hover: #1D4ED8;
     --success: #059669;
     --dark: #111113;
     --dark-surface: #1C1C1F;
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+    --warning: #D97706;
+    --danger: #DC2626;
   }
 
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif; font-feature-settings: "palt";
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif;
+    font-feature-settings: "palt";
     font-weight: 400;
     color: var(--ink);
     background: var(--surface);
@@ -33,822 +37,519 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── Layout ── */
-  .container {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
   /* ── Header ── */
-  .header {
+  header {
     position: sticky;
     top: 0;
-    z-index: 100;
-    height: 64px;
+    z-index: 200;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
+    height: 64px;
     display: flex;
     align-items: center;
+    padding: 0 32px;
   }
-
   .header-inner {
-    width: 100%;
     max-width: 1120px;
     margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .logo {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.02em;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .header-search {
-    flex: 1;
-    max-width: 400px;
-    position: relative;
-  }
-
-  .header-search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--ink-secondary);
-    pointer-events: none;
-  }
-
-  .header-search input {
     width: 100%;
-    height: 38px;
-    padding: 0 12px 0 40px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 14px;
-    font-family: inherit;
-    color: var(--ink);
-    background: var(--surface);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  .header-search input:focus {
-    border-color: var(--accent);
-  }
-
-  .header-search input::placeholder {
-    color: var(--ink-secondary);
-  }
-
-  .header-nav {
     display: flex;
     align-items: center;
-    gap: 24px;
-    margin-left: auto;
+    justify-content: space-between;
   }
-
-  .header-nav a {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ink-secondary);
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
-    transition: color 0.15s;
   }
-
-  .header-nav a:hover { color: var(--ink); }
-
-  .btn {
-    display: inline-flex;
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--dark);
+    border-radius: 6px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 0 20px;
-    height: 38px;
-    font-family: inherit;
+  }
+  .logo-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.3px;
+  }
+  .logo-text span { color: var(--accent); }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  nav a {
+    color: var(--ink-secondary);
+    text-decoration: none;
     font-size: 14px;
     font-weight: 500;
+    padding: 6px 14px;
     border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: all 0.2s ease;
+    transition: color 0.15s;
   }
-
-  .btn-accent {
+  nav a:hover { color: var(--ink); }
+  .btn-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     background: var(--accent);
-    color: #fff;
+    color: var(--surface) !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    margin-left: 8px;
   }
+  .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 0 20px; height: 38px; font-family: inherit; font-size: 14px; font-weight: 500;
+    border-radius: 6px; border: none; cursor: pointer; text-decoration: none;
+    white-space: nowrap; transition: all 0.2s ease;
+  }
+  .btn-accent { background: var(--accent); color: #fff; }
   .btn-accent:hover { opacity: 0.9; transform: translateY(-1px); }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--border);
-  }
-
+  .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
   .btn-outline:hover { border-color: var(--ink); transform: translateY(-1px); }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink-secondary);
-    padding: 0;
-    height: auto;
-  }
-
+  .btn-ghost { background: transparent; color: var(--ink-secondary); padding: 0; height: auto; }
   .btn-ghost:hover { color: var(--ink); }
+  .btn-full { width: 100%; }
+  .btn-dark { background: var(--ink); color: #fff; }
+  .btn-dark:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-lg { height: 48px; padding: 0 32px; font-size: 15px; }
+  .btn-outline-white { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); }
+  .btn-outline-white:hover { border-color: rgba(255,255,255,0.4); color: #fff; opacity: 1; }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover { opacity: 0.9; }
 
   /* ── Hero ── */
   .hero {
     background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
-    padding: 120px 0 80px;
-    position: relative;
-    overflow: hidden;
+    padding: 120px 0 80px; position: relative; overflow: hidden;
   }
-
   .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
-    pointer-events: none;
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%); pointer-events: none;
   }
-
-  .hero-label {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-  }
-
-  .hero h1 {
-    font-size: clamp(36px, 5vw, 56px);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.15;
-    letter-spacing: -0.03em;
-    margin-bottom: 20px;
-  }
-
-  .hero-subtitle {
-    font-size: 17px;
-    color: rgba(255,255,255,0.6);
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 40px;
-  }
-
+  .hero-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 700; color: #fff; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 20px; }
+  .hero-subtitle { font-size: 17px; color: rgba(255,255,255,0.6); max-width: 520px; line-height: 1.7; margin-bottom: 40px; }
   .hero-search-wrap {
-    max-width: 560px;
-    display: flex;
-    align-items: center;
-    background: var(--surface);
-    border-radius: 8px;
-    padding: 6px 6px 6px 20px;
-    gap: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-    margin-bottom: 16px;
+    max-width: 560px; display: flex; align-items: center; background: var(--surface);
+    border-radius: 8px; padding: 6px 6px 6px 20px; gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12); margin-bottom: 16px;
   }
+  .hero-search-wrap input { flex: 1; border: none; outline: none; font-family: inherit; font-size: 15px; color: var(--ink); background: transparent; }
+  .hero-search-wrap input::placeholder { color: var(--ink-secondary); }
+  .hero-search-wrap .btn { height: 40px; padding: 0 24px; font-size: 14px; }
+  .hero-hint { font-size: 13px; color: rgba(255,255,255,0.4); }
 
-  .hero-search-wrap input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-family: inherit;
-    font-size: 15px;
-    color: var(--ink);
-    background: transparent;
+  /* ── Section ── */
+  .section { padding: 96px 0; }
+  .section-dark { background: var(--dark); padding: 120px 0; }
+  .section-canvas { background: var(--canvas); padding: 80px 0; }
+  .section-label, .section-label-dark {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--accent); margin-bottom: 12px; text-transform: uppercase;
   }
+  .section h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 48px; }
 
-  .hero-search-wrap input::placeholder {
-    color: var(--ink-secondary);
-  }
-
-  .hero-search-wrap .btn {
-    height: 40px;
-    padding: 0 24px;
-    font-size: 14px;
-  }
-
-  .hero-hint {
-    font-size: 13px;
-    color: rgba(255,255,255,0.4);
-  }
-
-  /* ── Section wrapper ── */
-  .section {
-    padding: 96px 0;
-  }
-
-  .section-dark {
-    background: var(--dark);
-    padding: 120px 0;
-  }
-
-  .section-canvas {
-    background: var(--canvas);
-    padding: 80px 0;
-  }
-
-  .section-pricing {
-    padding: 80px 0;
-  }
-
-  .section-label {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-
-  .section-label-dark {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-
-  .section h2 {
-    font-size: clamp(26px, 3.5vw, 36px);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-    margin-bottom: 48px;
-  }
-
-  .section-dark h2,
-  .section-dark .section-label {
-    /* overridden inline */
-  }
-
-  /* ── Price Comparison Cards ── */
-  .product-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
+  /* ── Product Cards ── */
+  .product-list { display: flex; flex-direction: column; gap: 16px; }
   .product-card {
-    display: grid;
-    grid-template-columns: 260px 1fr 160px;
-    align-items: center;
-    gap: 32px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    background: var(--surface);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    display: grid; grid-template-columns: 260px 1fr 200px; align-items: center; gap: 32px;
+    border: 1px solid var(--border); border-radius: 12px; padding: 24px;
+    background: var(--surface); box-shadow: var(--shadow-sm); transition: all 0.2s ease;
   }
+  .product-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: #D1D5DB; }
+  .product-meta { display: flex; align-items: flex-start; gap: 16px; }
+  .product-img { width: 64px; height: 64px; background: var(--canvas); border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+  .product-info h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.4; }
+  .product-sku { font-size: 12px; color: var(--ink-secondary); }
+  .price-table { width: 100%; border-collapse: collapse; }
+  .price-table tr { border-bottom: 1px solid var(--border); }
+  .price-table tr:last-child { border-bottom: none; }
+  .price-table td { padding: 8px 0; font-size: 14px; }
+  .price-table .platform-name { color: var(--ink-secondary); font-weight: 500; width: 180px; }
+  .price-table .price-val { font-weight: 700; font-size: 15px; text-align: right; padding-right: 12px; }
+  .price-table .price-val.best { color: var(--success); }
+  .price-table .tag-best { display: inline-block; font-size: 10px; font-weight: 700; color: var(--success); background: rgba(5,150,105,0.08); border-radius: 4px; padding: 2px 6px; letter-spacing: 0.04em; }
+  .platform-name.best { color: var(--success); font-weight: 700; }
+  .product-action { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .saving-text { font-size: 14px; font-weight: 700; color: var(--success); text-align: right; }
+  .saving-label { font-size: 11px; font-weight: 400; color: var(--ink-secondary); display: block; margin-bottom: 2px; }
 
-  .product-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: #D1D5DB;
+  /* Product card quantity input */
+  .qty-row { display: flex; align-items: center; gap: 8px; }
+  .qty-input {
+    width: 72px; height: 32px; border: 1px solid var(--border); border-radius: 4px;
+    text-align: center; font-size: 13px; font-family: inherit; outline: none;
   }
+  .qty-input:focus { border-color: var(--accent); }
+  .qty-label { font-size: 12px; color: var(--ink-secondary); }
+  .annual-est { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 2px; text-align: right; }
+  .bulk-saving-tag { font-size: 11px; color: var(--success); font-weight: 600; text-align: right; }
 
-  .product-meta {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .product-img {
-    width: 64px;
-    height: 64px;
-    background: var(--canvas);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  .product-info h3 {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 4px;
-    line-height: 1.4;
-  }
-
-  .product-sku {
-    font-size: 12px;
-    color: var(--ink-secondary);
-  }
-
-  .price-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .price-table tr {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .price-table tr:last-child {
-    border-bottom: none;
-  }
-
-  .price-table td {
-    padding: 8px 0;
-    font-size: 14px;
-  }
-
-  .price-table .platform-name {
-    color: var(--ink-secondary);
-    font-weight: 500;
-    width: 180px;
-  }
-
-  .price-table .price-val {
-    font-weight: 700;
-    font-size: 15px;
-    text-align: right;
-    padding-right: 12px;
-  }
-
-  .price-table .price-val.best {
-    color: var(--success);
-  }
-
-  .price-table .tag-best {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--success);
-    background: rgba(5, 150, 105, 0.08);
-    border-radius: 4px;
-    padding: 2px 6px;
-    letter-spacing: 0.04em;
-  }
-
-  .platform-name.best {
-    color: var(--success);
-    font-weight: 700;
-  }
-
-  .product-action {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
-  }
-
-  .saving-text {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--success);
-    text-align: right;
-  }
-
-  .saving-label {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--ink-secondary);
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  /* ── AI Analysis Section ── */
-  .ai-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: center;
-  }
-
-  .ai-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin-top: 40px;
-  }
-
-  .ai-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
+  /* ── AI Analysis ── */
+  .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .ai-steps { display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
+  .ai-step { display: flex; align-items: flex-start; gap: 16px; }
   .ai-step-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: rgba(255,255,255,0.7);
+    width: 40px; height: 40px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: rgba(255,255,255,0.7);
   }
-
-  .ai-step-body h4 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-  }
-
-  .ai-step-body p {
-    font-size: 13px;
-    color: rgba(255,255,255,0.45);
-    line-height: 1.5;
-  }
-
-  /* Dashboard Card */
-  .dashboard-card {
-    background: var(--dark-surface);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 32px;
-  }
-
-  .dashboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-  }
-
-  .dashboard-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .dashboard-date {
-    font-size: 12px;
-    color: rgba(255,255,255,0.3);
-  }
-
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .kpi-item {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 20px;
-  }
-
-  .kpi-label {
-    font-size: 12px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 8px;
-  }
-
-  .kpi-value {
-    font-size: 26px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
+  .ai-step-body h4 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .ai-step-body p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+  .dashboard-card { background: var(--dark-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 32px; }
+  .dashboard-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  .dashboard-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+  .dashboard-date { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .kpi-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 20px; }
+  .kpi-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1; }
   .kpi-value.success { color: var(--success); }
+  .kpi-sub { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 6px; }
 
-  .kpi-sub {
-    font-size: 12px;
-    color: rgba(255,255,255,0.3);
-    margin-top: 6px;
-  }
-
-  /* ── Category Section ── */
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
+  /* ── Category ── */
+  .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .category-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px 24px;
-    background: var(--surface);
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px;
+    background: var(--surface); cursor: pointer; text-decoration: none;
+    display: flex; align-items: flex-start; gap: 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-
-  .category-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-
-  .category-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink-secondary);
-    flex-shrink: 0;
-  }
-
-  .category-info h3 {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
-
-  .category-count {
-    font-size: 13px;
-    color: var(--ink-secondary);
-  }
-
-  /* ── Pricing ── */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    align-items: start;
-  }
-
-  .pricing-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 32px;
-    background: var(--surface);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .pricing-card.featured {
-    border-color: var(--ink);
-    border-top: 3px solid var(--accent);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .pricing-tier {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-secondary);
-    margin-bottom: 12px;
-  }
-
-  .pricing-tier.featured-label {
-    color: var(--accent);
-  }
-
-  .pricing-price {
-    font-size: 36px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .pricing-price span {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--ink-secondary);
-    letter-spacing: 0;
-  }
-
-  .pricing-desc {
-    font-size: 13px;
-    color: var(--ink-secondary);
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .pricing-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 32px;
-  }
-
-  .pricing-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--ink);
-  }
-
-  .pricing-features li .check-icon {
-    color: var(--success);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .pricing-features li .minus-icon {
-    color: var(--border);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .btn-full { width: 100%; }
-
-  .btn-dark {
-    background: var(--ink);
-    color: #fff;
-  }
-
-  .btn-dark:hover { opacity: 0.9; transform: translateY(-1px); }
+  .category-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .category-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--ink-secondary); flex-shrink: 0; }
+  .category-info h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .category-count { font-size: 13px; color: var(--ink-secondary); }
 
   /* ── CTA ── */
-  .cta-section {
-    background: var(--dark);
-    padding: 96px 0;
-    text-align: center;
-  }
-
-  .cta-section h2 {
-    font-size: clamp(28px, 4vw, 44px);
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.025em;
-    margin-bottom: 16px;
-  }
-
-  .cta-section p {
-    font-size: 17px;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 40px;
-  }
-
-  .cta-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .btn-lg {
-    height: 48px;
-    padding: 0 32px;
-    font-size: 15px;
-  }
-
-  .btn-outline-white {
-    background: transparent;
-    color: rgba(255,255,255,0.7);
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .btn-outline-white:hover {
-    border-color: rgba(255,255,255,0.4);
-    color: #fff;
-    opacity: 1;
-  }
+  .cta-section { background: var(--dark); padding: 96px 0; text-align: center; }
+  .cta-section h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: #fff; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .cta-section p { font-size: 17px; color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+  .cta-buttons { display: flex; align-items: center; justify-content: center; gap: 16px; }
 
   /* ── Footer ── */
-  .footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 56px 0 32px;
+  footer {
+    background: #0D0D10;
+    padding: 40px 32px;
   }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 200px repeat(3, 1fr);
-    gap: 48px;
-    margin-bottom: 48px;
-  }
-
-  .footer-brand p {
-    font-size: 13px;
-    color: var(--ink-secondary);
-    line-height: 1.6;
-    margin-top: 12px;
-  }
-
-  .footer-col h4 {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-secondary);
-    margin-bottom: 16px;
-  }
-
-  .footer-col ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .footer-col ul li a {
-    font-size: 14px;
-    color: var(--ink-secondary);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .footer-col ul li a:hover { color: var(--ink); }
-
-  .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
+  .footer-inner {
+    max-width: 1120px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
   }
+  .footer-logo { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.6); }
+  .footer-logo span { color: var(--accent); }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; font-weight: 400; transition: color 0.15s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); font-weight: 400; }
 
-  .footer-bottom p {
-    font-size: 13px;
-    color: var(--ink-secondary);
-  }
+  /* ── Logo band ── */
+  .logo-band { background: var(--canvas); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; }
+  .logo-band-inner { display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
 
-  /* ── Divider / Utility ── */
+  /* ── Utility ── */
   .text-center { text-align: center; }
   .mb-12 { margin-bottom: 12px; }
   .mb-48 { margin-bottom: 48px; }
 
-  /* Single animation: hero search bar focus pulse */
+  /* ── Scroll fade-in ── */
+  .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in-section.visible { opacity: 1; transform: translateY(0); }
+
   @keyframes borderPulse {
     0%   { border-color: var(--accent); box-shadow: 0 0 0 0 rgba(37,99,235,0.15); }
     100% { border-color: var(--accent); box-shadow: 0 0 0 6px rgba(37,99,235,0); }
   }
+  .hero-search-wrap:focus-within { animation: borderPulse 0.6s ease-out forwards; outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .hero-search-wrap:focus-within {
-    animation: borderPulse 0.6s ease-out forwards;
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+  /* ═══════════════════════════════════
+     COST SIMULATOR SECTION
+  ═══════════════════════════════════ */
+  .sim-section { padding: 100px 0; background: linear-gradient(180deg, var(--canvas) 0%, var(--surface) 100%); }
+  .sim-section h2 { font-size: clamp(26px,3.5vw,36px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 16px; }
+  .sim-section .section-desc { font-size: 15px; color: var(--ink-secondary); margin-bottom: 48px; max-width: 600px; }
+  .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .sim-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; box-shadow: var(--shadow-sm); }
+  .sim-panel h3 { font-size: 16px; font-weight: 700; margin-bottom: 24px; color: var(--ink); }
+
+  /* Slider */
+  .slider-group { margin-bottom: 28px; }
+  .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .slider-label span { font-size: 13px; color: var(--ink-secondary); font-weight: 500; }
+  .slider-value { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .range-slider { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: var(--border); outline: none; position: relative; }
+  .range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(37,99,235,0.3);
   }
-
-  /* ── Scroll fade-in ── */
-  .fade-in-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+  .range-slider::-moz-range-thumb {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--accent); cursor: pointer;
+    border: 3px solid #fff; box-shadow: 0 2px 6px rgba(37,99,235,0.3);
   }
+  .slider-range-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-secondary); margin-top: 6px; }
 
-  .fade-in-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+  /* Category percent inputs */
+  .cat-inputs { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+  .cat-row { display: flex; align-items: center; gap: 12px; }
+  .cat-row label { flex: 1; font-size: 13px; font-weight: 500; color: var(--ink); min-width: 100px; }
+  .cat-row input {
+    width: 70px; height: 32px; border: 1px solid var(--border); border-radius: 4px;
+    text-align: center; font-size: 13px; font-family: inherit; outline: none;
   }
+  .cat-row input:focus { border-color: var(--accent); }
+  .cat-row .unit { font-size: 13px; color: var(--ink-secondary); }
+  .cat-total { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+  .cat-total.valid { background: rgba(5,150,105,0.06); color: var(--success); }
+  .cat-total.invalid { background: rgba(220,38,38,0.06); color: var(--danger); }
 
-  /* ── Logo band ── */
-  .logo-band {
-    background: var(--canvas);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 24px 0;
+  /* Employee input */
+  .emp-group { margin-bottom: 0; }
+  .emp-group label { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+  .emp-group input {
+    width: 140px; height: 36px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 12px; font-size: 14px; font-family: inherit; outline: none;
   }
+  .emp-group input:focus { border-color: var(--accent); }
 
-  .logo-band-inner {
-    display: flex;
-    align-items: center;
-    gap: 48px;
-    flex-wrap: wrap;
+  /* Result panel */
+  .result-hero { text-align: center; padding: 24px 0 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .result-hero .result-label { font-size: 13px; color: var(--ink-secondary); margin-bottom: 8px; }
+  .result-hero .result-number { font-size: 42px; font-weight: 700; color: var(--success); letter-spacing: -0.03em; line-height: 1; }
+  .result-hero .result-unit { font-size: 18px; font-weight: 500; color: var(--ink-secondary); margin-left: 4px; }
+  .impact-msg { text-align: center; padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; margin-bottom: 24px; }
+  .impact-fire { background: rgba(220,38,38,0.06); color: var(--danger); }
+  .impact-check { background: rgba(5,150,105,0.06); color: var(--success); }
+  .impact-chart { background: rgba(37,99,235,0.06); color: var(--accent); }
+
+  /* Breakdown table */
+  .breakdown-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px; }
+  .breakdown-table th { text-align: left; padding: 8px 6px; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--ink-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .breakdown-table td { padding: 10px 6px; border-bottom: 1px solid var(--border); }
+  .breakdown-table tr:last-child td { border-bottom: none; font-weight: 700; }
+  .breakdown-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .breakdown-table .highlight { color: var(--success); font-weight: 700; }
+
+  /* SVG Chart */
+  .chart-wrap { margin-bottom: 24px; }
+  .chart-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
+
+  /* Bulk section */
+  .bulk-section { margin-top: 48px; padding: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .bulk-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .bulk-section .bulk-desc { font-size: 13px; color: var(--ink-secondary); margin-bottom: 20px; }
+  .bulk-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .bulk-tier {
+    text-align: center; padding: 16px 12px; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--canvas); transition: border-color 0.2s;
   }
+  .bulk-tier:hover { border-color: var(--accent); }
+  .bulk-tier .tier-qty { font-size: 20px; font-weight: 700; color: var(--ink); }
+  .bulk-tier .tier-label { font-size: 11px; color: var(--ink-secondary); margin-top: 2px; }
+  .bulk-tier .tier-off { font-size: 16px; font-weight: 700; color: var(--success); margin-top: 6px; }
+  .bulk-product-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
+  .bulk-product-table th { text-align: left; padding: 8px 6px; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--ink-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .bulk-product-table td { padding: 10px 6px; border-bottom: 1px solid var(--border); }
+  .bulk-product-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .bulk-product-table .save-highlight { color: var(--success); font-weight: 700; background: rgba(5,150,105,0.06); padding: 2px 8px; border-radius: 4px; }
 
-  .logo-band-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ink-secondary);
-    white-space: nowrap;
-    letter-spacing: 0.04em;
+  /* ═══════════════════════════════════
+     MODAL (shared)
+  ═══════════════════════════════════ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+    align-items: center; justify-content: center; padding: 24px;
   }
-
-  .logo-band-items {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    flex-wrap: wrap;
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: var(--surface); border-radius: 12px; max-width: 800px; width: 100%;
+    max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    position: relative;
   }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 32px; height: 32px;
+    border: none; background: var(--canvas); border-radius: 6px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--ink-secondary);
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--border); }
+  .modal-body { padding: 40px; }
 
-  .logo-text {
-    font-size: 14px;
-    font-weight: 600;
-    color: #C0C4CC;
+  /* Contact modal */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .contact-left h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .contact-left p { font-size: 14px; color: var(--ink-secondary); line-height: 1.7; margin-bottom: 16px; }
+  .contact-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .contact-features li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); }
+  .contact-features li .cf-icon { color: var(--success); flex-shrink: 0; }
+
+  /* Form shared */
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+  .form-group label .req { color: var(--danger); margin-left: 2px; }
+  .form-input {
+    width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 12px; font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-textarea {
+    width: 100%; min-height: 80px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 12px; font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+    resize: vertical; transition: border-color 0.15s;
+  }
+  .form-textarea:focus { border-color: var(--accent); }
+  .form-select {
+    width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 12px; font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+    background: var(--surface); transition: border-color 0.15s; -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+  }
+  .form-select:focus { border-color: var(--accent); }
+  .form-error { font-size: 11px; color: var(--danger); margin-top: 4px; display: none; }
+  .form-group.error .form-input,
+  .form-group.error .form-select,
+  .form-group.error .form-textarea { border-color: var(--danger); }
+  .form-group.error .form-error { display: block; }
+
+  /* Complete screen */
+  .complete-screen { text-align: center; padding: 60px 20px; }
+  .complete-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(5,150,105,0.1); display: inline-flex; align-items: center; justify-content: center; color: var(--success); margin-bottom: 20px; }
+  .complete-screen h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .complete-screen p { font-size: 14px; color: var(--ink-secondary); }
+
+  /* ═══════════════════════════════════
+     BOOKING MODAL
+  ═══════════════════════════════════ */
+  .booking-steps { display: flex; gap: 0; margin-bottom: 32px; }
+  .booking-step-indicator {
+    flex: 1; text-align: center; padding: 12px 8px; font-size: 12px; font-weight: 600;
+    color: var(--ink-secondary); border-bottom: 2px solid var(--border); transition: all 0.2s;
+  }
+  .booking-step-indicator.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .booking-step-indicator.done { color: var(--success); border-bottom-color: var(--success); }
+  .step-content { display: none; }
+  .step-content.active { display: block; }
+
+  /* Calendar */
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .cal-header h4 { font-size: 15px; font-weight: 700; }
+  .cal-nav { display: flex; gap: 8px; }
+  .cal-nav button {
+    width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--surface); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; color: var(--ink-secondary); transition: border-color 0.15s;
+  }
+  .cal-nav button:hover { border-color: var(--ink); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 24px; }
+  .cal-day-label { font-size: 11px; font-weight: 600; color: var(--ink-secondary); padding: 8px 0; }
+  .cal-day {
+    padding: 8px 0; font-size: 13px; border-radius: 6px; cursor: pointer; transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .cal-day:hover { background: var(--canvas); }
+  .cal-day.disabled { color: var(--border); pointer-events: none; }
+  .cal-day.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cal-day.today { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+  /* Time slots */
+  .time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
+  .time-slot {
+    padding: 10px; text-align: center; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+  }
+  .time-slot:hover { border-color: var(--accent); }
+  .time-slot.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .time-slot.disabled { color: var(--border); pointer-events: none; background: var(--canvas); }
+
+  /* Booking confirm */
+  .booking-summary { background: var(--canvas); border-radius: 8px; padding: 20px; margin-bottom: 24px; }
+  .booking-summary .sum-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+  .booking-summary .sum-label { color: var(--ink-secondary); }
+  .booking-summary .sum-val { font-weight: 600; color: var(--ink); }
+  .step-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+
+  /* ═══════════════════════════════════
+     CHATBOT
+  ═══════════════════════════════════ */
+  .chat-fab {
+    position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
+    border-radius: 50%; background: var(--accent); color: #fff; border: none;
+    cursor: pointer; z-index: 900; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.3); transition: transform 0.2s;
+  }
+  .chat-fab:hover { transform: scale(1.08); }
+  .chat-fab .fab-close { display: none; }
+  .chat-fab.open .fab-open { display: none; }
+  .chat-fab.open .fab-close { display: block; }
+
+  .chat-window {
+    display: none; position: fixed; bottom: 92px; right: 24px; width: 360px; max-height: 500px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12); z-index: 900; flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-window.open { display: flex; }
+  .chat-header {
+    padding: 16px 20px; background: var(--accent); color: #fff;
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .chat-header-dot { width: 8px; height: 8px; border-radius: 50%; background: #34D399; flex-shrink: 0; }
+  .chat-header h4 { font-size: 14px; font-weight: 600; }
+  .chat-header p { font-size: 11px; opacity: 0.8; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 280px; }
+  .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+  .chat-msg.bot { background: var(--canvas); color: var(--ink); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .chat-msg.user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chat-input-row {
+    display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+    border-top: 1px solid var(--border); flex-shrink: 0;
+  }
+  .chat-input {
+    flex: 1; height: 36px; border: 1px solid var(--border); border-radius: 18px;
+    padding: 0 14px; font-size: 13px; font-family: inherit; outline: none;
+  }
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-send {
+    width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--accent);
+    color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.15s;
+  }
+  .chat-send:hover { opacity: 0.85; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav a:not(.btn-nav) { display: none; }
+    .product-card { grid-template-columns: 1fr; gap: 16px; }
+    .product-action { align-items: flex-start; }
+    .ai-grid { grid-template-columns: 1fr; }
+    .category-grid { grid-template-columns: 1fr 1fr; }
+    .sim-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .bulk-tiers { grid-template-columns: 1fr; }
+    .chat-window { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
+    .time-slots { grid-template-columns: repeat(2, 1fr); }
+    .booking-steps { gap: 0; }
+    .modal-body { padding: 24px; }
   }
 </style>
 </head>
@@ -857,21 +558,30 @@
 <!-- ════════════════════════════════
      HEADER
 ════════════════════════════════ -->
-<header class="header">
+<header>
   <div class="header-inner">
-    <a href="#" class="logo">RAKUDA</a>
-    <div class="header-search">
-      <span class="header-search-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    <a class="logo" href="#">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
         </svg>
-      </span>
-      <input type="text" placeholder="品名・型番で検索...">
-    </div>
-    <nav class="header-nav">
-      <a href="#">価格比較</a>
-      <a href="#">AI分析</a>
-      <a href="#" class="btn btn-accent">お問い合わせ</a>
+      </div>
+      <div class="logo-text">RAKUDA <span>COSTCUT</span></div>
+    </a>
+    <nav>
+      <a href="#price-comparison">価格比較</a>
+      <a href="#ai-analysis">AI分析</a>
+      <a href="#" onclick="openBookingModal();return false;">面談予約</a>
+      <a href="#" class="btn-nav" onclick="openContactModal();return false;">
+        お問い合わせ
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
     </nav>
   </div>
 </header>
@@ -905,7 +615,7 @@
 <div class="logo-band">
   <div class="container">
     <div class="logo-band-inner" style="justify-content:center;">
-      <p class="logo-band-label" style="font-size:14px; letter-spacing:0; text-transform:none; line-height:1.6; max-width:640px; text-align:center; font-weight:400;">無料のAI診断ツールをはじめ、コスト構造の可視化から削減施策の実行支援まで一気通貫で提供します</p>
+      <p style="font-size:14px; letter-spacing:0; text-transform:none; line-height:1.6; max-width:640px; text-align:center; font-weight:400; color:var(--ink-secondary);">無料のAI診断ツールをはじめ、コスト構造の可視化から削減施策の実行支援まで一気通貫で提供します</p>
     </div>
   </div>
 </div>
@@ -913,7 +623,7 @@
 <!-- ════════════════════════════════
      PRICE COMPARISON
 ════════════════════════════════ -->
-<section class="section fade-in-section" style="background:var(--surface); padding: 120px 0;">
+<section id="price-comparison" class="section fade-in-section" style="background:var(--surface); padding: 120px 0;">
   <div class="container">
     <span class="section-label">Price Comparison</span>
     <h2>3プラットフォームを一括比較</h2>
@@ -921,7 +631,7 @@
     <div class="product-list">
 
       <!-- Product 1: コピー用紙 -->
-      <div class="product-card">
+      <div class="product-card" data-product="paper" data-unit-price="2180">
         <div class="product-meta">
           <div class="product-img"></div>
           <div class="product-info">
@@ -929,36 +639,28 @@
             <span class="product-sku">SKU: CP-A4-5000</span>
           </div>
         </div>
-
         <table class="price-table">
-          <tr>
-            <td class="platform-name">Monotaro</td>
-            <td class="price-val">¥2,480</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="platform-name best">Amazon Business</td>
-            <td class="price-val best">¥2,180</td>
-            <td><span class="tag-best">最安</span></td>
-          </tr>
-          <tr>
-            <td class="platform-name">Askul</td>
-            <td class="price-val">¥2,380</td>
-            <td></td>
-          </tr>
+          <tr><td class="platform-name">Monotaro</td><td class="price-val">¥2,480</td><td></td></tr>
+          <tr><td class="platform-name best">Amazon Business</td><td class="price-val best">¥2,180</td><td><span class="tag-best">最安</span></td></tr>
+          <tr><td class="platform-name">Askul</td><td class="price-val">¥2,380</td><td></td></tr>
         </table>
-
         <div class="product-action">
           <div>
             <span class="saving-label">Amazon で最大</span>
             <div class="saving-text">¥300 節約</div>
           </div>
-          <a href="#" class="btn btn-accent">購入 →</a>
+          <div class="qty-row">
+            <span class="qty-label">数量:</span>
+            <input type="number" class="qty-input" value="100" min="1" data-price="2180" onchange="updateProductEst(this)" oninput="updateProductEst(this)">
+            <span class="qty-label">個/月</span>
+          </div>
+          <div class="annual-est" data-annual-target="paper">年間見積: ¥2,616,000</div>
+          <div class="bulk-saving-tag" data-bulk-target="paper">バルク購入で年間 ¥130,800 節約</div>
         </div>
       </div>
 
       <!-- Product 2: トナーカートリッジ -->
-      <div class="product-card">
+      <div class="product-card" data-product="toner" data-unit-price="3890">
         <div class="product-meta">
           <div class="product-img"></div>
           <div class="product-info">
@@ -966,36 +668,28 @@
             <span class="product-sku">SKU: TN-HP-BK</span>
           </div>
         </div>
-
         <table class="price-table">
-          <tr>
-            <td class="platform-name">Monotaro</td>
-            <td class="price-val">¥4,980</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="platform-name best">Amazon Business</td>
-            <td class="price-val best">¥3,890</td>
-            <td><span class="tag-best">最安</span></td>
-          </tr>
-          <tr>
-            <td class="platform-name">Askul</td>
-            <td class="price-val">¥5,200</td>
-            <td></td>
-          </tr>
+          <tr><td class="platform-name">Monotaro</td><td class="price-val">¥4,980</td><td></td></tr>
+          <tr><td class="platform-name best">Amazon Business</td><td class="price-val best">¥3,890</td><td><span class="tag-best">最安</span></td></tr>
+          <tr><td class="platform-name">Askul</td><td class="price-val">¥5,200</td><td></td></tr>
         </table>
-
         <div class="product-action">
           <div>
             <span class="saving-label">Amazon で最大</span>
             <div class="saving-text">¥1,310 節約</div>
           </div>
-          <a href="#" class="btn btn-accent">購入 →</a>
+          <div class="qty-row">
+            <span class="qty-label">数量:</span>
+            <input type="number" class="qty-input" value="100" min="1" data-price="3890" onchange="updateProductEst(this)" oninput="updateProductEst(this)">
+            <span class="qty-label">個/月</span>
+          </div>
+          <div class="annual-est" data-annual-target="toner">年間見積: ¥4,668,000</div>
+          <div class="bulk-saving-tag" data-bulk-target="toner">バルク購入で年間 ¥233,400 節約</div>
         </div>
       </div>
 
       <!-- Product 3: ゴム手袋 -->
-      <div class="product-card">
+      <div class="product-card" data-product="gloves" data-unit-price="890">
         <div class="product-meta">
           <div class="product-img"></div>
           <div class="product-info">
@@ -1003,31 +697,23 @@
             <span class="product-sku">SKU: GL-NBR-100</span>
           </div>
         </div>
-
         <table class="price-table">
-          <tr>
-            <td class="platform-name best">Monotaro</td>
-            <td class="price-val best">¥890</td>
-            <td><span class="tag-best">最安</span></td>
-          </tr>
-          <tr>
-            <td class="platform-name">Amazon Business</td>
-            <td class="price-val">¥980</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="platform-name">Askul</td>
-            <td class="price-val">¥920</td>
-            <td></td>
-          </tr>
+          <tr><td class="platform-name best">Monotaro</td><td class="price-val best">¥890</td><td><span class="tag-best">最安</span></td></tr>
+          <tr><td class="platform-name">Amazon Business</td><td class="price-val">¥980</td><td></td></tr>
+          <tr><td class="platform-name">Askul</td><td class="price-val">¥920</td><td></td></tr>
         </table>
-
         <div class="product-action">
           <div>
             <span class="saving-label">Monotaro で最大</span>
             <div class="saving-text">¥90 節約</div>
           </div>
-          <a href="#" class="btn btn-accent">購入 →</a>
+          <div class="qty-row">
+            <span class="qty-label">数量:</span>
+            <input type="number" class="qty-input" value="100" min="1" data-price="890" onchange="updateProductEst(this)" oninput="updateProductEst(this)">
+            <span class="qty-label">個/月</span>
+          </div>
+          <div class="annual-est" data-annual-target="gloves">年間見積: ¥1,068,000</div>
+          <div class="bulk-saving-tag" data-bulk-target="gloves">バルク購入で年間 ¥53,400 節約</div>
         </div>
       </div>
 
@@ -1036,53 +722,150 @@
 </section>
 
 <!-- ════════════════════════════════
-     AI ANALYSIS
+     COST SIMULATOR
 ════════════════════════════════ -->
-<section class="section-dark fade-in-section">
+<section id="cost-simulator" class="sim-section fade-in-section">
   <div class="container">
-    <div class="ai-grid">
+    <span class="section-label">Cost Simulator</span>
+    <h2>年間コスト削減シミュレーター</h2>
+    <p class="section-desc">月間の購買額とカテゴリ構成を入力するだけで、RAKUDAによる年間の削減インパクトをリアルタイムに試算できます。</p>
 
-      <!-- Left: Text -->
-      <div>
-        <span class="section-label-dark">Auto Analysis</span>
-        <h2 style="font-size:clamp(26px,3.5vw,36px);font-weight:700;letter-spacing:-0.025em;line-height:1.2;color:#fff;">購買するだけで<br>AIが自動分析</h2>
+    <div class="sim-grid">
+      <!-- Left: Inputs -->
+      <div class="sim-panel">
+        <h3>購買情報を入力</h3>
 
-        <div class="ai-steps">
-          <div class="ai-step">
-            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">1</div>
-            <div class="ai-step-body">
-              <h4>購入データ自動蓄積</h4>
-              <p>3プラットフォームの購入履歴を自動で収集・整理</p>
-            </div>
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>月間購買額</span>
+            <span class="slider-value" id="sliderVal">500万円</span>
           </div>
+          <input type="range" class="range-slider" id="purchaseSlider" min="50" max="5000" step="50" value="500">
+          <div class="slider-range-labels"><span>50万円</span><span>5,000万円</span></div>
+        </div>
 
-          <div class="ai-step">
-            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">2</div>
-            <div class="ai-step-body">
-              <h4>AIがカテゴリ分類</h4>
-              <p>消耗品・IT機器・MROを自動でタグ付け・分類</p>
-            </div>
-          </div>
+        <div style="margin-bottom:8px; font-size:13px; font-weight:600; color:var(--ink);">カテゴリ別割合</div>
+        <div class="cat-inputs">
+          <div class="cat-row"><label>オフィス用品</label><input type="number" class="cat-pct" id="pctOffice" value="30" min="0" max="100"><span class="unit">%</span></div>
+          <div class="cat-row"><label>IT機器</label><input type="number" class="cat-pct" id="pctIT" value="25" min="0" max="100"><span class="unit">%</span></div>
+          <div class="cat-row"><label>MRO</label><input type="number" class="cat-pct" id="pctMRO" value="30" min="0" max="100"><span class="unit">%</span></div>
+          <div class="cat-row"><label>その他</label><input type="number" class="cat-pct" id="pctOther" value="15" min="0" max="100"><span class="unit">%</span></div>
+        </div>
+        <div class="cat-total valid" id="catTotal">合計: 100%</div>
 
-          <div class="ai-step">
-            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">3</div>
-            <div class="ai-step-body">
-              <h4>ベンチマーク比較</h4>
-              <p>同規模企業の平均コストと自社を自動比較</p>
-            </div>
-          </div>
-
-          <div class="ai-step">
-            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">4</div>
-            <div class="ai-step-body">
-              <h4>改善提案レポート</h4>
-              <p>月次でコスト削減アクションを自動レポート出力</p>
-            </div>
-          </div>
+        <div class="emp-group" style="margin-top:24px;">
+          <label>従業員数</label>
+          <input type="number" id="empCount" value="100" min="1" placeholder="例: 100">
         </div>
       </div>
 
-      <!-- Right: Dashboard -->
+      <!-- Right: Results -->
+      <div class="sim-panel" id="resultPanel">
+        <div class="result-hero">
+          <div class="result-label">年間削減見込</div>
+          <div><span class="result-number" id="totalSaving">0</span><span class="result-unit">万円</span></div>
+        </div>
+        <div class="impact-msg impact-chart" id="impactMsg">入力内容に基づいて試算します</div>
+
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">内訳</div>
+        <table class="breakdown-table" id="breakdownTable">
+          <thead>
+            <tr><th>カテゴリ</th><th class="num">現在の年間コスト</th><th class="num">最適化後</th><th class="num">削減額</th><th class="num">削減率</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <div class="chart-wrap">
+          <div class="chart-title">月次コスト推移（現在 vs 最適化後）</div>
+          <svg id="barChart" width="100%" height="200" viewBox="0 0 480 200" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk Section -->
+    <div class="bulk-section fade-in-section">
+      <h3>バルク購入による追加削減</h3>
+      <p class="bulk-desc">まとめ買いで単価が下がり、年間コストを更に削減できます。</p>
+
+      <div class="bulk-tiers">
+        <div class="bulk-tier">
+          <div class="tier-qty">100+</div>
+          <div class="tier-label">個以上</div>
+          <div class="tier-off">5% OFF</div>
+        </div>
+        <div class="bulk-tier">
+          <div class="tier-qty">500+</div>
+          <div class="tier-label">個以上</div>
+          <div class="tier-off">12% OFF</div>
+        </div>
+        <div class="bulk-tier">
+          <div class="tier-qty">1,000+</div>
+          <div class="tier-label">個以上</div>
+          <div class="tier-off">18% OFF</div>
+        </div>
+      </div>
+
+      <table class="bulk-product-table">
+        <thead>
+          <tr><th>商品</th><th class="num">月50個<br>(定価)</th><th class="num">月500個<br>(12%OFF)</th><th class="num">月1000個<br>(18%OFF)</th><th class="num">最大年間<br>削減額</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>コピー用紙 A4</td>
+            <td class="num">¥1,308,000</td>
+            <td class="num">¥11,529,600</td>
+            <td class="num">¥21,451,200</td>
+            <td class="num"><span class="save-highlight">¥4,708,800</span></td>
+          </tr>
+          <tr>
+            <td>トナーカートリッジ</td>
+            <td class="num">¥2,334,000</td>
+            <td class="num">¥20,539,200</td>
+            <td class="num">¥38,278,400</td>
+            <td class="num"><span class="save-highlight">¥8,381,600</span></td>
+          </tr>
+          <tr>
+            <td>ゴム手袋 100枚入</td>
+            <td class="num">¥534,000</td>
+            <td class="num">¥4,699,200</td>
+            <td class="num">¥8,755,200</td>
+            <td class="num"><span class="save-highlight">¥1,924,800</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px; color:var(--ink-secondary); margin-top:12px;">* 年間コスト = 単価 x 月間数量 x 12ヶ月。割引は最安値ベースで計算。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     AI ANALYSIS
+════════════════════════════════ -->
+<section id="ai-analysis" class="section-dark fade-in-section">
+  <div class="container">
+    <div class="ai-grid">
+      <div>
+        <span class="section-label-dark">Auto Analysis</span>
+        <h2 style="font-size:clamp(26px,3.5vw,36px);font-weight:700;letter-spacing:-0.025em;line-height:1.2;color:#fff;">購買するだけで<br>AIが自動分析</h2>
+        <div class="ai-steps">
+          <div class="ai-step">
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">1</div>
+            <div class="ai-step-body"><h4>購入データ自動蓄積</h4><p>3プラットフォームの購入履歴を自動で収集・整理</p></div>
+          </div>
+          <div class="ai-step">
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">2</div>
+            <div class="ai-step-body"><h4>AIがカテゴリ分類</h4><p>消耗品・IT機器・MROを自動でタグ付け・分類</p></div>
+          </div>
+          <div class="ai-step">
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">3</div>
+            <div class="ai-step-body"><h4>ベンチマーク比較</h4><p>同規模企業の平均コストと自社を自動比較</p></div>
+          </div>
+          <div class="ai-step">
+            <div class="ai-step-icon" style="font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:50%;width:36px;height:36px;">4</div>
+            <div class="ai-step-body"><h4>改善提案レポート</h4><p>月次でコスト削減アクションを自動レポート出力</p></div>
+          </div>
+        </div>
+      </div>
       <div>
         <div class="dashboard-card">
           <div class="dashboard-header">
@@ -1090,30 +873,13 @@
             <span class="dashboard-date">2026年3月</span>
           </div>
           <div class="kpi-grid">
-            <div class="kpi-item">
-              <div class="kpi-label">今月購買額</div>
-              <div class="kpi-value">¥342万</div>
-              <div class="kpi-sub">先月比 +8%</div>
-            </div>
-            <div class="kpi-item">
-              <div class="kpi-label">AI削減提案</div>
-              <div class="kpi-value success">¥48万</div>
-              <div class="kpi-sub">削減余地 14%</div>
-            </div>
-            <div class="kpi-item">
-              <div class="kpi-label">最安値購入率</div>
-              <div class="kpi-value">73%</div>
-              <div class="kpi-sub">目標: 85%</div>
-            </div>
-            <div class="kpi-item">
-              <div class="kpi-label">前月比</div>
-              <div class="kpi-value success">+5%↑</div>
-              <div class="kpi-sub">改善トレンド継続</div>
-            </div>
+            <div class="kpi-item"><div class="kpi-label">今月購買額</div><div class="kpi-value">¥342万</div><div class="kpi-sub">先月比 +8%</div></div>
+            <div class="kpi-item"><div class="kpi-label">AI削減提案</div><div class="kpi-value success">¥48万</div><div class="kpi-sub">削減余地 14%</div></div>
+            <div class="kpi-item"><div class="kpi-label">最安値購入率</div><div class="kpi-value">73%</div><div class="kpi-sub">目標: 85%</div></div>
+            <div class="kpi-item"><div class="kpi-label">前月比</div><div class="kpi-value success">+5%</div><div class="kpi-sub">改善トレンド継続</div></div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1125,79 +891,30 @@
   <div class="container">
     <h2 class="mb-48">カテゴリから探す</h2>
     <div class="category-grid">
-
       <a href="#" class="category-card">
-        <div class="category-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
-          </svg>
-        </div>
-        <div class="category-info">
-          <h3>オフィス用品</h3>
-          <span class="category-count">12,400 アイテム</span>
-        </div>
+        <div class="category-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></div>
+        <div class="category-info"><h3>オフィス用品</h3><span class="category-count">12,400 アイテム</span></div>
       </a>
-
       <a href="#" class="category-card">
-        <div class="category-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
-        </div>
-        <div class="category-info">
-          <h3>IT機器</h3>
-          <span class="category-count">8,700 アイテム</span>
-        </div>
+        <div class="category-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="category-info"><h3>IT機器</h3><span class="category-count">8,700 アイテム</span></div>
       </a>
-
       <a href="#" class="category-card">
-        <div class="category-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <div class="category-info">
-          <h3>MRO</h3>
-          <span class="category-count">31,200 アイテム</span>
-        </div>
+        <div class="category-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <div class="category-info"><h3>MRO</h3><span class="category-count">31,200 アイテム</span></div>
       </a>
-
       <a href="#" class="category-card">
-        <div class="category-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-        </div>
-        <div class="category-info">
-          <h3>清掃・衛生</h3>
-          <span class="category-count">5,800 アイテム</span>
-        </div>
+        <div class="category-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="category-info"><h3>清掃・衛生</h3><span class="category-count">5,800 アイテム</span></div>
       </a>
-
       <a href="#" class="category-card">
-        <div class="category-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
-          </svg>
-        </div>
-        <div class="category-info">
-          <h3>梱包・物流</h3>
-          <span class="category-count">9,100 アイテム</span>
-        </div>
+        <div class="category-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <div class="category-info"><h3>梱包・物流</h3><span class="category-count">9,100 アイテム</span></div>
       </a>
-
       <a href="#" class="category-card">
-        <div class="category-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <div class="category-info">
-          <h3>安全用品</h3>
-          <span class="category-count">4,300 アイテム</span>
-        </div>
+        <div class="category-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="category-info"><h3>安全用品</h3><span class="category-count">4,300 アイテム</span></div>
       </a>
-
     </div>
   </div>
 </section>
@@ -1210,7 +927,8 @@
     <h2>まずはお気軽に<br>ご相談ください</h2>
     <p>このような購買最適化ツールの御社カスタム構築をはじめ、AIを活用したコスト分析・削減施策のご提案と実行支援を提供しています。</p>
     <div class="cta-buttons">
-      <a href="#" class="btn btn-accent btn-lg">お問い合わせ</a>
+      <a href="#" onclick="openContactModal(); return false;" class="btn btn-accent btn-lg">お問い合わせ</a>
+      <a href="#" onclick="openBookingModal(); return false;" class="btn btn-outline-white btn-lg">初回面談を予約</a>
     </div>
   </div>
 </section>
@@ -1218,61 +936,617 @@
 <!-- ════════════════════════════════
      FOOTER
 ════════════════════════════════ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo">RAKUDA</div>
-        <p>AIツールとコンサルティングで、<br>御社のコスト削減を実現します。</p>
-      </div>
-      <div class="footer-col">
-        <h4>サービス</h4>
-        <ul>
-          <li><a href="#">AI診断ツール</a></li>
-          <li><a href="#">購買最適化</a></li>
-          <li><a href="#">コスト分析</a></li>
-          <li><a href="#">実行支援</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>会社</h4>
-        <ul>
-          <li><a href="#">会社概要</a></li>
-          <li><a href="#">ブログ</a></li>
-          <li><a href="#">採用情報</a></li>
-          <li><a href="#">お問い合わせ</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>法務</h4>
-        <ul>
-          <li><a href="#">利用規約</a></li>
-          <li><a href="#">プライバシーポリシー</a></li>
-          <li><a href="#">セキュリティ</a></li>
-          <li><a href="#">特定商取引法</a></li>
-        </ul>
-      </div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">RAKUDA <span>COSTCUT</span></div>
+    <div class="footer-links">
+      <a href="#">利用規約</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#" onclick="openContactModal();return false;">お問い合わせ</a>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 RAKUDA, Inc. All rights reserved.</p>
-      <p style="font-size:12px;color:var(--ink-secondary);">Made in Japan</p>
-    </div>
+    <div class="footer-copy">&copy; 2026 RAKUDA COSTCUT. All rights reserved.</div>
   </div>
 </footer>
 
+<!-- ════════════════════════════════
+     CONTACT MODAL
+════════════════════════════════ -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeContactModal()" aria-label="閉じる">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-body" id="contactBody">
+      <div class="contact-grid">
+        <div class="contact-left">
+          <h3>RAKUDAに相談する</h3>
+          <p>購買コスト削減のプロフェッショナルが、御社の状況に合わせた最適なプランをご提案します。まずはお気軽にご相談ください。</p>
+          <ul class="contact-features">
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>無料相談・お見積もり</li>
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>最短翌営業日にご連絡</li>
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>御社専用の削減レポート作成</li>
+            <li><span class="cf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>導入実績200社以上</li>
+          </ul>
+        </div>
+        <div class="contact-right">
+          <form id="contactForm" onsubmit="submitContact(event)">
+            <div class="form-group"><label>会社名<span class="req">*</span></label><input type="text" class="form-input" id="cCompany" required><div class="form-error">会社名を入力してください</div></div>
+            <div class="form-group"><label>氏名<span class="req">*</span></label><input type="text" class="form-input" id="cName" required><div class="form-error">氏名を入力してください</div></div>
+            <div class="form-group"><label>メールアドレス<span class="req">*</span></label><input type="email" class="form-input" id="cEmail" required><div class="form-error">有効なメールアドレスを入力してください</div></div>
+            <div class="form-group"><label>電話番号</label><input type="tel" class="form-input" id="cPhone" placeholder="03-1234-5678"></div>
+            <div class="form-group">
+              <label>従業員規模<span class="req">*</span></label>
+              <select class="form-select" id="cScale" required>
+                <option value="">選択してください</option>
+                <option value="1-50">1〜50名</option>
+                <option value="51-200">51〜200名</option>
+                <option value="201-500">201〜500名</option>
+                <option value="501-1000">501〜1,000名</option>
+                <option value="1001+">1,001名以上</option>
+              </select>
+              <div class="form-error">従業員規模を選択してください</div>
+            </div>
+            <div class="form-group"><label>ご相談内容</label><textarea class="form-textarea" id="cMessage" rows="3" placeholder="具体的なご要望やご質問があればお書きください"></textarea></div>
+            <button type="submit" class="btn btn-accent btn-full" style="height:44px; font-size:15px;">送信する</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     BOOKING MODAL
+════════════════════════════════ -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal-box" style="max-width:600px;">
+    <button class="modal-close" onclick="closeBookingModal()" aria-label="閉じる">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-body" id="bookingBody">
+      <h3 style="font-size:20px;font-weight:700;margin-bottom:4px;">初回面談を予約</h3>
+      <p style="font-size:13px;color:var(--ink-secondary);margin-bottom:24px;">30分のオンライン面談で、御社に最適なコスト削減プランをご提案します。</p>
+
+      <div class="booking-steps">
+        <div class="booking-step-indicator active" data-step="1">1. 日付選択</div>
+        <div class="booking-step-indicator" data-step="2">2. 時間・情報入力</div>
+        <div class="booking-step-indicator" data-step="3">3. 確認</div>
+      </div>
+
+      <!-- Step 1: Calendar -->
+      <div class="step-content active" id="bookStep1">
+        <div class="cal-header">
+          <button class="cal-nav-btn" onclick="calNav(-1)" style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-secondary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h4 id="calMonth" style="font-size:15px;font-weight:700;"></h4>
+          <button class="cal-nav-btn" onclick="calNav(1)" style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-secondary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="step-nav" style="justify-content:flex-end;">
+          <button class="btn btn-accent" id="btnToStep2" onclick="goBookStep(2)" disabled>次へ：時間選択</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Time + Mini form -->
+      <div class="step-content" id="bookStep2">
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;">ご希望の時間帯を選択</div>
+          <div class="time-slots" id="timeSlots">
+            <div class="time-slot" onclick="selectTime(this)">09:00</div>
+            <div class="time-slot" onclick="selectTime(this)">09:30</div>
+            <div class="time-slot" onclick="selectTime(this)">10:00</div>
+            <div class="time-slot" onclick="selectTime(this)">10:30</div>
+            <div class="time-slot" onclick="selectTime(this)">11:00</div>
+            <div class="time-slot" onclick="selectTime(this)">11:30</div>
+            <div class="time-slot" onclick="selectTime(this)">13:00</div>
+            <div class="time-slot" onclick="selectTime(this)">13:30</div>
+            <div class="time-slot" onclick="selectTime(this)">14:00</div>
+            <div class="time-slot" onclick="selectTime(this)">14:30</div>
+            <div class="time-slot" onclick="selectTime(this)">15:00</div>
+            <div class="time-slot" onclick="selectTime(this)">15:30</div>
+            <div class="time-slot" onclick="selectTime(this)">16:00</div>
+            <div class="time-slot" onclick="selectTime(this)">16:30</div>
+            <div class="time-slot" onclick="selectTime(this)">17:00</div>
+          </div>
+        </div>
+        <div class="form-group"><label>お名前<span class="req">*</span></label><input type="text" class="form-input" id="bName"></div>
+        <div class="form-group"><label>メールアドレス<span class="req">*</span></label><input type="email" class="form-input" id="bEmail"></div>
+        <div class="form-group"><label>会社名</label><input type="text" class="form-input" id="bCompany"></div>
+        <div class="step-nav">
+          <button class="btn btn-outline" onclick="goBookStep(1)">戻る</button>
+          <button class="btn btn-accent" id="btnToStep3" onclick="goBookStep(3)" disabled>次へ：確認</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Confirm -->
+      <div class="step-content" id="bookStep3">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">予約内容の確認</div>
+        <div class="booking-summary" id="bookingSummary"></div>
+        <div class="step-nav">
+          <button class="btn btn-outline" onclick="goBookStep(2)">戻る</button>
+          <button class="btn btn-accent" onclick="confirmBooking()">この内容で予約する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CHATBOT
+════════════════════════════════ -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">
+  <span class="fab-open"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+  <span class="fab-close"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+</button>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <div>
+      <h4>RAKUDAサポート</h4>
+      <p>オンライン</p>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">こんにちは！ RAKUDAへようこそ。購買コスト削減についてご質問はありますか？<br><br>以下のキーワードでお気軽にどうぞ：<br>・「料金」「価格」<br>・「機能」「できること」<br>・「導入」「始め方」<br>・「削減」「コスト」</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════ -->
 <script>
-  (function() {
-    var els = document.querySelectorAll('.fade-in-section');
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
+(function() {
+
+  /* ── Fade-in observer ── */
+  var fadeEls = document.querySelectorAll('.fade-in-section');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(function(el) { obs.observe(el); });
+
+  /* ═══════════════════════════════════
+     1. CONTACT MODAL
+  ═══════════════════════════════════ */
+  window.openContactModal = function() {
+    document.getElementById('contactModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    // Reset form
+    var form = document.getElementById('contactForm');
+    if (form) form.reset();
+    var groups = form ? form.querySelectorAll('.form-group') : [];
+    groups.forEach(function(g){ g.classList.remove('error'); });
+    // Reset to form view
+    document.getElementById('contactBody').innerHTML = document.getElementById('contactBody').innerHTML;
+  };
+  window.closeContactModal = function() {
+    document.getElementById('contactModal').classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  window.submitContact = function(e) {
+    e.preventDefault();
+    var valid = true;
+    var fields = [
+      {id: 'cCompany', req: true},
+      {id: 'cName', req: true},
+      {id: 'cEmail', req: true, type: 'email'},
+      {id: 'cScale', req: true}
+    ];
+    fields.forEach(function(f) {
+      var el = document.getElementById(f.id);
+      var group = el ? el.closest('.form-group') : null;
+      if (!el || !group) return;
+      group.classList.remove('error');
+      if (f.req && !el.value.trim()) { group.classList.add('error'); valid = false; }
+      if (f.type === 'email' && el.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)) { group.classList.add('error'); valid = false; }
+    });
+    if (!valid) return;
+
+    document.getElementById('contactBody').innerHTML =
+      '<div class="complete-screen">' +
+      '<div class="complete-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+      '<h3>送信完了</h3>' +
+      '<p>お問い合わせありがとうございます。<br>担当者より翌営業日までにご連絡いたします。</p>' +
+      '<button class="btn btn-outline" style="margin-top:24px;" onclick="closeContactModal()">閉じる</button>' +
+      '</div>';
+  };
+
+  // Close on overlay click
+  document.getElementById('contactModal').addEventListener('click', function(e) {
+    if (e.target === this) closeContactModal();
+  });
+
+  /* ═══════════════════════════════════
+     2. BOOKING MODAL
+  ═══════════════════════════════════ */
+  var bookState = { date: null, time: null, month: new Date().getMonth(), year: new Date().getFullYear() };
+
+  window.openBookingModal = function() {
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    bookState = { date: null, time: null, month: new Date().getMonth(), year: new Date().getFullYear() };
+    goBookStep(1);
+    renderCalendar();
+  };
+  window.closeBookingModal = function() {
+    document.getElementById('bookingModal').classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  document.getElementById('bookingModal').addEventListener('click', function(e) {
+    if (e.target === this) closeBookingModal();
+  });
+
+  function renderCalendar() {
+    var y = bookState.year, m = bookState.month;
+    var monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    document.getElementById('calMonth').textContent = y + '年 ' + monthNames[m];
+    var grid = document.getElementById('calGrid');
+    var dayLabels = ['日','月','火','水','木','金','土'];
+    var html = '';
+    dayLabels.forEach(function(d){ html += '<div class="cal-day-label">' + d + '</div>'; });
+
+    var first = new Date(y, m, 1);
+    var lastDay = new Date(y, m+1, 0).getDate();
+    var startDow = first.getDay();
+    var today = new Date(); today.setHours(0,0,0,0);
+
+    for (var i = 0; i < startDow; i++) html += '<div class="cal-day disabled"></div>';
+    for (var d = 1; d <= lastDay; d++) {
+      var dt = new Date(y, m, d);
+      var isPast = dt < today;
+      var isWeekend = dt.getDay() === 0 || dt.getDay() === 6;
+      var isToday = dt.getTime() === today.getTime();
+      var sel = bookState.date && bookState.date.getTime() === dt.getTime();
+      var cls = 'cal-day';
+      if (isPast || isWeekend) cls += ' disabled';
+      if (isToday) cls += ' today';
+      if (sel) cls += ' selected';
+      html += '<div class="' + cls + '" data-date="' + y + '-' + (m+1) + '-' + d + '" onclick="selectDate(this)">' + d + '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  window.calNav = function(dir) {
+    bookState.month += dir;
+    if (bookState.month > 11) { bookState.month = 0; bookState.year++; }
+    if (bookState.month < 0) { bookState.month = 11; bookState.year--; }
+    renderCalendar();
+  };
+
+  window.selectDate = function(el) {
+    if (el.classList.contains('disabled')) return;
+    document.querySelectorAll('#calGrid .cal-day').forEach(function(d){ d.classList.remove('selected'); });
+    el.classList.add('selected');
+    var parts = el.getAttribute('data-date').split('-');
+    bookState.date = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+    document.getElementById('btnToStep2').disabled = false;
+  };
+
+  window.selectTime = function(el) {
+    if (el.classList.contains('disabled')) return;
+    document.querySelectorAll('.time-slot').forEach(function(s){ s.classList.remove('selected'); });
+    el.classList.add('selected');
+    bookState.time = el.textContent;
+    checkStep2Valid();
+  };
+
+  function checkStep2Valid() {
+    var name = document.getElementById('bName').value.trim();
+    var email = document.getElementById('bEmail').value.trim();
+    var hasTime = bookState.time;
+    document.getElementById('btnToStep3').disabled = !(hasTime && name && email);
+  }
+
+  window.goBookStep = function(n) {
+    for (var i = 1; i <= 3; i++) {
+      document.getElementById('bookStep'+i).classList.remove('active');
+      var ind = document.querySelector('.booking-step-indicator[data-step="'+i+'"]');
+      ind.classList.remove('active','done');
+      if (i < n) ind.classList.add('done');
+      if (i === n) ind.classList.add('active');
+    }
+    document.getElementById('bookStep'+n).classList.add('active');
+
+    if (n === 2) {
+      // Add listeners to step 2 inputs
+      ['bName','bEmail'].forEach(function(id){
+        var el = document.getElementById(id);
+        el.removeEventListener('input', checkStep2Valid);
+        el.addEventListener('input', checkStep2Valid);
       });
-    }, { threshold: 0.1 });
-    els.forEach(function(el) { observer.observe(el); });
-  })();
+    }
+
+    if (n === 3) {
+      var ds = bookState.date;
+      var dateStr = ds.getFullYear() + '年' + (ds.getMonth()+1) + '月' + ds.getDate() + '日';
+      var sum = document.getElementById('bookingSummary');
+      sum.innerHTML =
+        '<div class="sum-row"><span class="sum-label">日付</span><span class="sum-val">' + dateStr + '</span></div>' +
+        '<div class="sum-row"><span class="sum-label">時間</span><span class="sum-val">' + bookState.time + '</span></div>' +
+        '<div class="sum-row"><span class="sum-label">お名前</span><span class="sum-val">' + document.getElementById('bName').value + '</span></div>' +
+        '<div class="sum-row"><span class="sum-label">メール</span><span class="sum-val">' + document.getElementById('bEmail').value + '</span></div>' +
+        (document.getElementById('bCompany').value ? '<div class="sum-row"><span class="sum-label">会社名</span><span class="sum-val">' + document.getElementById('bCompany').value + '</span></div>' : '');
+    }
+  };
+
+  window.confirmBooking = function() {
+    document.getElementById('bookingBody').innerHTML =
+      '<div class="complete-screen">' +
+      '<div class="complete-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+      '<h3>予約完了</h3>' +
+      '<p>面談のご予約ありがとうございます。<br>確認メールをお送りしました。</p>' +
+      '<button class="btn btn-outline" style="margin-top:24px;" onclick="closeBookingModal()">閉じる</button>' +
+      '</div>';
+  };
+
+  /* ═══════════════════════════════════
+     3. CHATBOT
+  ═══════════════════════════════════ */
+  window.toggleChat = function() {
+    var fab = document.getElementById('chatFab');
+    var win = document.getElementById('chatWindow');
+    fab.classList.toggle('open');
+    win.classList.toggle('open');
+  };
+
+  var chatResponses = {
+    '料金|価格|コスト|費用|いくら': '基本プランは月額¥50,000から、スタンダードプランは¥120,000/月です。御社の規模に合わせたカスタムプランもございます。詳しくはお問い合わせください。',
+    '機能|できること|特徴|サービス': 'RAKUDAの主な機能：\n- 3プラットフォーム価格一括比較\n- AI自動コスト分析\n- 月次削減レポート\n- バルク購入最適化\n- カテゴリ別支出管理',
+    '導入|始め方|開始|スタート': '導入は簡単3ステップです：\n1. 無料相談（30分）\n2. 購買データ分析（1週間）\n3. システム導入・運用開始\nまずは初回面談をご予約ください。',
+    '削減|節約|コストカット|効果': '導入企業の平均で年間15〜22%のコスト削減を実現しています。月間購買額500万円の企業で、年間約900万円の削減実績があります。',
+    '面談|相談|予約|アポ': '初回面談は30分のオンラインミーティングです。画面上部の「お問い合わせ」か、このチャットで「予約」とお伝えください。',
+    'ありがとう|感謝': 'こちらこそありがとうございます！他にご不明点があればいつでもお聞きください。'
+  };
+
+  window.sendChat = function() {
+    var input = document.getElementById('chatInput');
+    var msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    addChatMsg(msg, 'user');
+
+    setTimeout(function() {
+      var reply = null;
+      var keys = Object.keys(chatResponses);
+      for (var i = 0; i < keys.length; i++) {
+        var patterns = keys[i].split('|');
+        for (var j = 0; j < patterns.length; j++) {
+          if (msg.indexOf(patterns[j]) !== -1) { reply = chatResponses[keys[i]]; break; }
+        }
+        if (reply) break;
+      }
+      if (!reply) reply = 'ありがとうございます。詳しい内容は担当者がご案内いたします。「お問い合わせ」フォームからご連絡いただくか、以下のキーワードでお試しください：\n・「料金」「機能」「導入」「削減」';
+      addChatMsg(reply, 'bot');
+    }, 500);
+  };
+
+  function addChatMsg(text, type) {
+    var container = document.getElementById('chatMessages');
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + type;
+    div.textContent = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  /* ═══════════════════════════════════
+     4. COST SIMULATOR
+  ═══════════════════════════════════ */
+  var catRates = { office: 0.15, it: 0.08, mro: 0.22, other: 0.10 };
+
+  var slider = document.getElementById('purchaseSlider');
+  var sliderVal = document.getElementById('sliderVal');
+  var pctOffice = document.getElementById('pctOffice');
+  var pctIT = document.getElementById('pctIT');
+  var pctMRO = document.getElementById('pctMRO');
+  var pctOther = document.getElementById('pctOther');
+  var empCount = document.getElementById('empCount');
+
+  function fmt(n) { return n.toLocaleString('ja-JP'); }
+
+  function updateSliderTrack() {
+    var pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = 'linear-gradient(to right, var(--accent) 0%, var(--accent) ' + pct + '%, var(--border) ' + pct + '%, var(--border) 100%)';
+  }
+
+  function calcSim() {
+    var monthlyMan = parseInt(slider.value); // 万円
+    sliderVal.textContent = fmt(monthlyMan) + '万円';
+    updateSliderTrack();
+
+    var po = parseInt(pctOffice.value) || 0;
+    var pi = parseInt(pctIT.value) || 0;
+    var pm = parseInt(pctMRO.value) || 0;
+    var pp = parseInt(pctOther.value) || 0;
+    var total = po + pi + pm + pp;
+    var catTotalEl = document.getElementById('catTotal');
+    if (total === 100) {
+      catTotalEl.className = 'cat-total valid';
+      catTotalEl.textContent = '合計: 100% -- OK';
+    } else {
+      catTotalEl.className = 'cat-total invalid';
+      catTotalEl.textContent = '合計: ' + total + '% (100%にしてください)';
+    }
+
+    var annualTotal = monthlyMan * 12; // 万円
+    var cats = [
+      { name: 'オフィス用品', pct: po, rate: catRates.office },
+      { name: 'IT機器', pct: pi, rate: catRates.it },
+      { name: 'MRO', pct: pm, rate: catRates.mro },
+      { name: 'その他', pct: pp, rate: catRates.other }
+    ];
+
+    var totalSaving = 0;
+    var tbody = '';
+    cats.forEach(function(c) {
+      var current = annualTotal * c.pct / 100;
+      var saving = current * c.rate;
+      var after = current - saving;
+      totalSaving += saving;
+      var ratePct = (c.rate * 100).toFixed(0);
+      tbody += '<tr><td>' + c.name + '</td><td class="num">' + fmt(Math.round(current)) + '万</td><td class="num">' + fmt(Math.round(after)) + '万</td><td class="num highlight">' + fmt(Math.round(saving)) + '万</td><td class="num">' + ratePct + '%</td></tr>';
+    });
+    tbody += '<tr><td><strong>合計</strong></td><td class="num"><strong>' + fmt(annualTotal) + '万</strong></td><td class="num"><strong>' + fmt(Math.round(annualTotal - totalSaving)) + '万</strong></td><td class="num highlight"><strong>' + fmt(Math.round(totalSaving)) + '万</strong></td><td class="num">-</td></tr>';
+    document.querySelector('#breakdownTable tbody').innerHTML = tbody;
+
+    // Animate number
+    animateNumber(document.getElementById('totalSaving'), Math.round(totalSaving));
+
+    // Impact message
+    var msgEl = document.getElementById('impactMsg');
+    if (totalSaving >= 1000) {
+      msgEl.className = 'impact-msg impact-fire';
+      msgEl.innerHTML = '&#128293; 大幅な改善余地があります';
+    } else if (totalSaving >= 500) {
+      msgEl.className = 'impact-msg impact-check';
+      msgEl.innerHTML = '&#9989; 着実な改善が見込めます';
+    } else {
+      msgEl.className = 'impact-msg impact-chart';
+      msgEl.innerHTML = '&#128202; 効率的に管理されています';
+    }
+
+    // Draw chart
+    drawBarChart(monthlyMan, cats, totalSaving);
+  }
+
+  var animFrame = null;
+  function animateNumber(el, target) {
+    var start = parseInt(el.textContent) || 0;
+    var diff = target - start;
+    var duration = 400;
+    var startTime = null;
+    if (animFrame) cancelAnimationFrame(animFrame);
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = fmt(Math.round(start + diff * ease));
+      if (progress < 1) animFrame = requestAnimationFrame(step);
+    }
+    animFrame = requestAnimationFrame(step);
+  }
+
+  function drawBarChart(monthlyMan, cats, totalSaving) {
+    var svg = document.getElementById('barChart');
+    var w = 480, h = 200;
+    var pad = { top: 20, right: 10, bottom: 30, left: 50 };
+    var chartW = w - pad.left - pad.right;
+    var chartH = h - pad.top - pad.bottom;
+    var barGroupW = chartW / 12;
+    var barW = barGroupW * 0.32;
+    var gap = barGroupW * 0.06;
+
+    // Monthly current = monthlyMan
+    // Monthly optimized ramps down over 12 months
+    var totalRate = 0;
+    cats.forEach(function(c){ totalRate += (c.pct / 100) * c.rate; });
+
+    var months = [];
+    for (var i = 0; i < 12; i++) {
+      var ramp = Math.min((i + 1) / 6, 1); // ramp from 0 to full in 6 months
+      var opt = monthlyMan * (1 - totalRate * ramp);
+      months.push({ current: monthlyMan, optimized: opt });
+    }
+
+    var maxVal = monthlyMan * 1.1;
+    function yScale(v) { return pad.top + chartH - (v / maxVal) * chartH; }
+
+    var html = '';
+    // Grid lines
+    for (var g = 0; g <= 4; g++) {
+      var gv = maxVal * g / 4;
+      var gy = yScale(gv);
+      html += '<line x1="' + pad.left + '" y1="' + gy + '" x2="' + (w - pad.right) + '" y2="' + gy + '" stroke="#E5E7EB" stroke-width="0.5"/>';
+      html += '<text x="' + (pad.left - 4) + '" y="' + (gy + 3) + '" font-size="9" fill="#9CA3AF" text-anchor="end">' + fmt(Math.round(gv)) + '</text>';
+    }
+
+    var monthLabels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    for (var m = 0; m < 12; m++) {
+      var x = pad.left + m * barGroupW + barGroupW / 2;
+      var curH = (months[m].current / maxVal) * chartH;
+      var optH = (months[m].optimized / maxVal) * chartH;
+
+      // Current bar
+      html += '<rect x="' + (x - barW - gap/2) + '" y="' + (pad.top + chartH - curH) + '" width="' + barW + '" height="' + curH + '" fill="#E5E7EB" rx="2"/>';
+      // Optimized bar
+      html += '<rect x="' + (x + gap/2) + '" y="' + (pad.top + chartH - optH) + '" width="' + barW + '" height="' + optH + '" fill="' + (m >= 3 ? 'var(--success)' : 'var(--accent)') + '" rx="2"/>';
+
+      // Month label
+      if (m % 2 === 0 || barGroupW > 35) {
+        html += '<text x="' + x + '" y="' + (h - 5) + '" font-size="9" fill="#9CA3AF" text-anchor="middle">' + monthLabels[m] + '</text>';
+      }
+    }
+
+    // Legend
+    html += '<rect x="' + pad.left + '" y="2" width="8" height="8" fill="#E5E7EB" rx="1"/>';
+    html += '<text x="' + (pad.left + 12) + '" y="10" font-size="9" fill="#9CA3AF">現在</text>';
+    html += '<rect x="' + (pad.left + 45) + '" y="2" width="8" height="8" fill="var(--success)" rx="1"/>';
+    html += '<text x="' + (pad.left + 57) + '" y="10" font-size="9" fill="#9CA3AF">最適化後</text>';
+
+    svg.innerHTML = html;
+  }
+
+  // Event listeners for simulator
+  slider.addEventListener('input', calcSim);
+  [pctOffice, pctIT, pctMRO, pctOther, empCount].forEach(function(el) {
+    el.addEventListener('input', calcSim);
+  });
+
+  // Initial calc
+  calcSim();
+
+  /* ═══════════════════════════════════
+     PRODUCT CARD QUANTITY CALC
+  ═══════════════════════════════════ */
+  window.updateProductEst = function(input) {
+    var price = parseInt(input.getAttribute('data-price')) || 0;
+    var qty = parseInt(input.value) || 0;
+    var card = input.closest('.product-card');
+    var product = card.getAttribute('data-product');
+    var annual = price * qty * 12;
+
+    // Bulk discount
+    var discountRate = 0;
+    if (qty >= 1000) discountRate = 0.18;
+    else if (qty >= 500) discountRate = 0.12;
+    else if (qty >= 100) discountRate = 0.05;
+
+    var discounted = annual * (1 - discountRate);
+    var saving = annual - discounted;
+
+    var annualEl = card.querySelector('[data-annual-target="' + product + '"]');
+    var bulkEl = card.querySelector('[data-bulk-target="' + product + '"]');
+
+    if (annualEl) annualEl.textContent = '年間見積: ¥' + fmt(Math.round(discounted));
+    if (bulkEl) {
+      if (discountRate > 0) {
+        bulkEl.textContent = 'バルク購入で年間 ¥' + fmt(Math.round(saving)) + ' 節約 (' + (discountRate*100) + '%OFF)';
+        bulkEl.style.display = 'block';
+      } else {
+        bulkEl.textContent = '100個以上でバルク割引が適用されます';
+        bulkEl.style.display = 'block';
+      }
+    }
+  };
+
+  // Init product estimates
+  document.querySelectorAll('.qty-input').forEach(function(input) {
+    updateProductEst(input);
+  });
+
+})();
 </script>
 </body>
 </html>

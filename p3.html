@@ -1155,6 +1155,291 @@ footer {
   white-space: nowrap;
 }
 
+/* ── MODAL SHARED ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+  padding: 24px;
+}
+.modal-overlay.is-open { opacity: 1; visibility: visible; }
+.modal-card {
+  background: var(--surface);
+  border-radius: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  position: relative;
+  width: 100%;
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.modal-overlay.is-open .modal-card { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--canvas); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--ink-secondary); z-index: 2;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: var(--border); }
+
+/* ── CONTACT MODAL ── */
+.contact-modal .modal-card { max-width: 820px; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.contact-left {
+  background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
+  padding: 40px 32px; border-radius: 16px 0 0 16px;
+  color: var(--surface);
+}
+.contact-left-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; font-weight: 500; }
+.contact-left h3 { font-size: 22px; font-weight: 700; margin-bottom: 28px; line-height: 1.35; }
+.contact-step-list { display: flex; flex-direction: column; gap: 20px; }
+.contact-step-item { display: flex; gap: 14px; align-items: flex-start; }
+.contact-step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(37,99,235,0.2); color: var(--accent);
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.contact-step-text { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+.contact-step-text strong { color: var(--surface); font-weight: 600; }
+.contact-right { padding: 40px 32px; }
+.contact-right h3 { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--ink-secondary); margin-bottom: 6px; }
+.form-label .req { color: #EF4444; margin-left: 2px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; border: 1px solid var(--border); border-radius: 6px;
+  padding: 10px 14px; font-size: 14px; font-family: inherit;
+  color: var(--ink); background: var(--surface); outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-error { font-size: 11px; color: #EF4444; margin-top: 4px; display: none; }
+.form-error.show { display: block; }
+.btn-submit {
+  width: 100%; background: var(--accent); color: var(--surface);
+  font-size: 15px; font-weight: 500; padding: 12px; border-radius: 6px;
+  border: none; cursor: pointer; font-family: inherit;
+  transition: opacity 0.2s; margin-top: 8px;
+}
+.btn-submit:hover { opacity: 0.9; }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Contact complete */
+.contact-complete { display: none; text-align: center; padding: 60px 32px; }
+.contact-complete.is-show { display: block; }
+.contact-form-area.is-hide { display: none; }
+.check-anim {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(5,150,105,0.1); margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  animation: checkPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes checkPop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+.check-anim svg { color: var(--success); }
+.contact-complete h4 { font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.contact-complete p { font-size: 14px; color: var(--ink-secondary); line-height: 1.6; }
+
+/* ── BOOKING MODAL ── */
+.booking-modal .modal-card { max-width: 560px; padding: 32px; }
+.booking-progress { display: flex; gap: 8px; margin-bottom: 28px; }
+.booking-progress-bar { flex: 1; height: 3px; background: var(--border); border-radius: 2px; transition: background 0.3s; }
+.booking-progress-bar.active { background: var(--accent); }
+.booking-title { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.booking-sub { font-size: 13px; color: var(--ink-secondary); margin-bottom: 24px; }
+.booking-step { display: none; }
+.booking-step.is-active { display: block; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 20px; }
+.cal-header { font-size: 11px; color: var(--ink-secondary); font-weight: 500; padding: 4px 0; }
+.cal-day {
+  padding: 8px 4px; border-radius: 6px; font-size: 13px; cursor: pointer;
+  transition: background 0.15s, color 0.15s; color: var(--ink);
+}
+.cal-day:hover { background: rgba(37,99,235,0.08); }
+.cal-day.disabled { color: var(--border); pointer-events: none; }
+.cal-day.selected { background: var(--accent); color: var(--surface); font-weight: 600; }
+.cal-day.today { font-weight: 700; color: var(--accent); }
+.cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.cal-nav-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--ink-secondary); }
+.cal-nav-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+.time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.time-slot {
+  padding: 10px; border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; cursor: pointer; font-size: 13px; font-weight: 500;
+  transition: border-color 0.15s, background 0.15s;
+}
+.time-slot:hover { border-color: var(--accent); }
+.time-slot.selected { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.booking-nav { display: flex; gap: 10px; margin-top: 24px; }
+.btn-book-back {
+  flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface); font-size: 14px; font-weight: 500; cursor: pointer;
+  font-family: inherit; color: var(--ink-secondary);
+}
+.btn-book-next {
+  flex: 2; padding: 10px; background: var(--accent); color: var(--surface);
+  border: none; border-radius: 6px; font-size: 14px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: opacity 0.2s;
+}
+.btn-book-next:hover { opacity: 0.9; }
+.btn-book-next:disabled { opacity: 0.5; cursor: not-allowed; }
+.booking-confirm-summary {
+  background: var(--canvas); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; margin-bottom: 20px;
+}
+.booking-confirm-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+.booking-confirm-row .label { color: var(--ink-secondary); }
+.booking-confirm-row .value { font-weight: 600; color: var(--ink); }
+.booking-complete { display: none; text-align: center; padding: 40px 0; }
+.booking-complete.is-show { display: block; }
+.booking-steps-area.is-hide { display: none; }
+
+/* ── CHATBOT ── */
+.chatbot-fab {
+  position: fixed; bottom: 24px; right: 24px; z-index: 900;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--accent); color: var(--surface);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.chatbot-fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+.chatbot-fab .fab-close { display: none; }
+.chatbot-fab.is-open .fab-open { display: none; }
+.chatbot-fab.is-open .fab-close { display: block; }
+.chatbot-window {
+  position: fixed; bottom: 92px; right: 24px; z-index: 900;
+  width: 360px; max-height: 500px;
+  background: var(--surface); border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  opacity: 0; visibility: hidden; transform: translateY(12px) scale(0.95);
+  transition: opacity 0.25s, visibility 0.25s, transform 0.25s;
+}
+.chatbot-window.is-open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.chatbot-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.chatbot-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.chatbot-header-info { flex: 1; }
+.chatbot-header-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.chatbot-header-status { font-size: 11px; color: var(--success); }
+.chatbot-messages {
+  flex: 1; overflow-y: auto; padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+  max-height: 320px; min-height: 200px;
+}
+.chat-msg { max-width: 85%; }
+.chat-msg.bot { align-self: flex-start; }
+.chat-msg.user { align-self: flex-end; }
+.chat-bubble {
+  padding: 10px 14px; border-radius: 12px;
+  font-size: 13px; line-height: 1.5;
+}
+.chat-msg.bot .chat-bubble { background: var(--canvas); color: var(--ink); border-bottom-left-radius: 4px; }
+.chat-msg.user .chat-bubble { background: var(--accent); color: var(--surface); border-bottom-right-radius: 4px; }
+.chat-quick-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chat-quick-btn {
+  padding: 6px 12px; border: 1px solid var(--border); border-radius: 20px;
+  background: var(--surface); font-size: 12px; color: var(--accent);
+  cursor: pointer; font-family: inherit; font-weight: 500;
+  transition: background 0.15s, border-color 0.15s;
+}
+.chat-quick-btn:hover { border-color: var(--accent); background: rgba(37,99,235,0.04); }
+.chat-typing { display: flex; gap: 4px; padding: 10px 14px; align-self: flex-start; }
+.chat-typing span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--ink-secondary);
+  animation: typingDot 1.4s infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingDot { 0%,60%,100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+.chatbot-input-area {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; align-items: center;
+}
+.chatbot-input {
+  flex: 1; border: 1px solid var(--border); border-radius: 20px;
+  padding: 8px 14px; font-size: 13px; font-family: inherit;
+  outline: none; color: var(--ink);
+}
+.chatbot-input:focus { border-color: var(--accent); }
+.chatbot-send {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: var(--surface);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.15s;
+}
+.chatbot-send:hover { opacity: 0.85; }
+
+/* ── LOADING OVERLAY ── */
+.diag-loading {
+  display: none; text-align: center; padding: 80px 32px;
+  background: var(--surface);
+}
+.diag-loading.is-show { display: block; }
+.diag-spinner {
+  width: 48px; height: 48px; border: 3px solid var(--border);
+  border-top-color: var(--accent); border-radius: 50%;
+  margin: 0 auto 24px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.diag-loading-text {
+  font-size: 16px; font-weight: 500; color: var(--ink);
+  min-height: 28px; transition: opacity 0.3s;
+}
+.diag-loading-sub { font-size: 13px; color: var(--ink-secondary); margin-top: 8px; }
+
+/* ── RESULT ANIMATIONS ── */
+.result-section.is-hidden { display: none; }
+.result-section.fade-in-result { animation: fadeInUp 0.6s ease both; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.score-rank-pop { animation: rankPop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes rankPop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* Radar polygon animation */
+.radar-poly-anim { transition: all 1s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── RETRY BUTTON ── */
+.btn-retry {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+  font-size: 14px; font-weight: 500; padding: 12px 28px; border-radius: 6px;
+  cursor: pointer; font-family: inherit; margin-top: 32px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.btn-retry:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+
+/* Diagnosis hidden state */
+.diagnosis-section.is-hidden { display: none; }
+
+/* ── RESPONSIVE ADDITIONS ── */
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-left { border-radius: 16px 16px 0 0; padding: 28px 24px; }
+  .contact-right { padding: 28px 24px; }
+  .chatbot-window { width: calc(100vw - 32px); right: 16px; bottom: 80px; }
+  .time-grid { grid-template-columns: repeat(2, 1fr); }
+  .booking-modal .modal-card { padding: 24px; }
+}
+
 /* ── SOCIAL PROOF STATS ── */
 .social-proof-stats {
   display: flex;
@@ -1210,10 +1495,10 @@ footer {
       <div class="logo-text">RAKUDA <span>COSTCUT</span></div>
     </a>
     <nav>
-      <a href="#">機能</a>
+      <a href="#pricing">料金</a>
       <a href="#diagnosis">診断</a>
-      <a href="#">事例</a>
-      <a href="#contact" class="btn-nav">
+      <a href="#" onclick="openBooking();return false;">面談予約</a>
+      <a href="#" class="btn-nav" onclick="openContact();return false;">
         お問い合わせ
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"/>
@@ -1512,7 +1797,7 @@ footer {
 
       </div>
 
-      <button class="btn-diagnose" onclick="document.getElementById('result').scrollIntoView({behavior:'smooth'})">
+      <button class="btn-diagnose" id="btnDiagnose" onclick="runDiagnosis()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/>
           <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -1529,19 +1814,26 @@ footer {
 </section>
 
 <!-- ═══ RESULT SECTION ═══ -->
-<section class="result-section" id="result">
+<!-- Loading screen (inserted between diagnosis and result) -->
+<div class="diag-loading" id="diagLoading">
+  <div class="diag-spinner"></div>
+  <div class="diag-loading-text" id="diagLoadingText">AIが分析中...</div>
+  <div class="diag-loading-sub">業界3,200社のデータと照合しています</div>
+</div>
+
+<section class="result-section is-hidden" id="result">
   <div class="result-inner">
 
     <!-- Score header row -->
     <div class="result-header-row">
       <div class="score-display">
-        <div class="score-rank">B+</div>
-        <div class="score-pts">72 / 100</div>
+        <div class="score-rank" id="scoreRank">B+</div>
+        <div class="score-pts"><span id="scoreNum">72</span> / 100</div>
       </div>
       <div class="score-context">
         <div class="score-context-tag">DIAGNOSIS COMPLETE</div>
-        <div class="score-context-title">製造業・年商20〜100億円のうち<br>上位32%に位置します</div>
-        <div class="score-context-desc">AIが業界ベンチマーク3,200社のデータと比較しました。間接材コストに改善余地があり、適切な対策で年間800万円の削減が見込まれます。</div>
+        <div class="score-context-title" id="scoreContextTitle">製造業・年商20〜100億円のうち<br>上位32%に位置します</div>
+        <div class="score-context-desc" id="scoreContextDesc">AIが業界ベンチマーク3,200社のデータと比較しました。間接材コストに改善余地があり、適切な対策で年間800万円の削減が見込まれます。</div>
       </div>
     </div>
 
@@ -1579,19 +1871,20 @@ footer {
               stroke-width="1.5"
               stroke-dasharray="4 3"/>
 
-            <!-- You: 間接材60%, 販管費72%, 外注78%, 人件費88%, 調達58% -->
-            <polygon
-              points="0,-54 61.6,-20 41.3,56.7 -46.5,63.9 -49.6,-16.1"
+            <!-- You: dynamic polygon -->
+            <polygon id="radarPoly"
+              points="0,0 0,0 0,0 0,0 0,0"
               fill="rgba(37,99,235,0.1)"
               stroke="#2563EB"
-              stroke-width="2"/>
+              stroke-width="2"
+              class="radar-poly-anim"/>
 
             <!-- Dots -->
-            <circle cx="0" cy="-54" r="3.5" fill="#2563EB"/>
-            <circle cx="61.6" cy="-20" r="3.5" fill="#2563EB"/>
-            <circle cx="41.3" cy="56.7" r="3.5" fill="#2563EB"/>
-            <circle cx="-46.5" cy="63.9" r="3.5" fill="#2563EB"/>
-            <circle cx="-49.6" cy="-16.1" r="3.5" fill="#2563EB"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
 
             <!-- Axis Labels -->
             <text x="0" y="-98" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">間接材効率</text>
@@ -1614,60 +1907,15 @@ footer {
       </div>
 
       <!-- Improvement Points -->
-      <div class="improvements-block">
+      <div class="improvements-block" id="improvementsBlock">
         <div class="improvements-title">改善ポイント（優先度順）</div>
-
-        <div class="improvement-row">
-          <div class="imp-status red"></div>
-          <div class="imp-body">
-            <div class="imp-category">間接材</div>
-            <div class="imp-text">Monotaro依存度が高い。比較購買で年間800万円削減見込</div>
-          </div>
-          <div class="imp-badge red">要対策</div>
-        </div>
-
-        <div class="improvement-row">
-          <div class="imp-status yellow"></div>
-          <div class="imp-body">
-            <div class="imp-category">外注費</div>
-            <div class="imp-text">業界平均並み。内製化で10%改善余地</div>
-          </div>
-          <div class="imp-badge yellow">要検討</div>
-        </div>
-
-        <div class="improvement-row">
-          <div class="imp-status green"></div>
-          <div class="imp-body">
-            <div class="imp-category">人件費</div>
-            <div class="imp-text">効率的。現状維持推奨</div>
-          </div>
-          <div class="imp-badge green">現状維持</div>
-        </div>
-
-        <div class="improvement-row">
-          <div class="imp-status yellow"></div>
-          <div class="imp-body">
-            <div class="imp-category">調達戦略</div>
-            <div class="imp-text">サプライヤー集中リスクあり。分散調達で5〜8%コスト改善</div>
-          </div>
-          <div class="imp-badge yellow">要検討</div>
-        </div>
-
-        <div class="improvement-row">
-          <div class="imp-status green"></div>
-          <div class="imp-body">
-            <div class="imp-category">販管費率</div>
-            <div class="imp-text">業界平均以下。管理水準は良好</div>
-          </div>
-          <div class="imp-badge green">良好</div>
-        </div>
-
+        <!-- Dynamically populated by JS -->
       </div>
     </div>
 
     <!-- Freemium Wall -->
-    <div class="freemium-wall">
-      <div class="freemium-inner">
+    <div class="freemium-wall" id="freemiumWall">
+      <div class="freemium-inner" id="freemiumForm">
         <div class="freemium-icon-wrap">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -1680,8 +1928,8 @@ footer {
         <div class="freemium-title">詳細レポートをメールで受け取る</div>
         <div class="freemium-sub">改善施策の具体的ステップ・類似事例・ROIシミュレーションをPDFで送付します。無料・スパムなし。</div>
         <div class="email-row">
-          <input class="email-input" type="email" placeholder="ビジネスメールアドレスを入力">
-          <button class="btn-report">レポートを受け取る
+          <input class="email-input" id="freemiumEmail" type="email" placeholder="ビジネスメールアドレスを入力">
+          <button class="btn-report" onclick="submitFreemium()">レポートを受け取る
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-left:4px">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -1690,6 +1938,24 @@ footer {
         </div>
         <div class="freemium-note">いつでも配信停止可能。個人情報は第三者に提供しません。</div>
       </div>
+      <div class="freemium-inner" id="freemiumDone" style="display:none">
+        <div class="check-anim">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="freemium-title">レポートを送信しました</div>
+        <div class="freemium-sub">ご入力いただいたメールアドレスに詳細レポートをお送りしました。<br>数分以内に届かない場合は迷惑メールフォルダをご確認ください。</div>
+      </div>
+    </div>
+
+    <!-- Retry Button -->
+    <div style="text-align:center">
+      <button class="btn-retry" onclick="retryDiagnosis()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </svg>
+        もう一度診断する
+      </button>
     </div>
 
   </div>
@@ -1700,7 +1966,7 @@ footer {
   <div class="cta-inner">
     <h2 class="cta-title">まずはお気軽に<br>ご相談ください</h2>
     <p class="cta-sub">このような無料診断ツールをはじめ、AIを活用したコスト分析・削減施策のご提案から実行支援まで提供しています。</p>
-    <button class="btn-cta" onclick="document.getElementById('diagnosis').scrollIntoView({behavior:'smooth'})">
+    <button class="btn-cta" onclick="openContact()">
       お問い合わせ
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="5" y1="12" x2="19" y2="12"/>
@@ -1718,57 +1984,685 @@ footer {
     <div class="footer-links">
       <a href="#">利用規約</a>
       <a href="#">プライバシーポリシー</a>
-      <a href="#">お問い合わせ</a>
+      <a href="#" onclick="openContact();return false;">お問い合わせ</a>
     </div>
     <div class="footer-copy">&copy; 2026 RAKUDA COSTCUT. All rights reserved.</div>
   </div>
 </footer>
 
+<!-- ═══ CONTACT MODAL ═══ -->
+<div class="modal-overlay contact-modal" id="contactModal" onclick="if(event.target===this)closeContact()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeContact()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="contact-grid">
+      <div class="contact-left">
+        <div class="contact-left-label">RAKUDA COSTCUT</div>
+        <h3>AIコスト診断から<br>実行支援まで</h3>
+        <div class="contact-step-list">
+          <div class="contact-step-item">
+            <div class="contact-step-num">1</div>
+            <div class="contact-step-text"><strong>AI診断</strong><br>30秒のセルフ診断で改善余地を特定</div>
+          </div>
+          <div class="contact-step-item">
+            <div class="contact-step-num">2</div>
+            <div class="contact-step-text"><strong>詳細分析</strong><br>専門チームがデータを深掘り分析</div>
+          </div>
+          <div class="contact-step-item">
+            <div class="contact-step-num">3</div>
+            <div class="contact-step-text"><strong>実行支援</strong><br>施策立案から効果測定まで伴走</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-right contact-form-area" id="contactFormArea">
+        <h3>お問い合わせ</h3>
+        <form id="contactForm" onsubmit="submitContact(event)">
+          <div class="form-group">
+            <label class="form-label">会社名<span class="req">*</span></label>
+            <input class="form-input" id="cCompany" required placeholder="株式会社〇〇">
+            <div class="form-error" id="errCompany">会社名を入力してください</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">氏名<span class="req">*</span></label>
+            <input class="form-input" id="cName" required placeholder="山田 太郎">
+            <div class="form-error" id="errName">氏名を入力してください</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">メールアドレス<span class="req">*</span></label>
+            <input class="form-input" id="cEmail" type="email" required placeholder="taro@example.co.jp">
+            <div class="form-error" id="errEmail">有効なメールアドレスを入力してください</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">電話番号</label>
+            <input class="form-input" id="cPhone" placeholder="03-1234-5678">
+          </div>
+          <div class="form-group">
+            <label class="form-label">従業員規模</label>
+            <select class="form-select" id="cSize">
+              <option value="">選択してください</option>
+              <option>1〜50名</option>
+              <option>51〜200名</option>
+              <option>201〜500名</option>
+              <option>501〜1000名</option>
+              <option>1001名以上</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ご相談内容</label>
+            <textarea class="form-textarea" id="cMessage" placeholder="ご相談内容をご記入ください"></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="btnContactSubmit">送信する</button>
+        </form>
+      </div>
+      <div class="contact-right contact-complete" id="contactComplete">
+        <div class="check-anim">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4>お問い合わせを受け付けました</h4>
+        <p>1営業日以内にご連絡いたします。<br>しばらくお待ちください。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOOKING MODAL ═══ -->
+<div class="modal-overlay booking-modal" id="bookingModal" onclick="if(event.target===this)closeBooking()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeBooking()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="booking-steps-area" id="bookingStepsArea">
+      <div class="booking-progress" id="bookingProgress">
+        <div class="booking-progress-bar active"></div>
+        <div class="booking-progress-bar"></div>
+        <div class="booking-progress-bar"></div>
+      </div>
+      <!-- Step 1: Date -->
+      <div class="booking-step is-active" id="bookStep1">
+        <div class="booking-title">日程を選択</div>
+        <div class="booking-sub">ご希望の日付を選んでください</div>
+        <div class="cal-nav">
+          <button class="cal-nav-btn" onclick="calPrev()">&larr;</button>
+          <div class="cal-nav-title" id="calTitle"></div>
+          <button class="cal-nav-btn" onclick="calNext()">&rarr;</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="booking-nav">
+          <button class="btn-book-next" id="btnDate" disabled onclick="goBookStep(2)">次へ：時間を選択</button>
+        </div>
+      </div>
+      <!-- Step 2: Time -->
+      <div class="booking-step" id="bookStep2">
+        <div class="booking-title">時間を選択</div>
+        <div class="booking-sub" id="bookDateLabel">選択した日付の空き枠</div>
+        <div class="time-grid" id="timeGrid"></div>
+        <div class="booking-nav">
+          <button class="btn-book-back" onclick="goBookStep(1)">戻る</button>
+          <button class="btn-book-next" id="btnTime" disabled onclick="goBookStep(3)">次へ：情報入力</button>
+        </div>
+      </div>
+      <!-- Step 3: Info + Confirm -->
+      <div class="booking-step" id="bookStep3">
+        <div class="booking-title">ご予約内容の確認</div>
+        <div class="booking-sub">情報を入力して予約を確定してください</div>
+        <div class="booking-confirm-summary" id="bookSummary">
+          <div class="booking-confirm-row"><span class="label">日付</span><span class="value" id="sumDate">-</span></div>
+          <div class="booking-confirm-row"><span class="label">時間</span><span class="value" id="sumTime">-</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">氏名<span class="req">*</span></label>
+          <input class="form-input" id="bName" required placeholder="山田 太郎">
+        </div>
+        <div class="form-group">
+          <label class="form-label">メールアドレス<span class="req">*</span></label>
+          <input class="form-input" id="bEmail" type="email" required placeholder="taro@example.co.jp">
+        </div>
+        <div class="form-group">
+          <label class="form-label">会社名</label>
+          <input class="form-input" id="bCompany" placeholder="株式会社〇〇">
+        </div>
+        <div class="booking-nav">
+          <button class="btn-book-back" onclick="goBookStep(2)">戻る</button>
+          <button class="btn-book-next" onclick="confirmBooking()">予約を確定する</button>
+        </div>
+      </div>
+    </div>
+    <div class="booking-complete" id="bookingComplete">
+      <div class="check-anim">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h4 style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">予約が確定しました</h4>
+      <p style="font-size:14px;color:var(--ink-secondary);line-height:1.6">確認メールをお送りしました。<br>当日はオンラインでお会いしましょう。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHATBOT ═══ -->
+<button class="chatbot-fab" id="chatFab" onclick="toggleChat()">
+  <svg class="fab-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <svg class="fab-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">R</div>
+    <div class="chatbot-header-info">
+      <div class="chatbot-header-name">RAKUDA AI</div>
+      <div class="chatbot-header-status">オンライン</div>
+    </div>
+  </div>
+  <div class="chatbot-messages" id="chatMessages">
+    <div class="chat-msg bot">
+      <div class="chat-bubble">こんにちは! RAKUDA COSTCUTのAIアシスタントです。コスト削減について何でもお気軽にご質問ください。</div>
+    </div>
+    <div class="chat-quick-actions" id="chatQuickActions">
+      <button class="chat-quick-btn" onclick="sendQuickChat('サービスについて教えて')">サービスについて</button>
+      <button class="chat-quick-btn" onclick="sendQuickChat('料金体系を知りたい')">料金体系</button>
+      <button class="chat-quick-btn" onclick="sendQuickChat('無料診断を試したい')">無料診断</button>
+    </div>
+  </div>
+  <div class="chatbot-input-area">
+    <input class="chatbot-input" id="chatInput" placeholder="メッセージを入力..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chatbot-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
 <script>
-  // Single-select for industry and revenue
-  function selectCard(el, group) {
-    document.querySelectorAll('[data-group="' + group + '"]').forEach(function(c) {
-      c.classList.remove('is-selected');
+/* ========================================================
+   ORIGINAL FUNCTIONS (preserved & extended)
+   ======================================================== */
+function selectCard(el, group) {
+  document.querySelectorAll('[data-group="' + group + '"]').forEach(function(c) {
+    c.classList.remove('is-selected');
+  });
+  el.classList.add('is-selected');
+  updateProgress();
+}
+
+function toggleCost(el) {
+  el.classList.toggle('is-selected');
+  updateProgress();
+}
+
+var progressBar = document.getElementById('diagProgressBar');
+function updateProgress() {
+  var hasIndustry = document.querySelector('[data-group="industry"].is-selected') ? 1 : 0;
+  var hasRevenue  = document.querySelector('[data-group="revenue"].is-selected') ? 1 : 0;
+  var hasCost     = document.querySelector('.cost-card.is-selected') ? 1 : 0;
+  var pct = Math.round(((hasIndustry + hasRevenue + hasCost) / 3) * 100);
+  progressBar.style.width = pct + '%';
+}
+
+/* ========================================================
+   CONTACT MODAL
+   ======================================================== */
+function openContact() {
+  document.getElementById('contactModal').classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeContact() {
+  document.getElementById('contactModal').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+function submitContact(e) {
+  e.preventDefault();
+  var valid = true;
+  var fields = [
+    { id: 'cCompany', err: 'errCompany' },
+    { id: 'cName', err: 'errName' },
+    { id: 'cEmail', err: 'errEmail' }
+  ];
+  fields.forEach(function(f) {
+    var el = document.getElementById(f.id);
+    var errEl = document.getElementById(f.err);
+    if (!el.value.trim() || (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value))) {
+      errEl.classList.add('show');
+      valid = false;
+    } else {
+      errEl.classList.remove('show');
+    }
+  });
+  if (!valid) return;
+  document.getElementById('contactFormArea').classList.add('is-hide');
+  document.getElementById('contactComplete').classList.add('is-show');
+}
+
+/* ========================================================
+   BOOKING MODAL
+   ======================================================== */
+var bookState = { date: null, time: null, calOffset: 0 };
+var timeSlots = ['10:00', '11:00', '13:00', '14:00', '15:00', '16:00'];
+
+function openBooking() {
+  bookState = { date: null, time: null, calOffset: 0 };
+  document.getElementById('bookingStepsArea').classList.remove('is-hide');
+  document.getElementById('bookingComplete').classList.remove('is-show');
+  goBookStep(1);
+  renderCal();
+  document.getElementById('bookingModal').classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBooking() {
+  document.getElementById('bookingModal').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+function goBookStep(n) {
+  for (var i = 1; i <= 3; i++) {
+    var s = document.getElementById('bookStep' + i);
+    s.classList.toggle('is-active', i === n);
+  }
+  var bars = document.querySelectorAll('#bookingProgress .booking-progress-bar');
+  bars.forEach(function(b, idx) { b.classList.toggle('active', idx < n); });
+  if (n === 2) {
+    document.getElementById('bookDateLabel').textContent = bookState.date + ' の空き枠';
+    renderTimeSlots();
+  }
+  if (n === 3) {
+    document.getElementById('sumDate').textContent = bookState.date || '-';
+    document.getElementById('sumTime').textContent = bookState.time || '-';
+  }
+}
+function renderCal() {
+  var today = new Date();
+  var start = new Date(today);
+  start.setDate(start.getDate() + bookState.calOffset * 14);
+  if (start < today) start = new Date(today);
+  var end = new Date(start);
+  end.setDate(end.getDate() + 13);
+  var months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  document.getElementById('calTitle').textContent = start.getFullYear() + '年 ' + months[start.getMonth()];
+  var grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  var headers = ['日','月','火','水','木','金','土'];
+  headers.forEach(function(h) {
+    var d = document.createElement('div');
+    d.className = 'cal-header';
+    d.textContent = h;
+    grid.appendChild(d);
+  });
+  var firstDay = new Date(start);
+  var dow = firstDay.getDay();
+  for (var i = 0; i < dow; i++) {
+    var blank = document.createElement('div');
+    blank.className = 'cal-day disabled';
+    grid.appendChild(blank);
+  }
+  var cur = new Date(start);
+  while (cur <= end) {
+    var el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = cur.getDate();
+    var dayOfWeek = cur.getDay();
+    var dateStr = cur.getFullYear() + '/' + (cur.getMonth()+1) + '/' + cur.getDate();
+    if (dayOfWeek === 0 || dayOfWeek === 6 || cur < today) {
+      el.classList.add('disabled');
+    } else {
+      el.setAttribute('data-date', dateStr);
+      el.onclick = (function(ds, elem) {
+        return function() {
+          document.querySelectorAll('.cal-day.selected').forEach(function(c) { c.classList.remove('selected'); });
+          elem.classList.add('selected');
+          bookState.date = ds;
+          document.getElementById('btnDate').disabled = false;
+        };
+      })(dateStr, el);
+    }
+    if (cur.toDateString() === today.toDateString()) el.classList.add('today');
+    if (bookState.date === dateStr) el.classList.add('selected');
+    grid.appendChild(el);
+    cur.setDate(cur.getDate() + 1);
+  }
+}
+function calPrev() { if (bookState.calOffset > 0) { bookState.calOffset--; renderCal(); } }
+function calNext() { bookState.calOffset++; renderCal(); }
+function renderTimeSlots() {
+  var grid = document.getElementById('timeGrid');
+  grid.innerHTML = '';
+  timeSlots.forEach(function(t) {
+    var el = document.createElement('div');
+    el.className = 'time-slot';
+    el.textContent = t;
+    if (bookState.time === t) el.classList.add('selected');
+    el.onclick = function() {
+      document.querySelectorAll('.time-slot.selected').forEach(function(c) { c.classList.remove('selected'); });
+      el.classList.add('selected');
+      bookState.time = t;
+      document.getElementById('btnTime').disabled = false;
+    };
+    grid.appendChild(el);
+  });
+}
+function confirmBooking() {
+  var name = document.getElementById('bName').value.trim();
+  var email = document.getElementById('bEmail').value.trim();
+  if (!name || !email) { alert('氏名とメールアドレスを入力してください'); return; }
+  document.getElementById('bookingStepsArea').classList.add('is-hide');
+  document.getElementById('bookingComplete').classList.add('is-show');
+}
+
+/* ========================================================
+   CHATBOT
+   ======================================================== */
+function toggleChat() {
+  var fab = document.getElementById('chatFab');
+  var win = document.getElementById('chatWindow');
+  fab.classList.toggle('is-open');
+  win.classList.toggle('is-open');
+}
+function sendQuickChat(text) {
+  var qa = document.getElementById('chatQuickActions');
+  if (qa) qa.remove();
+  addChatMsg(text, 'user');
+  showTyping();
+  setTimeout(function() { removeTyping(); addChatMsg(getBotReply(text), 'bot'); }, 1200);
+}
+function sendChat() {
+  var input = document.getElementById('chatInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addChatMsg(text, 'user');
+  showTyping();
+  setTimeout(function() { removeTyping(); addChatMsg(getBotReply(text), 'bot'); }, 1200);
+}
+function addChatMsg(text, who) {
+  var msgs = document.getElementById('chatMessages');
+  var div = document.createElement('div');
+  div.className = 'chat-msg ' + who;
+  div.innerHTML = '<div class="chat-bubble">' + text + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function showTyping() {
+  var msgs = document.getElementById('chatMessages');
+  var div = document.createElement('div');
+  div.className = 'chat-typing';
+  div.id = 'chatTyping';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function removeTyping() {
+  var t = document.getElementById('chatTyping');
+  if (t) t.remove();
+}
+function getBotReply(text) {
+  var t = text.toLowerCase();
+  if (t.includes('料金') || t.includes('価格') || t.includes('費用')) {
+    return '無料のセルフ診断と、月額制のPro（コンサルティング付き）プランをご用意しています。詳しくはお問い合わせください。';
+  }
+  if (t.includes('サービス') || t.includes('何ができる')) {
+    return 'AIによるコスト体質診断、業界ベンチマーク比較、改善施策の提案、そして実行支援までワンストップで提供しています。';
+  }
+  if (t.includes('診断') || t.includes('無料')) {
+    return 'ページ上部の「無料で診断する」ボタンから、30秒でコスト体質診断ができます。業種・規模・課題を選ぶだけです!';
+  }
+  if (t.includes('事例') || t.includes('実績')) {
+    return '製造業のお客様で年間800万円、IT企業で年間1,200万円のコスト削減実績があります。詳細は個別にご紹介します。';
+  }
+  if (t.includes('問い合わせ') || t.includes('相談') || t.includes('連絡')) {
+    return 'ページ右上の「お問い合わせ」ボタンからフォームをご利用ください。1営業日以内にご連絡いたします。';
+  }
+  return 'ご質問ありがとうございます。より詳しいご説明は専門チームが対応いたします。お問い合わせフォームからご連絡いただけますか?';
+}
+
+/* ========================================================
+   DIAGNOSIS FLOW — FULL INTERACTIVE
+   ======================================================== */
+var industryData = {
+  '製造業': { label: '製造業', focus: '販管費率', tip: '販管費率が高め。生産コスト最適化で改善余地があります。', radarBias: [0.6, 0.72, 0.78, 0.88, 0.58] },
+  'IT・通信': { label: 'IT・通信', focus: 'SaaS費', tip: 'SaaSツール費が業界平均を上回っています。ライセンス統合を推奨。', radarBias: [0.82, 0.55, 0.65, 0.7, 0.8] },
+  '小売・卸売': { label: '小売・卸売', focus: '在庫コスト', tip: '在庫回転率に改善余地。需要予測AIで過剰在庫を削減可能。', radarBias: [0.7, 0.68, 0.6, 0.75, 0.55] },
+  '建設・不動産': { label: '建設・不動産', focus: '外注費', tip: '外注費依存度が高い傾向。内製化比率の最適化を推奨。', radarBias: [0.65, 0.7, 0.55, 0.8, 0.62] },
+  '医療・介護': { label: '医療・介護', focus: '人件費', tip: '人件費率が業界特性上高め。業務自動化で間接業務を効率化可能。', radarBias: [0.72, 0.75, 0.7, 0.55, 0.68] },
+  'その他': { label: 'サービス業', focus: '販管費', tip: '全体的にバランスの取れたコスト構造。販管費に若干の改善余地。', radarBias: [0.7, 0.65, 0.7, 0.75, 0.65] }
+};
+var revMultiplier = { '〜5億円': 0.6, '5〜20億円': 0.8, '20〜100億円': 1.0, '100億円〜': 1.5 };
+var revLabels = { '〜5億円': '〜5億円', '5〜20億円': '5〜20億円', '20〜100億円': '20〜100億円', '100億円〜': '100億円〜' };
+
+function getSelectedIndustry() {
+  var sel = document.querySelector('[data-group="industry"].is-selected .sel-card-label');
+  return sel ? sel.textContent.trim() : null;
+}
+function getSelectedRevenue() {
+  var sel = document.querySelector('[data-group="revenue"].is-selected .rev-amount');
+  return sel ? sel.textContent.trim() : null;
+}
+function getSelectedCosts() {
+  var items = [];
+  document.querySelectorAll('.cost-card.is-selected .cost-card-label').forEach(function(el) {
+    items.push(el.textContent.trim());
+  });
+  return items;
+}
+
+function runDiagnosis() {
+  var industry = getSelectedIndustry();
+  var revenue = getSelectedRevenue();
+  var costs = getSelectedCosts();
+  if (!industry || !revenue || costs.length === 0) {
+    alert('すべてのステップを選択してから診断してください。');
+    return;
+  }
+  // Animate progress to 100%
+  progressBar.style.width = '100%';
+
+  // Hide diagnosis section
+  setTimeout(function() {
+    document.querySelector('.diagnosis-section').classList.add('is-hidden');
+    // Show loading
+    var loading = document.getElementById('diagLoading');
+    loading.classList.add('is-show');
+    loading.scrollIntoView({ behavior: 'smooth' });
+
+    var texts = ['業界データを照合中...', 'ベンチマーク比較中...', '改善ポイント算出中...'];
+    var idx = 0;
+    var loadText = document.getElementById('diagLoadingText');
+    loadText.textContent = texts[0];
+    var interval = setInterval(function() {
+      idx++;
+      if (idx < texts.length) {
+        loadText.style.opacity = '0';
+        setTimeout(function() {
+          loadText.textContent = texts[idx];
+          loadText.style.opacity = '1';
+        }, 200);
+      }
+    }, 1000);
+
+    // After 3 seconds, show results
+    setTimeout(function() {
+      clearInterval(interval);
+      loading.classList.remove('is-show');
+      showResults(industry, revenue, costs);
+    }, 3200);
+  }, 400);
+}
+
+function showResults(industry, revenue, costs) {
+  var indData = industryData[industry] || industryData['その他'];
+  var mult = revMultiplier[revenue] || 1.0;
+  var costCount = costs.length;
+
+  // Calculate score: base 85, minus 4 per cost issue, adjusted by industry
+  var baseScore = 85 - (costCount * 4);
+  var avgRadar = indData.radarBias.reduce(function(a,b){return a+b;}, 0) / 5;
+  var score = Math.round(baseScore * avgRadar * (1 + (mult - 1) * 0.1));
+  score = Math.max(30, Math.min(95, score));
+
+  // Rank
+  var rank;
+  if (score >= 85) rank = 'A';
+  else if (score >= 75) rank = 'B+';
+  else if (score >= 65) rank = 'B';
+  else if (score >= 50) rank = 'C+';
+  else rank = 'C';
+
+  // Savings estimate
+  var baseSavings = { '〜5億円': 300, '5〜20億円': 600, '20〜100億円': 800, '100億円〜': 2500 };
+  var savings = (baseSavings[revenue] || 800) * (costCount > 3 ? 1.3 : 1.0);
+
+  // Percentile
+  var percentile = Math.max(5, Math.min(80, 100 - score));
+
+  // Update score display
+  var resultSection = document.getElementById('result');
+  resultSection.classList.remove('is-hidden');
+  resultSection.classList.add('fade-in-result');
+  setTimeout(function() {
+    resultSection.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+
+  // Count-up animation for score
+  var scoreEl = document.getElementById('scoreNum');
+  var rankEl = document.getElementById('scoreRank');
+  animateCount(scoreEl, 0, score, 1200);
+  setTimeout(function() {
+    rankEl.textContent = rank;
+    rankEl.classList.add('score-rank-pop');
+    setTimeout(function() { rankEl.classList.remove('score-rank-pop'); }, 600);
+  }, 800);
+
+  // Update context
+  document.getElementById('scoreContextTitle').innerHTML = indData.label + '・年商' + (revLabels[revenue] || revenue) + 'のうち<br>上位' + percentile + '%に位置します';
+  document.getElementById('scoreContextDesc').textContent = 'AIが業界ベンチマーク3,200社のデータと比較しました。' + indData.tip + ' 適切な対策で年間' + Math.round(savings) + '万円の削減が見込まれます。';
+
+  // Animate radar chart
+  animateRadar(indData.radarBias);
+
+  // Populate improvements
+  populateImprovements(costs, indData, savings);
+}
+
+function animateCount(el, from, to, duration) {
+  var start = performance.now();
+  function step(ts) {
+    var progress = Math.min((ts - start) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function animateRadar(biases) {
+  var R = 90;
+  var angles = [
+    { cos: 0, sin: -1 },
+    { cos: 0.9511, sin: -0.309 },
+    { cos: 0.5878, sin: 0.809 },
+    { cos: -0.5878, sin: 0.809 },
+    { cos: -0.9511, sin: -0.309 }
+  ];
+  var poly = document.getElementById('radarPoly');
+  var dots = document.querySelectorAll('.radar-dot');
+
+  // Start from center
+  poly.setAttribute('points', '0,0 0,0 0,0 0,0 0,0');
+  dots.forEach(function(d) { d.setAttribute('cx', '0'); d.setAttribute('cy', '0'); });
+
+  setTimeout(function() {
+    var pts = biases.map(function(b, i) {
+      var x = angles[i].cos * R * b;
+      var y = angles[i].sin * R * b;
+      return x.toFixed(1) + ',' + y.toFixed(1);
     });
-    el.classList.add('is-selected');
-  }
+    poly.setAttribute('points', pts.join(' '));
+    dots.forEach(function(d, i) {
+      d.setAttribute('cx', (angles[i].cos * R * biases[i]).toFixed(1));
+      d.setAttribute('cy', (angles[i].sin * R * biases[i]).toFixed(1));
+    });
+  }, 200);
+}
 
-  // Multi-select for cost issues
-  function toggleCost(el) {
-    el.classList.toggle('is-selected');
-  }
+function populateImprovements(costs, indData, savings) {
+  var block = document.getElementById('improvementsBlock');
+  block.innerHTML = '<div class="improvements-title">改善ポイント（優先度順）</div>';
 
-  // Progress bar responds to diagnosis interactions
-  var progressBar = document.getElementById('diagProgressBar');
+  var allImprovements = {
+    '間接材が高い': { cat: '間接材', text: '比較購買の導入で年間' + Math.round(savings * 0.35) + '万円削減見込', level: 'red', badge: '要対策' },
+    '外注費が多い': { cat: '外注費', text: '内製化比率を高めることで10〜15%の改善余地', level: 'yellow', badge: '要検討' },
+    '人件費率が高い': { cat: '人件費', text: '業務自動化（RPA/AI）で間接人件費を圧縮可能', level: 'yellow', badge: '要検討' },
+    '販管費増加傾向': { cat: '販管費', text: '固定費の変動費化とコスト配賦見直しを推奨', level: 'red', badge: '要対策' },
+    'エネルギーコスト': { cat: 'エネルギー', text: '電力契約の見直し・省エネ投資で15〜20%削減可能', level: 'yellow', badge: '要検討' },
+    '把握できていない': { cat: 'コスト可視化', text: 'まずABCコスト分析で全体像を把握することが急務', level: 'red', badge: '要対策' }
+  };
 
-  document.querySelectorAll('[data-group="industry"]').forEach(function(c) {
-    c.addEventListener('click', function() { updateProgress(); });
+  costs.forEach(function(c) {
+    var imp = allImprovements[c];
+    if (!imp) return;
+    var row = document.createElement('div');
+    row.className = 'improvement-row';
+    row.innerHTML =
+      '<div class="imp-status ' + imp.level + '"></div>' +
+      '<div class="imp-body"><div class="imp-category">' + imp.cat + '</div><div class="imp-text">' + imp.text + '</div></div>' +
+      '<div class="imp-badge ' + imp.level + '">' + imp.badge + '</div>';
+    block.appendChild(row);
   });
 
-  document.querySelectorAll('[data-group="revenue"]').forEach(function(c) {
-    c.addEventListener('click', function() { updateProgress(); });
-  });
+  // Add focus area from industry
+  var focusRow = document.createElement('div');
+  focusRow.className = 'improvement-row';
+  focusRow.innerHTML =
+    '<div class="imp-status green"></div>' +
+    '<div class="imp-body"><div class="imp-category">' + indData.focus + '（業界特性）</div><div class="imp-text">' + indData.tip + '</div></div>' +
+    '<div class="imp-badge green">参考情報</div>';
+  block.appendChild(focusRow);
+}
 
-  document.querySelectorAll('.cost-card').forEach(function(c) {
-    c.addEventListener('click', function() { updateProgress(); });
-  });
+function retryDiagnosis() {
+  var resultSection = document.getElementById('result');
+  resultSection.classList.add('is-hidden');
+  resultSection.classList.remove('fade-in-result');
+  document.querySelector('.diagnosis-section').classList.remove('is-hidden');
+  document.getElementById('diagLoading').classList.remove('is-show');
+  // Reset freemium
+  document.getElementById('freemiumForm').style.display = '';
+  document.getElementById('freemiumDone').style.display = 'none';
+  updateProgress();
+  document.getElementById('diagnosis').scrollIntoView({ behavior: 'smooth' });
+}
 
-  function updateProgress() {
-    var hasIndustry = document.querySelector('[data-group="industry"].is-selected') ? 1 : 0;
-    var hasRevenue  = document.querySelector('[data-group="revenue"].is-selected') ? 1 : 0;
-    var hasCost     = document.querySelector('.cost-card.is-selected') ? 1 : 0;
-    var pct = Math.round(((hasIndustry + hasRevenue + hasCost) / 3) * 100);
-    progressBar.style.width = pct + '%';
+/* ========================================================
+   FREEMIUM WALL
+   ======================================================== */
+function submitFreemium() {
+  var email = document.getElementById('freemiumEmail').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('freemiumEmail').style.borderColor = '#EF4444';
+    return;
   }
-</script>
+  document.getElementById('freemiumForm').style.display = 'none';
+  document.getElementById('freemiumDone').style.display = 'block';
+}
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('section:not(.hero):not(.diagnosis-section)').forEach(s => s.classList.add('fade-in-section'));
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+/* ========================================================
+   ESC KEY HANDLER
+   ======================================================== */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeContact();
+    closeBooking();
+  }
+});
+
+/* ========================================================
+   SCROLL FADE-IN (original, preserved)
+   ======================================================== */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('section:not(.hero):not(.diagnosis-section)').forEach(function(s) { s.classList.add('fade-in-section'); });
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
   }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in-section').forEach(s => obs.observe(s));
+  document.querySelectorAll('.fade-in-section').forEach(function(s) { obs.observe(s); });
 });
 </script>
 </body>

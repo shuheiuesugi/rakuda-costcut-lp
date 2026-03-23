@@ -29,6 +29,7 @@
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
       --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+      --danger: #DC2626;
     }
 
     /* ===== TYPOGRAPHY ===== */
@@ -57,52 +58,73 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 100;
-      height: 64px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      z-index: 200;
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
     }
     .header-inner {
-      height: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--dark);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-text {
       font-size: 15px;
       font-weight: 700;
       color: var(--ink);
-      text-decoration: none;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.3px;
     }
-    .header-nav {
+    .logo-text span { color: var(--accent); }
+    nav {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 4px;
     }
-    .nav-link {
-      font-size: 0.875rem;
-      font-weight: 500;
+    nav a {
       color: var(--ink-secondary);
       text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
       transition: color 0.15s;
     }
-    .nav-link:hover { color: var(--ink); }
-    .btn-header {
+    nav a:hover { color: var(--ink); }
+    .btn-nav {
       display: inline-flex;
       align-items: center;
-      padding: 9px 18px;
-      background: var(--ink);
-      color: #fff;
-      font-size: 0.875rem;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--surface) !important;
+      font-size: 14px;
       font-weight: 500;
-      text-decoration: none;
+      padding: 8px 18px;
       border-radius: 6px;
       transition: all 0.2s ease;
+      margin-left: 8px;
     }
-    .btn-header:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* ===== HERO ===== */
     .hero {
@@ -163,6 +185,8 @@
       text-decoration: none;
       border-radius: 6px;
       transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
     }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-text-link {
@@ -279,6 +303,9 @@
       gap: 12px;
       margin-bottom: 16px;
       min-height: 280px;
+      max-height: 440px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
     }
 
     /* Bubbles */
@@ -360,8 +387,11 @@
       background: transparent;
       font-family: inherit;
       font-size: 0.875rem;
-      color: var(--ink-secondary);
+      color: var(--ink);
       outline: none;
+    }
+    .chat-input-row input::placeholder {
+      color: var(--ink-secondary);
     }
     .chat-send-btn {
       display: flex;
@@ -377,6 +407,35 @@
       transition: all 0.2s ease;
     }
     .chat-send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+    }
+    .typing-indicator span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ink-secondary);
+      animation: typingBounce 1.4s infinite ease-in-out;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* Bubble appear animation */
+    .bubble-appear {
+      animation: bubbleIn 0.3s ease-out;
+    }
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     /* ===== USE CASES ===== */
     .usecases-section {
@@ -568,67 +627,45 @@
 
     /* ===== FOOTER ===== */
     footer {
-      background: var(--dark);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 48px 0 36px;
+      background: #0D0D10;
+      padding: 40px 32px;
     }
     .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 32px;
+      gap: 16px;
       flex-wrap: wrap;
     }
     .footer-logo {
       font-size: 14px;
       font-weight: 700;
-      color: #FFFFFF;
-      text-decoration: none;
-      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.6);
     }
-    .footer-tagline {
-      font-size: 0.8125rem;
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 13px;
       color: rgba(255,255,255,0.35);
-      margin-top: 8px;
-    }
-    .footer-links {
-      display: flex;
-      gap: 48px;
-      flex-wrap: wrap;
-    }
-    .footer-col h4 {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 14px;
-    }
-    .footer-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-    .footer-col a {
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.45);
       text-decoration: none;
+      font-weight: 400;
       transition: color 0.15s;
     }
-    .footer-col a:hover { color: rgba(255,255,255,0.75); }
-    .footer-bottom {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      font-size: 0.8125rem;
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+    .footer-copy {
+      font-size: 12px;
       color: rgba(255,255,255,0.25);
+      font-weight: 400;
     }
 
+    @media (max-width: 768px) {
+      nav a:not(.btn-nav) { display: none; }
+    }
     @media (max-width: 600px) {
       .container { padding: 0 20px; }
       .hero { padding: 96px 0 64px; }
-      .header-nav .nav-link { display: none; }
       .chat-section { padding: 64px 0; }
       .usecases-section { padding: 64px 0; }
       .pricing-section { padding: 64px 0; }
@@ -667,21 +704,703 @@
     /* ===== SCROLL FADE-IN ===== */
     .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .fade-in-section.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== MODAL SHARED ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-overlay.active .modal-container {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .modal-container {
+      background: var(--surface);
+      border-radius: 16px;
+      max-width: 860px;
+      width: 92%;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--ink-secondary);
+      transition: all 0.15s;
+      z-index: 2;
+    }
+    .modal-close:hover { color: var(--ink); background: var(--border); }
+    body.modal-open { overflow: hidden; }
+
+    /* ===== CONTACT MODAL ===== */
+    .contact-modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 540px;
+    }
+    @media (max-width: 700px) {
+      .contact-modal-body { grid-template-columns: 1fr; }
+      .contact-left { display: none; }
+    }
+    .contact-left {
+      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
+      padding: 48px 40px;
+      border-radius: 16px 0 0 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .contact-left h3 {
+      color: #fff;
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      letter-spacing: -0.02em;
+    }
+    .contact-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .contact-feature-icon {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(37,99,235,0.15);
+      border-radius: 8px;
+      color: var(--accent);
+    }
+    .contact-feature-text h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .contact-feature-text p {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    .contact-right {
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .contact-right h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .contact-right .form-subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .form-group label .req {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--ink);
+      background: var(--surface);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+    .form-group input.error,
+    .form-group select.error,
+    .form-group textarea.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    }
+    .form-error-msg {
+      font-size: 0.75rem;
+      color: var(--danger);
+      margin-top: 4px;
+      display: none;
+    }
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 700px) {
+      .form-row { grid-template-columns: 1fr; }
+      .contact-right { padding: 36px 24px; }
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 13px 24px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* Contact success */
+    .contact-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 40px;
+      min-height: 400px;
+    }
+    .contact-success.active {
+      display: flex;
+    }
+    .success-check {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(5,150,105,0.1);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .success-check svg {
+      width: 36px; height: 36px;
+      stroke: var(--success);
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: checkDraw 0.6s 0.3s ease forwards;
+    }
+    @keyframes checkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+    .success-check-circle {
+      animation: circleScale 0.4s ease forwards;
+    }
+    @keyframes circleScale {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .contact-success h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .contact-success p {
+      font-size: 0.9375rem;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+
+    /* ===== BOOKING MODAL ===== */
+    .booking-modal .modal-container {
+      max-width: 560px;
+    }
+    .booking-body {
+      padding: 48px 40px;
+    }
+    @media (max-width: 600px) {
+      .booking-body { padding: 32px 20px; }
+    }
+    .booking-body h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .booking-body .booking-subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* Progress bar */
+    .booking-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      white-space: nowrap;
+    }
+    .progress-step.active {
+      color: var(--accent);
+    }
+    .progress-step.done {
+      color: var(--success);
+    }
+    .progress-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--canvas);
+      border: 2px solid var(--border);
+      transition: all 0.3s;
+    }
+    .progress-step.active .progress-num {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .progress-step.done .progress-num {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+    .progress-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-line-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+    .progress-line.filled .progress-line-fill {
+      width: 100%;
+    }
+
+    /* Booking steps */
+    .booking-step {
+      display: none;
+    }
+    .booking-step.active {
+      display: block;
+      animation: fadeSlideUp 0.3s ease;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Calendar grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .calendar-header {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      text-align: center;
+      padding: 8px 0;
+    }
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 2px solid transparent;
+      color: var(--ink);
+    }
+    .calendar-day:hover:not(.disabled):not(.empty) {
+      background: rgba(37,99,235,0.08);
+    }
+    .calendar-day.selected {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .calendar-day.disabled {
+      color: #D1D5DB;
+      cursor: default;
+    }
+    .calendar-day.today {
+      border-color: var(--accent);
+    }
+    .calendar-day.empty {
+      cursor: default;
+    }
+
+    /* Time slots */
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 400px) {
+      .time-slots { grid-template-columns: repeat(2, 1fr); }
+    }
+    .time-slot {
+      padding: 12px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .time-slot:hover {
+      border-color: var(--accent);
+      background: rgba(37,99,235,0.04);
+    }
+    .time-slot.selected {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Booking buttons */
+    .booking-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .btn-booking-back {
+      padding: 11px 20px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.15s;
+    }
+    .btn-booking-back:hover { border-color: #9CA3AF; color: var(--ink); }
+    .btn-booking-next {
+      flex: 1;
+      padding: 11px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-booking-next:hover { background: var(--accent-hover); }
+    .btn-booking-next:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Booking confirmation */
+    .booking-confirm-card {
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .booking-confirm-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 0.875rem;
+    }
+    .booking-confirm-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+    .booking-confirm-label {
+      color: var(--ink-secondary);
+    }
+    .booking-confirm-value {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Booking success */
+    .booking-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .booking-success.active {
+      display: flex;
+    }
+
+    /* ===== CHATBOT WIDGET ===== */
+    .chatbot-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+      transition: all 0.3s ease;
+    }
+    .chatbot-fab:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+    .chatbot-fab.active { transform: rotate(90deg); }
+    .chatbot-fab svg { transition: transform 0.3s; }
+
+    .chatbot-window {
+      position: fixed;
+      bottom: 92px;
+      right: 24px;
+      width: 360px;
+      height: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .chatbot-window.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    @media (max-width: 420px) {
+      .chatbot-window {
+        width: calc(100vw - 16px);
+        right: 8px;
+        bottom: 84px;
+        height: 420px;
+      }
+    }
+    .chatbot-header {
+      padding: 16px 20px;
+      background: var(--dark);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .chatbot-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chatbot-header-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .chatbot-header-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .chatbot-header-status .status-dot {
+      width: 6px;
+      height: 6px;
+    }
+    .chatbot-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      transition: color 0.15s;
+    }
+    .chatbot-close:hover { color: #fff; }
+
+    .chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+    .chatbot-messages .bubble-ai,
+    .chatbot-messages .bubble-user {
+      max-width: 85%;
+    }
+    .chatbot-messages .bubble-ai .bubble-inner {
+      font-size: 0.8125rem;
+      padding: 10px 14px;
+    }
+    .chatbot-messages .bubble-user .bubble-inner {
+      font-size: 0.8125rem;
+      padding: 10px 14px;
+    }
+
+    .chatbot-quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-self: flex-start;
+    }
+    .chatbot-quick-btn {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(37,99,235,0.08);
+      color: var(--accent);
+      border: 1px solid rgba(37,99,235,0.2);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chatbot-quick-btn:hover {
+      background: rgba(37,99,235,0.15);
+    }
+
+    .chatbot-input {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .chatbot-input input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      color: var(--ink);
+      outline: none;
+      background: var(--canvas);
+    }
+    .chatbot-input input:focus {
+      border-color: var(--accent);
+    }
+    .chatbot-input input::placeholder {
+      color: var(--ink-secondary);
+    }
+    .chatbot-send {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .chatbot-send:hover { background: var(--accent-hover); }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
   <header>
-    <div class="container">
-      <div class="header-inner">
-        <a href="#" class="logo">RAKUDA</a>
-        <nav class="header-nav">
-          <a href="#demo" class="nav-link">デモ</a>
-          <a href="#usecases" class="nav-link">活用例</a>
-          <a href="#cta" class="btn-header">お問い合わせ</a>
-        </nav>
-      </div>
+    <div class="header-inner">
+      <a class="logo" href="#">
+        <div class="logo-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
+        </div>
+        <div class="logo-text">RAKUDA <span>COSTCUT</span></div>
+      </a>
+      <nav>
+        <a href="#demo">デモ</a>
+        <a href="#usecases">活用例</a>
+        <a href="#" onclick="openBookingModal();return false;">面談予約</a>
+        <a href="#" class="btn-nav" onclick="openContactModal();return false;">
+          お問い合わせ
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </nav>
     </div>
   </header>
 
@@ -693,7 +1412,7 @@
         <h1>聞くだけで、&#13;&#10;コストの問題点がわかる。</h1>
         <p class="hero-subtitle">専門用語不要。日本語で質問するだけで、AIがコスト構造を診断します。</p>
         <div class="hero-actions">
-          <a href="#cta" class="btn-primary">
+          <a href="javascript:void(0)" class="btn-primary" onclick="openContactModal()">
             お問い合わせ
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -769,8 +1488,8 @@
           </div>
         </div>
 
-        <!-- Right: chat UI -->
-        <div class="chat-card">
+        <!-- Right: chat UI (interactive) -->
+        <div class="chat-card" id="demoChatCard">
           <div class="chat-card-header">
             <span class="chat-card-title">RAKUDA AI</span>
             <span class="chat-status">
@@ -779,61 +1498,19 @@
             </span>
           </div>
 
-          <div class="chat-messages">
-
-            <!-- AI message 1 -->
+          <div class="chat-messages" id="demoChatMessages">
+            <!-- Initial AI message -->
             <div class="bubble-ai">
               <div class="bubble-inner">
-                こんにちは。御社のコスト構造について、いくつか教えてください。業種は何ですか？
+                こんにちは。御社のコスト構造について、いくつか教えてください。まずはお気軽にメッセージをどうぞ。
               </div>
             </div>
-
-            <!-- User message 1 -->
-            <div class="bubble-user">
-              <div class="bubble-inner">
-                製造業で、年商50億くらいです
-              </div>
-            </div>
-
-            <!-- AI message 2 -->
-            <div class="bubble-ai">
-              <div class="bubble-inner">
-                製造業・年商50億円ですね。一般的に、この規模では間接材比率9.8%が平均です。
-              </div>
-            </div>
-
-            <!-- AI result card -->
-            <div class="bubble-ai" style="max-width:100%;">
-              <div class="result-card">
-                <table class="result-table">
-                  <tbody>
-                    <tr>
-                      <td>御社推定</td>
-                      <td style="font-size:0.9375rem;">12.3%</td>
-                    </tr>
-                    <tr>
-                      <td>業界平均</td>
-                      <td>9.8%</td>
-                    </tr>
-                    <tr>
-                      <td>差分</td>
-                      <td class="result-diff">+2.5pt</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p class="result-note">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>
-                  年間約1.2億円の改善余地があります
-                </p>
-              </div>
-            </div>
-
           </div>
 
-          <!-- Input -->
-          <div class="chat-input-row">
-            <input type="text" placeholder="コストについて質問..." readonly>
-            <button class="chat-send-btn" aria-label="送信">
+          <!-- Input (interactive) -->
+          <div class="chat-input-row" id="demoChatInputRow">
+            <input type="text" id="demoChatInput" placeholder="コストについて質問..." autocomplete="off">
+            <button class="chat-send-btn" id="demoChatSend" aria-label="送信">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"/>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -942,69 +1619,796 @@
       <div class="cta-inner">
         <h2>まずはお気軽に<br>ご相談ください</h2>
         <p>AIツールを活用したコスト診断・削減施策のご提案から実行支援まで、御社に最適なプランをご案内します。</p>
-        <a href="#" class="btn-primary" style="background:#2563EB; color:#fff;">
-          お問い合わせ
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-        <p style="margin-top:-16px; font-size:0.8125rem; color:rgba(255,255,255,0.35);">初回無料相談 · オンラインMTG対応</p>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <a href="javascript:void(0)" class="btn-primary" style="background:#2563EB; color:#fff;" onclick="openContactModal()">
+            お問い合わせ
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="javascript:void(0)" class="btn-primary" style="background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.2);" onclick="openBookingModal()">
+            初回面談を予約
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </a>
+        </div>
+        <p style="margin-top:-16px; font-size:0.8125rem; color:rgba(255,255,255,0.35);">初回無料相談 / オンラインMTG対応</p>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <div>
-          <a href="#" class="footer-logo">RAKUDA</a>
-          <p class="footer-tagline">AIツールとコンサルティングで、御社のコスト削減を実現します。</p>
-        </div>
-        <div class="footer-links">
-          <div class="footer-col">
-            <h4>サービス</h4>
-            <ul>
-              <li><a href="#">AI診断ツール</a></li>
-              <li><a href="#">コスト分析</a></li>
-              <li><a href="#">実行支援</a></li>
-              <li><a href="#">導入事例</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>会社情報</h4>
-            <ul>
-              <li><a href="#">会社概要</a></li>
-              <li><a href="#">チーム</a></li>
-              <li><a href="#">ブログ</a></li>
-              <li><a href="#">ニュース</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>サポート</h4>
-            <ul>
-              <li><a href="#">よくある質問</a></li>
-              <li><a href="#">お問い合わせ</a></li>
-              <li><a href="#">プライバシーポリシー</a></li>
-              <li><a href="#">利用規約</a></li>
-            </ul>
-          </div>
-        </div>
+    <div class="footer-inner">
+      <div class="footer-logo">RAKUDA <span>COSTCUT</span></div>
+      <div class="footer-links">
+        <a href="#">利用規約</a>
+        <a href="#">プライバシーポリシー</a>
+        <a href="#" onclick="openContactModal();return false;">お問い合わせ</a>
       </div>
-      <div class="footer-bottom">
-        © 2026 RAKUDA COSTCUT, Inc. All rights reserved.
-      </div>
+      <div class="footer-copy">&copy; 2026 RAKUDA COSTCUT. All rights reserved.</div>
     </div>
   </footer>
 
 
+  <!-- ======================== -->
+  <!-- CONTACT MODAL            -->
+  <!-- ======================== -->
+  <div class="modal-overlay" id="contactModal" onclick="handleOverlayClick(event, 'contactModal')">
+    <div class="modal-container" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('contactModal')" aria-label="閉じる">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <!-- Form view -->
+      <div class="contact-modal-body" id="contactFormView">
+        <div class="contact-left">
+          <h3>AIコスト診断で<br>御社の課題を可視化</h3>
+          <div class="contact-feature">
+            <div class="contact-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="contact-feature-text">
+              <h4>対話型AI診断</h4>
+              <p>専門用語不要。チャットで質問するだけで、コスト構造の問題点を特定します。</p>
+            </div>
+          </div>
+          <div class="contact-feature">
+            <div class="contact-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+            </div>
+            <div class="contact-feature-text">
+              <h4>業界ベンチマーク比較</h4>
+              <p>同業種・同規模の企業データと比較し、改善余地を数値で提示します。</p>
+            </div>
+          </div>
+          <div class="contact-feature">
+            <div class="contact-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="contact-feature-text">
+              <h4>実行支援まで一気通貫</h4>
+              <p>診断結果をもとに、具体的な削減施策の策定から実行までサポートします。</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right">
+          <h3>無料相談のお申し込み</h3>
+          <p class="form-subtitle">以下のフォームにご記入ください。担当者よりご連絡いたします。</p>
+          <form id="contactForm" onsubmit="return handleContactSubmit(event)" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label>会社名<span class="req">*</span></label>
+                <input type="text" name="company" required placeholder="株式会社RAKUDA">
+                <div class="form-error-msg">会社名を入力してください</div>
+              </div>
+              <div class="form-group">
+                <label>氏名<span class="req">*</span></label>
+                <input type="text" name="name" required placeholder="山田 太郎">
+                <div class="form-error-msg">氏名を入力してください</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>メールアドレス<span class="req">*</span></label>
+                <input type="email" name="email" required placeholder="taro@example.com">
+                <div class="form-error-msg">正しいメールアドレスを入力してください</div>
+              </div>
+              <div class="form-group">
+                <label>電話番号</label>
+                <input type="tel" name="phone" placeholder="03-1234-5678">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>従業員規模<span class="req">*</span></label>
+              <select name="scale" required>
+                <option value="">選択してください</option>
+                <option value="~50">~50名</option>
+                <option value="50-200">50-200名</option>
+                <option value="200-1000">200-1000名</option>
+                <option value="1000~">1000名~</option>
+              </select>
+              <div class="form-error-msg">従業員規模を選択してください</div>
+            </div>
+            <div class="form-group">
+              <label>ご相談内容</label>
+              <textarea name="message" placeholder="コスト構造の見直しを検討しています..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">無料相談を予約する</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Success view -->
+      <div class="contact-success" id="contactSuccess">
+        <div class="success-check success-check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3>お問い合わせを受け付けました</h3>
+        <p>担当より<strong>1営業日以内</strong>にご連絡いたします。<br>しばらくお待ちください。</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================== -->
+  <!-- BOOKING MODAL            -->
+  <!-- ======================== -->
+  <div class="modal-overlay booking-modal" id="bookingModal" onclick="handleOverlayClick(event, 'bookingModal')">
+    <div class="modal-container" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('bookingModal')" aria-label="閉じる">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="booking-body" id="bookingFormView">
+        <h3>初回面談を予約する</h3>
+        <p class="booking-subtitle">ご都合の良い日時をお選びください（オンラインMTG・約30分）</p>
+
+        <!-- Progress bar -->
+        <div class="booking-progress">
+          <div class="progress-step active" id="bkStep1Indicator">
+            <span class="progress-num">1</span>
+            <span>日付</span>
+          </div>
+          <div class="progress-line" id="bkLine1">
+            <div class="progress-line-fill"></div>
+          </div>
+          <div class="progress-step" id="bkStep2Indicator">
+            <span class="progress-num">2</span>
+            <span>時間</span>
+          </div>
+          <div class="progress-line" id="bkLine2">
+            <div class="progress-line-fill"></div>
+          </div>
+          <div class="progress-step" id="bkStep3Indicator">
+            <span class="progress-num">3</span>
+            <span>確認</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Date -->
+        <div class="booking-step active" id="bkStep1">
+          <div id="calendarMonth" style="font-size:0.9375rem; font-weight:700; margin-bottom:16px; color:var(--ink);"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="booking-nav">
+            <button class="btn-booking-next" id="bkNext1" disabled onclick="goBookingStep(2)">時間帯を選ぶ</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Time -->
+        <div class="booking-step" id="bkStep2">
+          <p style="font-size:0.875rem; color:var(--ink-secondary); margin-bottom:16px;" id="selectedDateLabel"></p>
+          <div class="time-slots" id="timeSlots"></div>
+          <div class="booking-nav">
+            <button class="btn-booking-back" onclick="goBookingStep(1)">戻る</button>
+            <button class="btn-booking-next" id="bkNext2" disabled onclick="goBookingStep(3)">情報入力へ</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Info + Confirm -->
+        <div class="booking-step" id="bkStep3">
+          <div class="booking-confirm-card" id="bookingConfirmCard"></div>
+          <form id="bookingForm" onsubmit="return handleBookingSubmit(event)" novalidate>
+            <div class="form-group">
+              <label>会社名<span class="req">*</span></label>
+              <input type="text" name="bk_company" required placeholder="株式会社RAKUDA">
+              <div class="form-error-msg">会社名を入力してください</div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>氏名<span class="req">*</span></label>
+                <input type="text" name="bk_name" required placeholder="山田 太郎">
+                <div class="form-error-msg">氏名を入力してください</div>
+              </div>
+              <div class="form-group">
+                <label>メールアドレス<span class="req">*</span></label>
+                <input type="email" name="bk_email" required placeholder="taro@example.com">
+                <div class="form-error-msg">正しいメールアドレスを入力してください</div>
+              </div>
+            </div>
+            <div class="booking-nav">
+              <button type="button" class="btn-booking-back" onclick="goBookingStep(2)">戻る</button>
+              <button type="submit" class="btn-booking-next">予約を確定する</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Booking success -->
+      <div class="booking-success" id="bookingSuccess">
+        <div class="success-check success-check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3>ご予約を承りました</h3>
+        <p id="bookingSuccessDetail" style="font-size:0.9375rem; color:var(--ink-secondary); line-height:1.6; margin-top:8px;"></p>
+        <p style="font-size:0.875rem; color:var(--ink-secondary); margin-top:16px;">確認メールをお送りしました。<br>当日のMTGリンクは前日までにご連絡いたします。</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================== -->
+  <!-- CHATBOT WIDGET           -->
+  <!-- ======================== -->
+  <button class="chatbot-fab" id="chatbotFab" aria-label="チャットサポート" onclick="toggleChatbot()">
+    <svg id="chatbotIconChat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <svg id="chatbotIconClose" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+      <div class="chatbot-header-left">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <div>
+          <div class="chatbot-header-title">RAKUDA AI</div>
+          <div class="chatbot-header-status">
+            <span class="status-dot" style="background:var(--success);"></span>
+            オンライン
+          </div>
+        </div>
+      </div>
+      <button class="chatbot-close" onclick="toggleChatbot()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="bubble-ai bubble-appear">
+        <div class="bubble-inner">
+          こんにちは!RAKUDAへようこそ。コスト削減についてお気軽にご質問ください。
+        </div>
+      </div>
+      <div class="chatbot-quick-actions">
+        <button class="chatbot-quick-btn" onclick="sendChatbotQuick('AI診断について教えて')">AI診断について</button>
+        <button class="chatbot-quick-btn" onclick="sendChatbotQuick('料金プランを知りたい')">料金プラン</button>
+        <button class="chatbot-quick-btn" onclick="sendChatbotQuick('導入事例はありますか？')">導入事例</button>
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatbotInput" placeholder="メッセージを入力..." autocomplete="off">
+      <button class="chatbot-send" onclick="sendChatbotMessage()" aria-label="送信">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('section:not(.hero)').forEach(s => s.classList.add('fade-in-section'));
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+/* ==============================================
+   SHARED UTILITY
+   ============================================== */
+
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  document.body.classList.add('modal-open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+function handleOverlayClick(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
+
+// ESC key closes modals
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    ['contactModal', 'bookingModal'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.classList.contains('active')) closeModal(id);
+    });
+  }
+});
+
+
+/* ==============================================
+   1. CONTACT MODAL
+   ============================================== */
+
+function openContactModal() {
+  // Reset form
+  var form = document.getElementById('contactForm');
+  form.reset();
+  form.querySelectorAll('.error').forEach(function(el) { el.classList.remove('error'); });
+  form.querySelectorAll('.form-error-msg').forEach(function(el) { el.style.display = 'none'; });
+  document.getElementById('contactFormView').style.display = '';
+  document.getElementById('contactSuccess').classList.remove('active');
+  openModal('contactModal');
+}
+
+function handleContactSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var valid = true;
+
+  // Validate required fields
+  form.querySelectorAll('[required]').forEach(function(input) {
+    var errEl = input.parentElement.querySelector('.form-error-msg');
+    var isValid = true;
+
+    if (input.type === 'email') {
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+    } else if (input.tagName === 'SELECT') {
+      isValid = input.value !== '';
+    } else {
+      isValid = input.value.trim() !== '';
+    }
+
+    if (!isValid) {
+      input.classList.add('error');
+      if (errEl) errEl.style.display = 'block';
+      valid = false;
+    } else {
+      input.classList.remove('error');
+      if (errEl) errEl.style.display = 'none';
+    }
+  });
+
+  if (!valid) return false;
+
+  // Show success
+  document.getElementById('contactFormView').style.display = 'none';
+  document.getElementById('contactSuccess').classList.add('active');
+  return false;
+}
+
+
+/* ==============================================
+   2. BOOKING MODAL
+   ============================================== */
+
+var bookingState = {
+  selectedDate: null,
+  selectedTime: null,
+  currentStep: 1
+};
+
+function openBookingModal() {
+  bookingState = { selectedDate: null, selectedTime: null, currentStep: 1 };
+  document.getElementById('bookingFormView').style.display = '';
+  document.getElementById('bookingSuccess').classList.remove('active');
+  var form = document.getElementById('bookingForm');
+  form.reset();
+  form.querySelectorAll('.error').forEach(function(el) { el.classList.remove('error'); });
+  form.querySelectorAll('.form-error-msg').forEach(function(el) { el.style.display = 'none'; });
+  buildCalendar();
+  goBookingStep(1);
+  openModal('bookingModal');
+}
+
+function buildCalendar() {
+  var grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+  var today = new Date();
+  var dayNames = ['日','月','火','水','木','金','土'];
+
+  // Header
+  dayNames.forEach(function(d) {
+    var h = document.createElement('div');
+    h.className = 'calendar-header';
+    h.textContent = d;
+    grid.appendChild(h);
+  });
+
+  // Month label
+  var monthLabel = document.getElementById('calendarMonth');
+  monthLabel.textContent = today.getFullYear() + '年' + (today.getMonth()+1) + '月';
+
+  // Start from today, show 14 days
+  var startDate = new Date(today);
+  // Fill empty cells for the first week alignment
+  var firstDow = startDate.getDay();
+  for (var i = 0; i < firstDow; i++) {
+    var empty = document.createElement('div');
+    empty.className = 'calendar-day empty';
+    grid.appendChild(empty);
+  }
+
+  for (var d = 0; d < 14; d++) {
+    var date = new Date(today);
+    date.setDate(today.getDate() + d);
+    var cell = document.createElement('div');
+    cell.className = 'calendar-day';
+    cell.textContent = date.getDate();
+    var dow = date.getDay();
+
+    if (d === 0) cell.classList.add('today');
+    if (dow === 0 || dow === 6) {
+      cell.classList.add('disabled');
+    } else {
+      (function(dt) {
+        cell.addEventListener('click', function() {
+          grid.querySelectorAll('.calendar-day').forEach(function(c) { c.classList.remove('selected'); });
+          cell.classList.add('selected');
+          bookingState.selectedDate = dt;
+          document.getElementById('bkNext1').disabled = false;
+        });
+      })(new Date(date));
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function buildTimeSlots() {
+  var container = document.getElementById('timeSlots');
+  container.innerHTML = '';
+  var times = ['10:00','11:00','12:00','14:00','15:00','16:00'];
+  times.forEach(function(t) {
+    var slot = document.createElement('div');
+    slot.className = 'time-slot';
+    slot.textContent = t;
+    slot.addEventListener('click', function() {
+      container.querySelectorAll('.time-slot').forEach(function(s) { s.classList.remove('selected'); });
+      slot.classList.add('selected');
+      bookingState.selectedTime = t;
+      document.getElementById('bkNext2').disabled = false;
+    });
+    container.appendChild(slot);
+  });
+}
+
+function goBookingStep(step) {
+  bookingState.currentStep = step;
+
+  // Steps
+  for (var i = 1; i <= 3; i++) {
+    var el = document.getElementById('bkStep' + i);
+    if (i === step) { el.classList.add('active'); } else { el.classList.remove('active'); }
+  }
+
+  // Progress indicators
+  for (var i = 1; i <= 3; i++) {
+    var ind = document.getElementById('bkStep' + i + 'Indicator');
+    ind.classList.remove('active', 'done');
+    if (i < step) ind.classList.add('done');
+    else if (i === step) ind.classList.add('active');
+  }
+
+  // Lines
+  var l1 = document.getElementById('bkLine1');
+  var l2 = document.getElementById('bkLine2');
+  if (step > 1) l1.classList.add('filled'); else l1.classList.remove('filled');
+  if (step > 2) l2.classList.add('filled'); else l2.classList.remove('filled');
+
+  // Step-specific
+  if (step === 2) {
+    var d = bookingState.selectedDate;
+    var dayNames = ['日','月','火','水','木','金','土'];
+    document.getElementById('selectedDateLabel').textContent =
+      d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + dayNames[d.getDay()] + '）の空き時間';
+    bookingState.selectedTime = null;
+    document.getElementById('bkNext2').disabled = true;
+    buildTimeSlots();
+  }
+
+  if (step === 3) {
+    var d = bookingState.selectedDate;
+    var dayNames = ['日','月','火','水','木','金','土'];
+    var dateStr = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + dayNames[d.getDay()] + '）';
+    var card = document.getElementById('bookingConfirmCard');
+    card.innerHTML =
+      '<div class="booking-confirm-row"><span class="booking-confirm-label">日時</span><span class="booking-confirm-value">' + dateStr + ' ' + bookingState.selectedTime + '</span></div>' +
+      '<div class="booking-confirm-row"><span class="booking-confirm-label">形式</span><span class="booking-confirm-value">オンラインMTG（約30分）</span></div>';
+  }
+}
+
+function handleBookingSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var valid = true;
+
+  form.querySelectorAll('[required]').forEach(function(input) {
+    var errEl = input.parentElement.querySelector('.form-error-msg');
+    var isValid = true;
+    if (input.type === 'email') {
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+    } else {
+      isValid = input.value.trim() !== '';
+    }
+    if (!isValid) {
+      input.classList.add('error');
+      if (errEl) errEl.style.display = 'block';
+      valid = false;
+    } else {
+      input.classList.remove('error');
+      if (errEl) errEl.style.display = 'none';
+    }
+  });
+
+  if (!valid) return false;
+
+  // Show success
+  var d = bookingState.selectedDate;
+  var dayNames = ['日','月','火','水','木','金','土'];
+  var dateStr = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + dayNames[d.getDay()] + '）';
+  document.getElementById('bookingSuccessDetail').innerHTML =
+    '<strong>' + dateStr + ' ' + bookingState.selectedTime + '</strong> で予約を承りました。';
+
+  document.getElementById('bookingFormView').style.display = 'none';
+  document.getElementById('bookingSuccess').classList.add('active');
+  return false;
+}
+
+
+/* ==============================================
+   3. CHATBOT WIDGET
+   ============================================== */
+
+function toggleChatbot() {
+  var win = document.getElementById('chatbotWindow');
+  var fab = document.getElementById('chatbotFab');
+  var iconChat = document.getElementById('chatbotIconChat');
+  var iconClose = document.getElementById('chatbotIconClose');
+  var isOpen = win.classList.contains('open');
+
+  if (isOpen) {
+    win.classList.remove('open');
+    fab.classList.remove('active');
+    iconChat.style.display = '';
+    iconClose.style.display = 'none';
+  } else {
+    win.classList.add('open');
+    fab.classList.add('active');
+    iconChat.style.display = 'none';
+    iconClose.style.display = '';
+    document.getElementById('chatbotInput').focus();
+  }
+}
+
+function sendChatbotQuick(text) {
+  // Remove quick actions
+  var qa = document.querySelector('.chatbot-quick-actions');
+  if (qa) qa.remove();
+  addChatbotUserMsg(text);
+  showChatbotTyping(function() {
+    var reply = getChatbotReply(text);
+    addChatbotAIMsg(reply);
+  });
+}
+
+function sendChatbotMessage() {
+  var input = document.getElementById('chatbotInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  // Remove quick actions if still there
+  var qa = document.querySelector('.chatbot-quick-actions');
+  if (qa) qa.remove();
+
+  addChatbotUserMsg(text);
+  showChatbotTyping(function() {
+    var reply = getChatbotReply(text);
+    addChatbotAIMsg(reply);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('chatbotInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); sendChatbotMessage(); }
+  });
+});
+
+function addChatbotUserMsg(text) {
+  var msgs = document.getElementById('chatbotMessages');
+  var div = document.createElement('div');
+  div.className = 'bubble-user bubble-appear';
+  div.innerHTML = '<div class="bubble-inner">' + escapeHtml(text) + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addChatbotAIMsg(text) {
+  var msgs = document.getElementById('chatbotMessages');
+  var div = document.createElement('div');
+  div.className = 'bubble-ai bubble-appear';
+  div.innerHTML = '<div class="bubble-inner">' + text + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showChatbotTyping(callback) {
+  var msgs = document.getElementById('chatbotMessages');
+  var typing = document.createElement('div');
+  typing.className = 'bubble-ai bubble-appear';
+  typing.id = 'chatbotTyping';
+  typing.innerHTML = '<div class="bubble-inner"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(function() {
+    var t = document.getElementById('chatbotTyping');
+    if (t) t.remove();
+    callback();
+  }, 1000 + Math.random() * 500);
+}
+
+function getChatbotReply(text) {
+  var t = text.toLowerCase();
+  if (t.includes('診断') || t.includes('分析') || t.includes('ツール')) {
+    return 'RAKUDAのAI診断は、チャットで質問するだけで御社のコスト構造を可視化します。業種と売上規模を伝えるだけで、業界平均との乖離や改善余地を即座にお伝えできます。まずは<a href="javascript:void(0)" onclick="toggleChatbot();openContactModal();" style="color:var(--accent);font-weight:600;">無料相談</a>をお試しください。';
+  }
+  if (t.includes('料金') || t.includes('価格') || t.includes('プラン') || t.includes('コスト')) {
+    return '初回のAI診断は<strong>完全無料</strong>です。その後のコンサルティング・実行支援については、御社の規模や課題に応じた最適なプランをご提案します。詳しくは<a href="javascript:void(0)" onclick="toggleChatbot();openContactModal();" style="color:var(--accent);font-weight:600;">お問い合わせ</a>ください。';
+  }
+  if (t.includes('事例') || t.includes('実績') || t.includes('導入')) {
+    return '製造業の年商50億円企業で年間1.2億円、IT企業で販管費率を5.6pt改善した実績があります。業種・規模に合わせた改善提案が可能です。<a href="javascript:void(0)" onclick="toggleChatbot();openBookingModal();" style="color:var(--accent);font-weight:600;">初回面談</a>で詳しくご紹介します。';
+  }
+  return 'ありがとうございます。より詳しいご相談は、専門スタッフが対応いたします。<a href="javascript:void(0)" onclick="toggleChatbot();openContactModal();" style="color:var(--accent);font-weight:600;">お問い合わせフォーム</a>からお気軽にどうぞ。平日1営業日以内にご連絡いたします。';
+}
+
+
+/* ==============================================
+   4. INTERACTIVE CHAT DEMO (P2 main feature)
+   ============================================== */
+
+var demoState = {
+  turn: 0,
+  industry: '',
+  revenue: ''
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  var input = document.getElementById('demoChatInput');
+  var sendBtn = document.getElementById('demoChatSend');
+
+  sendBtn.addEventListener('click', function() { handleDemoSend(); });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); handleDemoSend(); }
+  });
+});
+
+function handleDemoSend() {
+  var input = document.getElementById('demoChatInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.disabled = true;
+
+  demoState.turn++;
+  addDemoBubble('user', escapeHtml(text));
+
+  var turn = demoState.turn;
+
+  if (turn === 1) {
+    // Turn 1: Ask for industry
+    showDemoTyping(function() {
+      addDemoBubble('ai', 'ありがとうございます。業種を教えていただけますか？（例：製造業、IT、小売など）');
+      input.disabled = false;
+      input.focus();
+    });
+  } else if (turn === 2) {
+    // Turn 2: Save industry, ask revenue
+    demoState.industry = text;
+    showDemoTyping(function() {
+      addDemoBubble('ai', escapeHtml(text) + 'ですね。年商規模はどのくらいですか？');
+      input.disabled = false;
+      input.focus();
+    });
+  } else if (turn === 3) {
+    // Turn 3: Save revenue, show analysis
+    demoState.revenue = text;
+    showDemoTyping(function() {
+      addDemoBubble('ai', '了解しました。<strong>' + escapeHtml(demoState.industry) + '</strong>・<strong>' + escapeHtml(demoState.revenue) + '</strong>の企業で典型的な課題をAIが分析中です...');
+
+      // After 1s, show result card
+      setTimeout(function() {
+        addDemoResultCard(demoState.industry, demoState.revenue);
+        input.disabled = false;
+        input.focus();
+      }, 1200);
+    });
+  } else {
+    // Turn 4+: Generic message
+    showDemoTyping(function() {
+      addDemoBubble('ai', 'より詳しい分析をご希望の場合は、決算書データをお送りいただければ精密な診断が可能です。<a href="javascript:void(0)" onclick="openContactModal()" style="color:var(--accent);font-weight:600;">お問い合わせフォーム</a>からご連絡ください。');
+      input.disabled = false;
+      input.focus();
+    });
+  }
+}
+
+function addDemoBubble(type, html) {
+  var msgs = document.getElementById('demoChatMessages');
+  var div = document.createElement('div');
+  div.className = (type === 'ai' ? 'bubble-ai' : 'bubble-user') + ' bubble-appear';
+  div.innerHTML = '<div class="bubble-inner">' + html + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showDemoTyping(callback) {
+  var msgs = document.getElementById('demoChatMessages');
+  var typing = document.createElement('div');
+  typing.className = 'bubble-ai bubble-appear';
+  typing.id = 'demoTyping';
+  typing.innerHTML = '<div class="bubble-inner"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(function() {
+    var t = document.getElementById('demoTyping');
+    if (t) t.remove();
+    callback();
+  }, 1200 + Math.random() * 400);
+}
+
+function addDemoResultCard(industry, revenue) {
+  var msgs = document.getElementById('demoChatMessages');
+  var div = document.createElement('div');
+  div.className = 'bubble-ai bubble-appear';
+  div.style.maxWidth = '100%';
+  div.innerHTML =
+    '<div class="result-card">' +
+      '<table class="result-table"><tbody>' +
+        '<tr><td>業種</td><td>' + escapeHtml(industry) + '</td></tr>' +
+        '<tr><td>推定販管費率</td><td style="font-size:0.9375rem;">24.8%</td></tr>' +
+        '<tr><td>業界平均</td><td>19.2%</td></tr>' +
+        '<tr><td>差分</td><td class="result-diff">+5.6pt</td></tr>' +
+      '</tbody></table>' +
+      '<p class="result-note">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>' +
+        '年間約8,400万円の改善余地があります' +
+      '</p>' +
+    '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+
+/* ==============================================
+   UTILITY
+   ============================================== */
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+
+/* ==============================================
+   SCROLL FADE-IN (original)
+   ============================================== */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('section:not(.hero)').forEach(function(s) { s.classList.add('fade-in-section'); });
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
   }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in-section').forEach(s => obs.observe(s));
+  document.querySelectorAll('.fade-in-section').forEach(function(s) { obs.observe(s); });
 });
 </script>
 </body>
