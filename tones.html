@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAKUDA COSTCUT — Tone Comparison v3 Full Preview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic Medium','Yu Gothic',Meiryo,sans-serif; background:#E5E7EB; color:#1A1A1A; -webkit-font-smoothing:antialiased; font-feature-settings:"palt"; }
+
+    /* === STICKY NAV === */
+    .page-nav { position:sticky; top:0; z-index:200; background:#FFF; border-bottom:1px solid #D1D5DB; padding:14px 0; }
+    .page-nav-inner { max-width:1400px; margin:0 auto; padding:0 32px; display:flex; align-items:center; justify-content:space-between; }
+    .page-nav h1 { font-size:15px; font-weight:700; letter-spacing:-0.02em; }
+    .page-nav .subtitle { font-size:12px; color:#6B7280; }
+    .nav-pills { display:flex; gap:5px; flex-wrap:wrap; }
+    .nav-pills a { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:5px; font-size:11px; font-weight:500; text-decoration:none; color:#374151; background:#F9FAFB; border:1px solid #E5E7EB; transition:all 0.12s; }
+    .nav-pills a:hover { border-color:#9CA3AF; background:#F3F4F6; }
+    .nav-pills .dot { width:7px; height:7px; border-radius:50%; }
+
+    /* === TONE SECTION === */
+    .tone-section { max-width:1400px; margin:32px auto; padding:0 32px; }
+    .tone-label { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .tone-label .num { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#FFF; }
+    .tone-label h2 { font-size:15px; font-weight:700; }
+    .tone-label .desc { font-size:12px; color:#6B7280; margin-left:8px; }
+    .tone-label .swatches { display:flex; gap:4px; margin-left:auto; }
+    .tone-label .sw { width:18px; height:18px; border-radius:4px; border:1px solid rgba(0,0,0,0.08); }
+
+    /* === LP FRAME === */
+    .lp-frame {
+      background:#FFF; border-radius:12px; border:1px solid #D1D5DB;
+      overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    /* === LP INTERNAL STYLES === */
+    .lp { overflow:hidden; }
+
+    /* Header */
+    .lp .lp-header { height:52px; display:flex; align-items:center; justify-content:space-between; padding:0 32px; }
+    .lp .lp-logo { font-size:14px; font-weight:700; letter-spacing:-0.01em; }
+    .lp .lp-nav { display:flex; gap:24px; align-items:center; }
+    .lp .lp-nav span { font-size:12px; font-weight:500; }
+    .lp .lp-nav-cta { font-size:12px; font-weight:600; padding:6px 16px; border-radius:6px; display:inline-block; }
+
+    /* Hero */
+    .lp .lp-hero { padding:64px 40px; text-align:center; display:flex; flex-direction:column; align-items:center; }
+    .lp .lp-badge { display:inline-flex; align-items:center; gap:5px; padding:5px 12px; border-radius:100px; font-size:11px; font-weight:500; margin-bottom:20px; }
+    .lp .lp-hero h1 { font-size:32px; font-weight:700; letter-spacing:-0.03em; line-height:1.3; margin-bottom:14px; }
+    .lp .lp-hero p { font-size:14px; line-height:1.75; margin-bottom:28px; max-width:480px; }
+    .lp .lp-cta-group { display:flex; gap:10px; }
+    .lp .btn-p { padding:10px 22px; border-radius:7px; font-size:13px; font-weight:600; border:none; cursor:pointer; }
+    .lp .btn-s { padding:10px 22px; border-radius:7px; font-size:13px; font-weight:500; border:1px solid; cursor:pointer; background:transparent; }
+
+    /* Stats */
+    .lp .lp-stats { display:grid; grid-template-columns:repeat(3,1fr); text-align:center; padding:0; }
+    .lp .lp-stat { padding:28px 16px; }
+    .lp .lp-stat .num { font-size:28px; font-weight:700; letter-spacing:-0.02em; margin-bottom:4px; }
+    .lp .lp-stat .lbl { font-size:12px; font-weight:500; }
+
+    /* Features */
+    .lp .lp-features { padding:48px 40px; }
+    .lp .lp-features-title { font-size:20px; font-weight:700; letter-spacing:-0.02em; text-align:center; margin-bottom:32px; }
+    .lp .lp-features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .lp .lp-feat-card { padding:24px; border-radius:10px; }
+    .lp .lp-feat-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .lp .lp-feat-card h3 { font-size:14px; font-weight:600; margin-bottom:6px; }
+    .lp .lp-feat-card p { font-size:12px; line-height:1.65; }
+
+    /* CTA Banner */
+    .lp .lp-cta-banner { padding:48px 40px; text-align:center; }
+    .lp .lp-cta-banner h2 { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin-bottom:10px; }
+    .lp .lp-cta-banner p { font-size:13px; margin-bottom:24px; }
+    .lp .lp-cta-banner .btn-p { padding:12px 32px; font-size:14px; }
+
+    /* Footer */
+    .lp .lp-footer { padding:20px 32px; display:flex; justify-content:space-between; align-items:center; }
+    .lp .lp-footer span { font-size:11px; }
+
+    /* ==================================================================
+       TONE STYLES
+       ================================================================== */
+
+    /* T1: White + Blue */
+    .t1 .lp-header { background:#FFF; border-bottom:1px solid #E5E7EB; }
+    .t1 .lp-logo { color:#111827; }
+    .t1 .lp-nav span { color:#6B7280; }
+    .t1 .lp-nav-cta { background:#2563EB; color:#FFF; }
+    .t1 .lp-hero { background:#FFF; }
+    .t1 .lp-badge { background:#EFF6FF; color:#2563EB; }
+    .t1 .lp-hero h1 { color:#111827; }
+    .t1 .lp-hero p { color:#6B7280; }
+    .t1 .btn-p { background:#2563EB; color:#FFF; }
+    .t1 .btn-s { color:#2563EB; border-color:#BFDBFE; }
+    .t1 .lp-stats { background:#F9FAFB; border-top:1px solid #E5E7EB; border-bottom:1px solid #E5E7EB; }
+    .t1 .lp-stat .num { color:#2563EB; }
+    .t1 .lp-stat .lbl { color:#6B7280; }
+    .t1 .lp-stat:not(:last-child) { border-right:1px solid #E5E7EB; }
+    .t1 .lp-features { background:#FFF; }
+    .t1 .lp-features-title { color:#111827; }
+    .t1 .lp-feat-card { background:#F9FAFB; border:1px solid #E5E7EB; }
+    .t1 .lp-feat-icon { background:#EFF6FF; color:#2563EB; }
+    .t1 .lp-feat-card h3 { color:#111827; }
+    .t1 .lp-feat-card p { color:#6B7280; }
+    .t1 .lp-cta-banner { background:#EFF6FF; }
+    .t1 .lp-cta-banner h2 { color:#111827; }
+    .t1 .lp-cta-banner p { color:#6B7280; }
+    .t1 .lp-footer { background:#F9FAFB; border-top:1px solid #E5E7EB; }
+    .t1 .lp-footer span { color:#9CA3AF; }
+
+    /* T2: White + Green */
+    .t2 .lp-header { background:#FFF; border-bottom:1px solid #E5E7EB; }
+    .t2 .lp-logo { color:#111827; }
+    .t2 .lp-nav span { color:#6B7280; }
+    .t2 .lp-nav-cta { background:#059669; color:#FFF; }
+    .t2 .lp-hero { background:#FFF; }
+    .t2 .lp-badge { background:#ECFDF5; color:#059669; }
+    .t2 .lp-hero h1 { color:#111827; }
+    .t2 .lp-hero p { color:#6B7280; }
+    .t2 .btn-p { background:#059669; color:#FFF; }
+    .t2 .btn-s { color:#059669; border-color:#A7F3D0; }
+    .t2 .lp-stats { background:#F0FDF4; border-top:1px solid #D1FAE5; border-bottom:1px solid #D1FAE5; }
+    .t2 .lp-stat .num { color:#059669; }
+    .t2 .lp-stat .lbl { color:#6B7280; }
+    .t2 .lp-stat:not(:last-child) { border-right:1px solid #D1FAE5; }
+    .t2 .lp-features { background:#FFF; }
+    .t2 .lp-features-title { color:#111827; }
+    .t2 .lp-feat-card { background:#F0FDF4; border:1px solid #D1FAE5; }
+    .t2 .lp-feat-icon { background:#ECFDF5; color:#059669; }
+    .t2 .lp-feat-card h3 { color:#111827; }
+    .t2 .lp-feat-card p { color:#6B7280; }
+    .t2 .lp-cta-banner { background:#ECFDF5; }
+    .t2 .lp-cta-banner h2 { color:#111827; }
+    .t2 .lp-cta-banner p { color:#6B7280; }
+    .t2 .lp-footer { background:#F9FAFB; border-top:1px solid #E5E7EB; }
+    .t2 .lp-footer span { color:#9CA3AF; }
+
+    /* T3: Bold Mono */
+    .t3 .lp { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans','Yu Gothic Medium',Meiryo,sans-serif; }
+    .t3 .lp-header { background:#000; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .t3 .lp-logo { color:#FFF; }
+    .t3 .lp-nav span { color:rgba(255,255,255,0.5); }
+    .t3 .lp-nav-cta { background:#FFF; color:#000; }
+    .t3 .lp-hero { background:#000; }
+    .t3 .lp-badge { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.1); }
+    .t3 .lp-hero h1 { color:#FFF; }
+    .t3 .lp-hero p { color:rgba(255,255,255,0.4); }
+    .t3 .btn-p { background:#FFF; color:#000; }
+    .t3 .btn-s { color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.15); }
+    .t3 .lp-stats { background:#050505; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); }
+    .t3 .lp-stat .num { color:#FFF; }
+    .t3 .lp-stat .lbl { color:rgba(255,255,255,0.35); }
+    .t3 .lp-stat:not(:last-child) { border-right:1px solid rgba(255,255,255,0.06); }
+    .t3 .lp-features { background:#000; }
+    .t3 .lp-features-title { color:#FFF; }
+    .t3 .lp-feat-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); }
+    .t3 .lp-feat-icon { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.7); }
+    .t3 .lp-feat-card h3 { color:rgba(255,255,255,0.9); }
+    .t3 .lp-feat-card p { color:rgba(255,255,255,0.4); }
+    .t3 .lp-cta-banner { background:#050505; }
+    .t3 .lp-cta-banner h2 { color:#FFF; }
+    .t3 .lp-cta-banner p { color:rgba(255,255,255,0.4); }
+    .t3 .lp-footer { background:#000; border-top:1px solid rgba(255,255,255,0.06); }
+    .t3 .lp-footer span { color:rgba(255,255,255,0.25); }
+
+    /* T4: White + Orange */
+    .t4 .lp-header { background:#FFF; border-bottom:1px solid #E5E7EB; }
+    .t4 .lp-logo { color:#18181B; }
+    .t4 .lp-nav span { color:#71717A; }
+    .t4 .lp-nav-cta { background:#FF6B35; color:#FFF; }
+    .t4 .lp-hero { background:#FFF; }
+    .t4 .lp-badge { background:#FFF3ED; color:#E8612F; }
+    .t4 .lp-hero h1 { color:#18181B; }
+    .t4 .lp-hero p { color:#71717A; }
+    .t4 .btn-p { background:#FF6B35; color:#FFF; }
+    .t4 .btn-s { color:#FF6B35; border-color:#FDBA74; }
+    .t4 .lp-stats { background:#FFFBF7; border-top:1px solid #FDE7D0; border-bottom:1px solid #FDE7D0; }
+    .t4 .lp-stat .num { color:#E8612F; }
+    .t4 .lp-stat .lbl { color:#71717A; }
+    .t4 .lp-stat:not(:last-child) { border-right:1px solid #FDE7D0; }
+    .t4 .lp-features { background:#FFF; }
+    .t4 .lp-features-title { color:#18181B; }
+    .t4 .lp-feat-card { background:#FFFBF7; border:1px solid #FDE7D0; }
+    .t4 .lp-feat-icon { background:#FFF3ED; color:#E8612F; }
+    .t4 .lp-feat-card h3 { color:#18181B; }
+    .t4 .lp-feat-card p { color:#71717A; }
+    .t4 .lp-cta-banner { background:#FFF3ED; }
+    .t4 .lp-cta-banner h2 { color:#18181B; }
+    .t4 .lp-cta-banner p { color:#71717A; }
+    .t4 .lp-footer { background:#FFFBF7; border-top:1px solid #FDE7D0; }
+    .t4 .lp-footer span { color:#A8A29E; }
+
+    /* T5: Gray + Navy */
+    .t5 .lp-header { background:#F9FAFB; border-bottom:1px solid #E2E8F0; }
+    .t5 .lp-logo { color:#1E293B; }
+    .t5 .lp-nav span { color:#64748B; }
+    .t5 .lp-nav-cta { background:#1E3A5F; color:#FFF; }
+    .t5 .lp-hero { background:#F9FAFB; }
+    .t5 .lp-badge { background:#E0E7FF; color:#3730A3; }
+    .t5 .lp-hero h1 { color:#1E293B; }
+    .t5 .lp-hero p { color:#64748B; }
+    .t5 .btn-p { background:#1E3A5F; color:#FFF; }
+    .t5 .btn-s { color:#1E3A5F; border-color:#CBD5E1; }
+    .t5 .lp-stats { background:#F1F5F9; border-top:1px solid #E2E8F0; border-bottom:1px solid #E2E8F0; }
+    .t5 .lp-stat .num { color:#1E3A5F; }
+    .t5 .lp-stat .lbl { color:#64748B; }
+    .t5 .lp-stat:not(:last-child) { border-right:1px solid #E2E8F0; }
+    .t5 .lp-features { background:#F9FAFB; }
+    .t5 .lp-features-title { color:#1E293B; }
+    .t5 .lp-feat-card { background:#FFF; border:1px solid #E2E8F0; }
+    .t5 .lp-feat-icon { background:#E0E7FF; color:#1E3A5F; }
+    .t5 .lp-feat-card h3 { color:#1E293B; }
+    .t5 .lp-feat-card p { color:#64748B; }
+    .t5 .lp-cta-banner { background:#E0E7FF; }
+    .t5 .lp-cta-banner h2 { color:#1E293B; }
+    .t5 .lp-cta-banner p { color:#64748B; }
+    .t5 .lp-footer { background:#F1F5F9; border-top:1px solid #E2E8F0; }
+    .t5 .lp-footer span { color:#94A3B8; }
+
+    /* T6: White + Coral */
+    .t6 .lp-header { background:#FFF; border-bottom:1px solid #E5E7EB; }
+    .t6 .lp-logo { color:#18181B; }
+    .t6 .lp-nav span { color:#71717A; }
+    .t6 .lp-nav-cta { background:#E04D3D; color:#FFF; }
+    .t6 .lp-hero { background:#FFF; }
+    .t6 .lp-badge { background:#FFF1F0; color:#E04D3D; }
+    .t6 .lp-hero h1 { color:#18181B; }
+    .t6 .lp-hero p { color:#71717A; }
+    .t6 .btn-p { background:#E04D3D; color:#FFF; }
+    .t6 .btn-s { color:#E04D3D; border-color:#FECACA; }
+    .t6 .lp-stats { background:#FFFBFB; border-top:1px solid #FEE2E2; border-bottom:1px solid #FEE2E2; }
+    .t6 .lp-stat .num { color:#E04D3D; }
+    .t6 .lp-stat .lbl { color:#71717A; }
+    .t6 .lp-stat:not(:last-child) { border-right:1px solid #FEE2E2; }
+    .t6 .lp-features { background:#FFF; }
+    .t6 .lp-features-title { color:#18181B; }
+    .t6 .lp-feat-card { background:#FFFBFB; border:1px solid #FEE2E2; }
+    .t6 .lp-feat-icon { background:#FFF1F0; color:#E04D3D; }
+    .t6 .lp-feat-card h3 { color:#18181B; }
+    .t6 .lp-feat-card p { color:#71717A; }
+    .t6 .lp-cta-banner { background:#FFF1F0; }
+    .t6 .lp-cta-banner h2 { color:#18181B; }
+    .t6 .lp-cta-banner p { color:#71717A; }
+    .t6 .lp-footer { background:#FAFAFA; border-top:1px solid #E5E7EB; }
+    .t6 .lp-footer span { color:#A1A1AA; }
+
+    /* T7: Cream + Dark */
+    .t7 .lp { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Mincho ProN','Yu Mincho','MS PMincho',serif; }
+    .t7 .lp-header { background:#FAF8F4; border-bottom:1px solid #E7E5E4; }
+    .t7 .lp-logo { color:#292524; }
+    .t7 .lp-nav span { color:#78716C; }
+    .t7 .lp-nav-cta { background:#292524; color:#FAF8F4; }
+    .t7 .lp-hero { background:#FAF8F4; }
+    .t7 .lp-badge { background:#F0EBE0; color:#78603C; }
+    .t7 .lp-hero h1 { color:#292524; }
+    .t7 .lp-hero p { color:#78716C; }
+    .t7 .btn-p { background:#292524; color:#FAF8F4; }
+    .t7 .btn-s { color:#44403C; border-color:#D6D3D1; }
+    .t7 .lp-stats { background:#F5F0EA; border-top:1px solid #E7E5E4; border-bottom:1px solid #E7E5E4; }
+    .t7 .lp-stat .num { color:#292524; }
+    .t7 .lp-stat .lbl { color:#A8A29E; }
+    .t7 .lp-stat:not(:last-child) { border-right:1px solid #E7E5E4; }
+    .t7 .lp-features { background:#FAF8F4; }
+    .t7 .lp-features-title { color:#292524; }
+    .t7 .lp-feat-card { background:#F5F0EA; border:1px solid #E7E5E4; }
+    .t7 .lp-feat-icon { background:#F0EBE0; color:#78603C; }
+    .t7 .lp-feat-card h3 { color:#292524; }
+    .t7 .lp-feat-card p { color:#78716C; }
+    .t7 .lp-cta-banner { background:#F0EBE0; }
+    .t7 .lp-cta-banner h2 { color:#292524; }
+    .t7 .lp-cta-banner p { color:#78716C; }
+    .t7 .lp-footer { background:#F5F0EA; border-top:1px solid #E7E5E4; }
+    .t7 .lp-footer span { color:#A8A29E; }
+
+    /* T8: White + Teal */
+    .t8 .lp-header { background:#FFF; border-bottom:1px solid #E5E7EB; }
+    .t8 .lp-logo { color:#111827; }
+    .t8 .lp-nav span { color:#6B7280; }
+    .t8 .lp-nav-cta { background:#0D9488; color:#FFF; }
+    .t8 .lp-hero { background:#FFF; }
+    .t8 .lp-badge { background:#F0FDFA; color:#0D9488; }
+    .t8 .lp-hero h1 { color:#111827; }
+    .t8 .lp-hero p { color:#6B7280; }
+    .t8 .btn-p { background:#0D9488; color:#FFF; }
+    .t8 .btn-s { color:#0D9488; border-color:#99F6E4; }
+    .t8 .lp-stats { background:#F0FDFA; border-top:1px solid #CCFBF1; border-bottom:1px solid #CCFBF1; }
+    .t8 .lp-stat .num { color:#0D9488; }
+    .t8 .lp-stat .lbl { color:#6B7280; }
+    .t8 .lp-stat:not(:last-child) { border-right:1px solid #CCFBF1; }
+    .t8 .lp-features { background:#FFF; }
+    .t8 .lp-features-title { color:#111827; }
+    .t8 .lp-feat-card { background:#F0FDFA; border:1px solid #CCFBF1; }
+    .t8 .lp-feat-icon { background:#CCFBF1; color:#0D9488; }
+    .t8 .lp-feat-card h3 { color:#111827; }
+    .t8 .lp-feat-card p { color:#6B7280; }
+    .t8 .lp-cta-banner { background:#F0FDFA; }
+    .t8 .lp-cta-banner h2 { color:#111827; }
+    .t8 .lp-cta-banner p { color:#6B7280; }
+    .t8 .lp-footer { background:#F9FAFB; border-top:1px solid #E5E7EB; }
+    .t8 .lp-footer span { color:#9CA3AF; }
+
+    /* T9: Pure White + Black */
+    .t9 .lp-header { background:#FFF; border-bottom:1px solid #E4E4E7; }
+    .t9 .lp-logo { color:#18181B; }
+    .t9 .lp-nav span { color:#71717A; }
+    .t9 .lp-nav-cta { background:#18181B; color:#FAFAFA; }
+    .t9 .lp-hero { background:#FFF; }
+    .t9 .lp-badge { background:#F4F4F5; color:#52525B; border:1px solid #E4E4E7; }
+    .t9 .lp-hero h1 { color:#18181B; }
+    .t9 .lp-hero p { color:#71717A; }
+    .t9 .btn-p { background:#18181B; color:#FAFAFA; }
+    .t9 .btn-s { color:#3F3F46; border-color:#D4D4D8; }
+    .t9 .lp-stats { background:#FAFAFA; border-top:1px solid #E4E4E7; border-bottom:1px solid #E4E4E7; }
+    .t9 .lp-stat .num { color:#18181B; }
+    .t9 .lp-stat .lbl { color:#A1A1AA; }
+    .t9 .lp-stat:not(:last-child) { border-right:1px solid #E4E4E7; }
+    .t9 .lp-features { background:#FFF; }
+    .t9 .lp-features-title { color:#18181B; }
+    .t9 .lp-feat-card { background:#FAFAFA; border:1px solid #E4E4E7; }
+    .t9 .lp-feat-icon { background:#F4F4F5; color:#3F3F46; }
+    .t9 .lp-feat-card h3 { color:#18181B; }
+    .t9 .lp-feat-card p { color:#71717A; }
+    .t9 .lp-cta-banner { background:#FAFAFA; }
+    .t9 .lp-cta-banner h2 { color:#18181B; }
+    .t9 .lp-cta-banner p { color:#71717A; }
+    .t9 .lp-footer { background:#FFF; border-top:1px solid #E4E4E7; }
+    .t9 .lp-footer span { color:#A1A1AA; }
+
+    /* T10: White + Indigo */
+    .t10 .lp-header { background:#FFF; border-bottom:1px solid #E5E7EB; }
+    .t10 .lp-logo { color:#111827; }
+    .t10 .lp-nav span { color:#6B7280; }
+    .t10 .lp-nav-cta { background:#4F46E5; color:#FFF; }
+    .t10 .lp-hero { background:#FFF; }
+    .t10 .lp-badge { background:#EEF2FF; color:#4F46E5; }
+    .t10 .lp-hero h1 { color:#111827; }
+    .t10 .lp-hero p { color:#6B7280; }
+    .t10 .btn-p { background:#4F46E5; color:#FFF; }
+    .t10 .btn-s { color:#4F46E5; border-color:#C7D2FE; }
+    .t10 .lp-stats { background:#EEF2FF; border-top:1px solid #C7D2FE; border-bottom:1px solid #C7D2FE; }
+    .t10 .lp-stat .num { color:#4F46E5; }
+    .t10 .lp-stat .lbl { color:#6B7280; }
+    .t10 .lp-stat:not(:last-child) { border-right:1px solid #C7D2FE; }
+    .t10 .lp-features { background:#FFF; }
+    .t10 .lp-features-title { color:#111827; }
+    .t10 .lp-feat-card { background:#EEF2FF; border:1px solid #C7D2FE; }
+    .t10 .lp-feat-icon { background:#C7D2FE; color:#4338CA; }
+    .t10 .lp-feat-card h3 { color:#111827; }
+    .t10 .lp-feat-card p { color:#6B7280; }
+    .t10 .lp-cta-banner { background:#EEF2FF; }
+    .t10 .lp-cta-banner h2 { color:#111827; }
+    .t10 .lp-cta-banner p { color:#6B7280; }
+    .t10 .lp-footer { background:#F9FAFB; border-top:1px solid #E5E7EB; }
+    .t10 .lp-footer span { color:#9CA3AF; }
+  </style>
+</head>
+<body>
+
+<div class="page-nav">
+  <div class="page-nav-inner">
+    <div><h1>RAKUDA COSTCUT — Tone Full Preview</h1><span class="subtitle">ヘッダー〜フッターまで全セクション比較</span></div>
+    <div class="nav-pills">
+      <a href="#t1"><span class="dot" style="background:#2563EB;"></span>T1 Blue</a>
+      <a href="#t2"><span class="dot" style="background:#059669;"></span>T2 Green</a>
+      <a href="#t3"><span class="dot" style="background:#000;"></span>T3 Mono</a>
+      <a href="#t4"><span class="dot" style="background:#FF6B35;"></span>T4 Orange</a>
+      <a href="#t5"><span class="dot" style="background:#1E3A5F;"></span>T5 Navy</a>
+      <a href="#t6"><span class="dot" style="background:#E04D3D;"></span>T6 Coral</a>
+      <a href="#t7"><span class="dot" style="background:#292524;"></span>T7 Cream</a>
+      <a href="#t8"><span class="dot" style="background:#0D9488;"></span>T8 Teal</a>
+      <a href="#t9"><span class="dot" style="background:#18181B;"></span>T9 White</a>
+      <a href="#t10"><span class="dot" style="background:#4F46E5;"></span>T10 Indigo</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// LP template — injected per tone
+function renderLP(id) {
+  const toneNames = {
+    t1:'White + Blue — 安心感・SaaS定番', t2:'White + Green — 節約ポジティブ',
+    t3:'Bold Monochrome ★KEEP — 大胆・研ぎ澄まされた', t4:'White + Orange — ブランドカラー',
+    t5:'Gray + Navy — 経理向け堅実', t6:'White + Coral — 柔らか・親近感',
+    t7:'Cream + Dark — 温もり・手触り', t8:'White + Teal — 清潔・スマート',
+    t9:'Pure White + Black — 静謐・洗練', t10:'White + Indigo — モダン日本SaaS'
+  };
+  const colors = { t1:'#2563EB', t2:'#059669', t3:'#000', t4:'#FF6B35', t5:'#1E3A5F', t6:'#E04D3D', t7:'#292524', t8:'#0D9488', t9:'#18181B', t10:'#4F46E5' };
+  const refs = { t1:'freee / マネーフォワード', t2:'Ramp / Wise', t3:'Vercel / Linear', t4:'HubSpot / Chatwork', t5:'弥生 / 勘定奉行', t6:'メルカリ / Canva', t7:'Notion / STORES', t8:'Wise / CLINICS', t9:'Apple / Stripe', t10:'SmartHR / カオナビ' };
+
+  return `
+  <div class="tone-section" id="${id}">
+    <div class="tone-label">
+      <div class="num" style="background:${colors[id]}">${id.replace('t','').padStart(2,'0')}</div>
+      <h2>${toneNames[id].split('—')[0].trim()}</h2>
+      <span class="desc">— ${toneNames[id].split('—')[1]?.trim()||''} ｜ 参考: ${refs[id]}</span>
+    </div>
+    <div class="lp-frame ${id}">
+      <div class="lp">
+        <div class="lp-header">
+          <span class="lp-logo">RAKUDA</span>
+          <div class="lp-nav">
+            <span>機能</span><span>料金</span><span>導入事例</span>
+            <span class="lp-nav-cta">無料で始める</span>
+          </div>
+        </div>
+        <div class="lp-hero">
+          <div class="lp-badge">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            AIコスト最適化プラットフォーム
+          </div>
+          <h1>請求書を入れるだけで、<br>コストの無駄が見える。</h1>
+          <p>AIが請求書・契約書を自動解析。業界ベンチマークと比較して、削減可能なコストを即座に特定します。</p>
+          <div class="lp-cta-group">
+            <button class="btn-p">無料で診断する →</button>
+            <button class="btn-s">導入事例を見る</button>
+          </div>
+        </div>
+        <div class="lp-stats">
+          <div class="lp-stat"><div class="num">平均23%</div><div class="lbl">コスト削減率</div></div>
+          <div class="lp-stat"><div class="num">850社+</div><div class="lbl">導入企業</div></div>
+          <div class="lp-stat"><div class="num">3分</div><div class="lbl">初回診断完了</div></div>
+        </div>
+        <div class="lp-features">
+          <div class="lp-features-title">RAKUDAが選ばれる3つの理由</div>
+          <div class="lp-features-grid">
+            <div class="lp-feat-card">
+              <div class="lp-feat-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              </div>
+              <h3>ファイルを入れるだけ</h3>
+              <p>請求書・契約書をアップロードするだけ。AIが自動で項目を読み取り、分類・解析します。</p>
+            </div>
+            <div class="lp-feat-card">
+              <div class="lp-feat-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <h3>業界水準と自動比較</h3>
+              <p>10万件超のベンチマークデータと照合。「高い」「適正」「安い」を瞬時に判定します。</p>
+            </div>
+            <div class="lp-feat-card">
+              <div class="lp-feat-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3>具体的な削減アクション</h3>
+              <p>「何を」「いくら」「どう交渉すれば」削減できるか、具体的なアクションプランを提示します。</p>
+            </div>
+          </div>
+        </div>
+        <div class="lp-cta-banner">
+          <h2>まずは無料で、コストの健康診断を。</h2>
+          <p>クレジットカード不要・3分で完了。請求書3枚から診断できます。</p>
+          <button class="btn-p">無料で診断する →</button>
+        </div>
+        <div class="lp-footer">
+          <span>© 2026 RAKUDA Inc.</span>
+          <span>プライバシー　利用規約　お問い合わせ</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+const tones = ['t1','t2','t3','t4','t5','t6','t7','t8','t9','t10'];
+const container = document.createElement('div');
+container.innerHTML = tones.map(t => renderLP(t)).join('');
+document.body.appendChild(container);
+</script>
+
+</body>
+</html>

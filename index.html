@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAKUDA - AIコスト最適化コンサルティング</title>
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --blue-50:  #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  --gray-50:  #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --white:    #ffffff;
+  --radius:   8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow:    0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+  --transition: 0.2s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif;
+  font-feature-settings: "palt";
+  color: var(--gray-800);
+  background: var(--white);
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+ul { list-style: none; }
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   PATTERN SWITCHER BAR
+   ============================================================ */
+.pattern-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--gray-900);
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.pattern-bar__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 42px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pattern-bar__label {
+  color: var(--gray-400);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+
+.pattern-tab {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-400);
+  border-radius: 6px;
+  transition: all var(--transition);
+  white-space: nowrap;
+  position: relative;
+}
+
+.pattern-tab:hover {
+  color: var(--gray-200);
+  background: rgba(255,255,255,0.08);
+}
+
+.pattern-tab.active {
+  color: var(--white);
+  background: var(--blue-600);
+}
+
+/* ============================================================
+   HEADER (STICKY)
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 42px;
+  z-index: 900;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.site-header__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--gray-900);
+}
+
+.logo span {
+  color: var(--blue-600);
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-600);
+  transition: color var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--gray-900);
+}
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--blue-600);
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
+
+.nav-cta:hover {
+  background: var(--blue-700);
+}
+
+.mobile-menu-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   HERO SECTIONS
+   ============================================================ */
+.hero {
+  padding: 100px 0 80px;
+  background: var(--white);
+}
+
+.hero__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 8px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-200);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue-700);
+  margin-bottom: 20px;
+}
+
+.hero__badge svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.hero__title {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--gray-900);
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.hero__subtitle {
+  font-size: 16px;
+  color: var(--gray-600);
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--blue-600);
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
+
+.btn-primary:hover {
+  background: var(--blue-700);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-700);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-400);
+}
+
+.btn-primary svg, .btn-secondary svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Hero visual area */
+.hero__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__mockup {
+  width: 100%;
+  max-width: 480px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.mockup-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.mockup-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-300);
+}
+
+.mockup-body {
+  padding: 24px;
+}
+
+/* P1: Upload mockup */
+.mockup-upload-zone {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.mockup-upload-zone svg {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 12px;
+  color: var(--blue-500);
+}
+
+.mockup-upload-zone p {
+  font-size: 14px;
+  color: var(--gray-500);
+}
+
+.mockup-upload-zone .highlight {
+  color: var(--blue-600);
+  font-weight: 600;
+}
+
+.mockup-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mockup-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.mockup-file svg {
+  width: 18px;
+  height: 18px;
+  color: var(--blue-500);
+  flex-shrink: 0;
+}
+
+.mockup-file span {
+  color: var(--gray-600);
+}
+
+.mockup-file .tag {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--blue-600);
+  background: var(--blue-50);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+/* P2: Chat mockup */
+.mockup-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.chat-bubble--ai {
+  background: var(--blue-50);
+  color: var(--blue-900);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+}
+
+.chat-bubble--user {
+  background: var(--gray-100);
+  color: var(--gray-800);
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+
+.chat-bubble__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-400);
+  margin-bottom: 4px;
+}
+
+.chat-input-mock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.chat-input-mock span {
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.chat-input-mock svg {
+  width: 18px;
+  height: 18px;
+  color: var(--blue-500);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* P3: Diagnosis mockup */
+.mockup-diagnosis {
+  text-align: center;
+}
+
+.diagnosis-score {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px;
+}
+
+.diagnosis-score svg {
+  width: 140px;
+  height: 140px;
+  transform: rotate(-90deg);
+}
+
+.diagnosis-score circle {
+  fill: none;
+  stroke-width: 10;
+}
+
+.diagnosis-score .bg {
+  stroke: var(--gray-200);
+}
+
+.diagnosis-score .fill {
+  stroke: var(--blue-500);
+  stroke-dasharray: 377;
+  stroke-dashoffset: 113;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.diagnosis-score__value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.diagnosis-score__number {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--blue-600);
+  line-height: 1;
+}
+
+.diagnosis-score__label {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+.diagnosis-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.diagnosis-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.diagnosis-bar__name {
+  width: 80px;
+  color: var(--gray-600);
+  flex-shrink: 0;
+}
+
+.diagnosis-bar__track {
+  flex: 1;
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.diagnosis-bar__fill {
+  height: 100%;
+  background: var(--blue-500);
+  border-radius: 4px;
+}
+
+.diagnosis-bar__val {
+  width: 36px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+/* P4: Dashboard mockup */
+.mockup-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dash-metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dash-metric {
+  padding: 12px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+}
+
+.dash-metric__label {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-bottom: 4px;
+}
+
+.dash-metric__value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.dash-metric__value.positive {
+  color: #059669;
+}
+
+.dash-chart {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.dash-chart__title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 12px;
+}
+
+.dash-chart svg {
+  width: 100%;
+  height: 100px;
+}
+
+/* P5: Plans mockup */
+.mockup-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plan-card-mock {
+  padding: 14px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.plan-card-mock.featured {
+  border-color: var(--blue-500);
+  background: var(--blue-50);
+}
+
+.plan-card-mock__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.plan-card-mock__icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--blue-600);
+}
+
+.plan-card-mock__info {
+  flex: 1;
+}
+
+.plan-card-mock__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.plan-card-mock__desc {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+.plan-card-mock__badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue-600);
+  background: var(--blue-100);
+  padding: 3px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   STATS BAR
+   ============================================================ */
+.stats-bar {
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 32px 0;
+}
+
+.stats-bar__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-item__number {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--blue-600);
+  letter-spacing: -0.02em;
+}
+
+.stat-item__label {
+  font-size: 14px;
+  color: var(--gray-500);
+}
+
+/* ============================================================
+   FEATURES / SERVICE DESCRIPTION
+   ============================================================ */
+.features {
+  padding: 80px 0;
+}
+
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-600);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--gray-500);
+  margin-bottom: 48px;
+  max-width: 600px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  padding: 28px;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--gray-300);
+}
+
+.feature-card__icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-50);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.feature-card__icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--blue-600);
+}
+
+.feature-card__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.feature-card__desc {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   PROCESS FLOW
+   ============================================================ */
+.process {
+  padding: 80px 0;
+  background: var(--gray-50);
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  position: relative;
+}
+
+.process-step {
+  text-align: center;
+  position: relative;
+}
+
+.process-step__number {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  background: var(--blue-600);
+  color: var(--white);
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.process-step__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.process-step__desc {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+
+/* Arrow connector between steps */
+.process-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 24px;
+  right: -10px;
+  width: 20px;
+  height: 2px;
+  background: var(--gray-300);
+}
+
+/* ============================================================
+   CASE STUDIES
+   ============================================================ */
+.cases {
+  padding: 80px 0;
+}
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.case-card {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+
+.case-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.case-card__header {
+  padding: 20px 24px;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.case-card__icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-100);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.case-card__icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--blue-600);
+}
+
+.case-card__meta {
+  flex: 1;
+}
+
+.case-card__industry {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.case-card__size {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+.case-card__body {
+  padding: 24px;
+}
+
+.case-card__result {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue-600);
+  margin-bottom: 8px;
+}
+
+.case-card__detail {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.7;
+}
+
+.case-card__tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.case-tag {
+  font-size: 12px;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+/* ============================================================
+   PRODUCT DEV NOTE
+   ============================================================ */
+.product-note {
+  padding: 60px 0;
+  background: var(--white);
+}
+
+.product-note__box {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-200);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.product-note__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border-radius: 10px;
+  border: 1px solid var(--blue-200);
+  flex-shrink: 0;
+}
+
+.product-note__icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--blue-600);
+}
+
+.product-note__content {
+  flex: 1;
+}
+
+.product-note__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.product-note__desc {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.cta-banner {
+  padding: 80px 0;
+  background: var(--gray-900);
+  text-align: center;
+}
+
+.cta-banner__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+.cta-banner__subtitle {
+  font-size: 16px;
+  color: var(--gray-400);
+  margin-bottom: 32px;
+}
+
+.cta-banner .btn-primary {
+  padding: 16px 36px;
+  font-size: 16px;
+  background: var(--blue-600);
+}
+
+.cta-banner .btn-primary:hover {
+  background: var(--blue-500);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  padding: 48px 0 32px;
+  background: var(--gray-900);
+  border-top: 1px solid var(--gray-700);
+}
+
+.site-footer__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.footer-logo span {
+  color: var(--blue-400);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--gray-400);
+  transition: color var(--transition);
+}
+
+.footer-links a:hover {
+  color: var(--gray-200);
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+/* ============================================================
+   PATTERN VISIBILITY
+   ============================================================ */
+.pattern-page { display: none; }
+.pattern-page.active { display: block; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .pattern-bar__inner {
+    gap: 2px;
+  }
+  .pattern-tab {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .pattern-bar__label {
+    display: none;
+  }
+
+  .nav-list { display: none; }
+  .mobile-menu-btn { display: flex; }
+
+  .hero__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  .hero__title { font-size: 26px; }
+  .hero__actions { justify-content: center; }
+  .hero__visual { order: -1; }
+
+  .stats-bar__inner {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .process-step:not(:last-child)::after { display: none; }
+
+  .cases-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-note__box {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .site-footer__inner {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 60px 0 40px; }
+  .hero__title { font-size: 22px; }
+  .stat-item__number { font-size: 26px; }
+  .section-title { font-size: 22px; }
+  .process-grid { grid-template-columns: 1fr; }
+  .cta-banner__title { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PATTERN SWITCHER BAR
+     ============================================================ -->
+<div class="pattern-bar">
+  <div class="pattern-bar__inner">
+    <span class="pattern-bar__label">Pattern</span>
+    <button class="pattern-tab active" data-pattern="p1">P1 Upload</button>
+    <button class="pattern-tab" data-pattern="p2">P2 Chat</button>
+    <button class="pattern-tab" data-pattern="p3">P3 Diagnosis</button>
+    <button class="pattern-tab" data-pattern="p4">P4 Dashboard</button>
+    <button class="pattern-tab" data-pattern="p5">P5 Plans</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     HEADER (SHARED)
+     ============================================================ -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="logo">RAKUDA</div>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="#" class="nav-link">サービス</a></li>
+        <li><a href="#" class="nav-link">進め方</a></li>
+        <li><a href="#" class="nav-link">事例</a></li>
+        <li><a href="#" class="nav-cta">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>
+          無料相談
+        </a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="メニュー">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+    </button>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     PATTERN 1: UPLOAD-FIRST
+     ============================================================ -->
+<div class="pattern-page active" id="p1">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
+          書類をアップロードするだけ
+        </div>
+        <h1 class="hero__title">書類を渡すだけ。<br>あとはAIとプロが<br>最適化します。</h1>
+        <p class="hero__subtitle">請求書・見積書・契約書をお預けいただくだけで、AIが自動解析。コスト構造を可視化し、プロのコンサルタントが削減提案をレポートで納品します。</p>
+        <div class="hero__actions">
+          <a href="#" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
+            書類をアップロード
+          </a>
+          <a href="#" class="btn-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+            サンプルレポートを見る
+          </a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__mockup">
+          <div class="mockup-header">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-upload-zone">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+              <p>ここに書類を<span class="highlight">ドラッグ&ドロップ</span></p>
+            </div>
+            <div class="mockup-file-list">
+              <div class="mockup-file">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                <span>通信費_2025年度.pdf</span>
+                <span class="tag">解析中</span>
+              </div>
+              <div class="mockup-file">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                <span>オフィス賃料_契約書.pdf</span>
+                <span class="tag">完了</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="container">
+      <div class="section-label">サービス</div>
+      <h2 class="section-title">書類をお預かりし、プロが最適化</h2>
+      <p class="section-subtitle">ITに不慣れでも大丈夫。書類を渡すだけで、AIとプロが御社のコストを最適化します。</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+          </div>
+          <h3 class="feature-card__title">AI自動解析</h3>
+          <p class="feature-card__desc">請求書・見積書・契約書をAIが自動で読み取り、コスト項目を分類・構造化。人手では見落としがちな無駄も検出します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" /></svg>
+          </div>
+          <h3 class="feature-card__title">専門家レビュー</h3>
+          <p class="feature-card__desc">AIの解析結果を、コスト削減の専門コンサルタントがレビュー。業界相場と比較し、実現可能な削減プランを設計します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" /></svg>
+          </div>
+          <h3 class="feature-card__title">レポート納品</h3>
+          <p class="feature-card__desc">具体的な削減金額・優先順位・実行手順をまとめたレポートを納品。そのまま社内で実行に移せるアクションプランです。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============================================================
+     PATTERN 2: CHAT-FIRST
+     ============================================================ -->
+<div class="pattern-page" id="p2">
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>
+          チャットで気軽に相談
+        </div>
+        <h1 class="hero__title">チャットで相談。<br>AIが即座にコスト構造を<br>分析。</h1>
+        <p class="hero__subtitle">テキストで現状の課題を伝えるだけで、AIが即座にコスト構造を分析。チャット形式なので、疑問もその場で解決できます。</p>
+        <div class="hero__actions">
+          <a href="#" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>
+            チャットで相談する
+          </a>
+          <a href="#" class="btn-secondary">サービス詳細を見る</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__mockup">
+          <div class="mockup-header">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-chat">
+              <div class="chat-bubble chat-bubble--ai">
+                <div class="chat-bubble__label">RAKUDA AI</div>
+                こんにちは。御社のコスト状況についてお聞かせください。まず、特に気になっている費目はありますか？
+              </div>
+              <div class="chat-bubble chat-bubble--user">
+                通信費とオフィス関連のコストが高い気がしています。従業員50名ほどの会社です。
+              </div>
+              <div class="chat-bubble chat-bubble--ai">
+                <div class="chat-bubble__label">RAKUDA AI</div>
+                承知しました。50名規模で通信費とオフィスコストですね。業界平均と比較すると、年間約15〜25%の削減余地がある企業が多いです。
+              </div>
+            </div>
+            <div class="chat-input-mock">
+              <span>メッセージを入力...</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="section-label">サービス</div>
+      <h2 class="section-title">対話しながら、最適解を導く</h2>
+      <p class="section-subtitle">一方的なレポート納品ではなく、会話を通じて御社の実情に合った提案を行います。</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" /></svg>
+          </div>
+          <h3 class="feature-card__title">AI即時分析</h3>
+          <p class="feature-card__desc">チャットで伝えた内容をAIが即座に分析。業界平均との比較や、削減可能性のある領域をリアルタイムで提示します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+          </div>
+          <h3 class="feature-card__title">専任コンサルタント</h3>
+          <p class="feature-card__desc">AIヒアリング後、専任のコンサルタントが詳細分析を実施。対話を通じて、御社の事情を踏まえた実行可能なプランを策定します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
+          </div>
+          <h3 class="feature-card__title">継続フォロー</h3>
+          <p class="feature-card__desc">施策実行後もチャットで相談可能。新たなコスト課題が出た際もすぐに対応でき、継続的なコスト最適化を支援します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============================================================
+     PATTERN 3: SELF-DIAGNOSIS
+     ============================================================ -->
+<div class="pattern-page" id="p3">
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+          3分で無料診断
+        </div>
+        <h1 class="hero__title">3分でわかる、<br>御社のコスト健康度。</h1>
+        <p class="hero__subtitle">簡単な質問に答えるだけで、AIが御社のコスト健康度をスコアリング。業界平均との比較で、改善ポイントが一目瞭然です。</p>
+        <div class="hero__actions">
+          <a href="#" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+            無料診断を始める
+          </a>
+          <a href="#" class="btn-secondary">診断サンプルを見る</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__mockup">
+          <div class="mockup-header">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-diagnosis">
+              <div class="diagnosis-score">
+                <svg viewBox="0 0 140 140">
+                  <circle class="bg" cx="70" cy="70" r="60" />
+                  <circle class="fill" cx="70" cy="70" r="60" />
+                </svg>
+                <div class="diagnosis-score__value">
+                  <span class="diagnosis-score__number">72</span>
+                  <span class="diagnosis-score__label">/ 100</span>
+                </div>
+              </div>
+              <div class="diagnosis-bars">
+                <div class="diagnosis-bar">
+                  <span class="diagnosis-bar__name">通信費</span>
+                  <div class="diagnosis-bar__track"><div class="diagnosis-bar__fill" style="width: 45%"></div></div>
+                  <span class="diagnosis-bar__val">45</span>
+                </div>
+                <div class="diagnosis-bar">
+                  <span class="diagnosis-bar__name">人件費</span>
+                  <div class="diagnosis-bar__track"><div class="diagnosis-bar__fill" style="width: 82%"></div></div>
+                  <span class="diagnosis-bar__val">82</span>
+                </div>
+                <div class="diagnosis-bar">
+                  <span class="diagnosis-bar__name">オフィス</span>
+                  <div class="diagnosis-bar__track"><div class="diagnosis-bar__fill" style="width: 68%"></div></div>
+                  <span class="diagnosis-bar__val">68</span>
+                </div>
+                <div class="diagnosis-bar">
+                  <span class="diagnosis-bar__name">IT関連</span>
+                  <div class="diagnosis-bar__track"><div class="diagnosis-bar__fill" style="width: 56%"></div></div>
+                  <span class="diagnosis-bar__val">56</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="section-label">サービス</div>
+      <h2 class="section-title">まずはセルフ診断から</h2>
+      <p class="section-subtitle">登録不要で今すぐ診断。スコアを見てから、詳細分析を依頼するかどうか決められます。</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          </div>
+          <h3 class="feature-card__title">3分で完了</h3>
+          <p class="feature-card__desc">業種・従業員数・主要コスト項目など、10問程度の質問に回答するだけ。面倒な書類準備は不要です。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+          </div>
+          <h3 class="feature-card__title">業界比較スコア</h3>
+          <p class="feature-card__desc">同業種・同規模の企業データと比較し、御社のコスト健康度をスコアリング。改善余地の大きい項目がすぐにわかります。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+          </div>
+          <h3 class="feature-card__title">詳細分析へのステップ</h3>
+          <p class="feature-card__desc">診断結果をもとに、書類提出・詳細分析・レポート納品へスムーズに移行。段階的にサービスを利用できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============================================================
+     PATTERN 4: DASHBOARD-DEMO
+     ============================================================ -->
+<div class="pattern-page" id="p4">
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" /></svg>
+          成果を可視化
+        </div>
+        <h1 class="hero__title">削減成果を、<br>リアルタイムで可視化。</h1>
+        <p class="hero__subtitle">AI分析の結果をダッシュボードで一覧表示。削減効果の推移、費目別の内訳、改善ポイントをビジュアルで把握できます。</p>
+        <div class="hero__actions">
+          <a href="#" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" /></svg>
+            デモを見る
+          </a>
+          <a href="#" class="btn-secondary">無料で分析を依頼</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__mockup">
+          <div class="mockup-header">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-dashboard">
+              <div class="dash-metric-row">
+                <div class="dash-metric">
+                  <div class="dash-metric__label">年間削減見込み</div>
+                  <div class="dash-metric__value positive">-23.4%</div>
+                </div>
+                <div class="dash-metric">
+                  <div class="dash-metric__label">削減額</div>
+                  <div class="dash-metric__value">1,840<span style="font-size:14px;color:var(--gray-500)">万円</span></div>
+                </div>
+              </div>
+              <div class="dash-chart">
+                <div class="dash-chart__title">月別コスト推移</div>
+                <svg viewBox="0 0 400 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Grid lines -->
+                  <line x1="0" y1="25" x2="400" y2="25" stroke="#e5e7eb" stroke-width="1" />
+                  <line x1="0" y1="50" x2="400" y2="50" stroke="#e5e7eb" stroke-width="1" />
+                  <line x1="0" y1="75" x2="400" y2="75" stroke="#e5e7eb" stroke-width="1" />
+                  <!-- Before line (gray) -->
+                  <polyline points="0,30 50,35 100,28 150,32 200,25 250,30 300,27 350,33 400,29" stroke="#9ca3af" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <!-- After line (blue) -->
+                  <polyline points="0,30 50,35 100,28 150,40 200,45 250,55 300,58 350,62 400,65" stroke="#2563eb" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <!-- Area fill -->
+                  <polygon points="150,32 200,25 250,30 300,27 350,33 400,29 400,65 350,62 300,58 250,55 200,45 150,40" fill="#2563eb" fill-opacity="0.08" />
+                </svg>
+              </div>
+              <div class="dash-metric-row">
+                <div class="dash-metric">
+                  <div class="dash-metric__label">分析済み費目</div>
+                  <div class="dash-metric__value">12<span style="font-size:14px;color:var(--gray-500)">項目</span></div>
+                </div>
+                <div class="dash-metric">
+                  <div class="dash-metric__label">実行済み施策</div>
+                  <div class="dash-metric__value">8<span style="font-size:14px;color:var(--gray-500)">/12</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="section-label">サービス</div>
+      <h2 class="section-title">データドリブンで、成果を実感</h2>
+      <p class="section-subtitle">感覚ではなくデータで意思決定。コスト削減の効果を定量的に把握し、継続的な改善につなげます。</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+          </div>
+          <h3 class="feature-card__title">コスト構造の可視化</h3>
+          <p class="feature-card__desc">費目別・部門別にコスト構造をビジュアル化。どこに無駄があるか、経営者が直感的に把握できるダッシュボードを提供します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+          </div>
+          <h3 class="feature-card__title">効果測定レポート</h3>
+          <p class="feature-card__desc">施策実行前後のコスト比較をグラフで表示。月次・年次での削減効果を自動で算出し、経営会議にそのまま使える資料を生成します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>
+          </div>
+          <h3 class="feature-card__title">アラート機能</h3>
+          <p class="feature-card__desc">コストが異常に増加した場合や、契約更新のタイミングを自動通知。見逃しがちなコスト増加を未然に防ぎます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============================================================
+     PATTERN 5: MARKETPLACE / PLANS
+     ============================================================ -->
+<div class="pattern-page" id="p5">
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <div class="hero__badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" /></svg>
+          プランを比較して選べる
+        </div>
+        <h1 class="hero__title">御社に最適な<br>コスト最適化プランを<br>選べます。</h1>
+        <p class="hero__subtitle">課題の大きさや予算に応じて、複数のコンサルティングプランから最適なものをお選びいただけます。AI解析オプションも組み合わせ自由です。</p>
+        <div class="hero__actions">
+          <a href="#" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" /></svg>
+            プラン一覧を見る
+          </a>
+          <a href="#" class="btn-secondary">無料相談する</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__mockup">
+          <div class="mockup-header">
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+            <div class="mockup-dot"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-plans">
+              <div class="plan-card-mock">
+                <div class="plan-card-mock__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+                </div>
+                <div class="plan-card-mock__info">
+                  <div class="plan-card-mock__name">ライトプラン</div>
+                  <div class="plan-card-mock__desc">AI解析 + 簡易レポート</div>
+                </div>
+                <span class="plan-card-mock__badge">無料</span>
+              </div>
+              <div class="plan-card-mock featured">
+                <div class="plan-card-mock__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" /></svg>
+                </div>
+                <div class="plan-card-mock__info">
+                  <div class="plan-card-mock__name">スタンダードプラン</div>
+                  <div class="plan-card-mock__desc">AI解析 + 専門家レビュー + 実行支援</div>
+                </div>
+                <span class="plan-card-mock__badge">人気</span>
+              </div>
+              <div class="plan-card-mock">
+                <div class="plan-card-mock__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
+                </div>
+                <div class="plan-card-mock__info">
+                  <div class="plan-card-mock__name">プレミアムプラン</div>
+                  <div class="plan-card-mock__desc">フルコンサル + 継続モニタリング</div>
+                </div>
+                <span class="plan-card-mock__badge">法人向け</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="section-label">サービス</div>
+      <h2 class="section-title">課題と予算に合わせて選べる</h2>
+      <p class="section-subtitle">小さく始めて大きく削減。段階的にサービスを拡張できるので、無理のないスタートが切れます。</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" /></svg>
+          </div>
+          <h3 class="feature-card__title">3つのプラン</h3>
+          <p class="feature-card__desc">ライト（AI解析のみ）、スタンダード（専門家レビュー付き）、プレミアム（継続支援込み）の3段階。御社の状況に合わせて選べます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+          </div>
+          <h3 class="feature-card__title">カスタマイズ可能</h3>
+          <p class="feature-card__desc">各プランにAI解析オプション（契約書分析、サプライヤー比較など）を追加可能。必要なものだけを組み合わせてコストを抑えられます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          </div>
+          <h3 class="feature-card__title">成果報酬型も対応</h3>
+          <p class="feature-card__desc">プレミアムプランは成果報酬型にも対応。実際に削減できた金額の一定割合を報酬とするため、リスクなくご利用いただけます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============================================================
+     SHARED SECTIONS (always visible, outside pattern pages)
+     ============================================================ -->
+
+<!-- Stats Bar -->
+<section class="stats-bar">
+  <div class="stats-bar__inner">
+    <div class="stat-item">
+      <div class="stat-item__number">23%</div>
+      <div class="stat-item__label">平均コスト削減率</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-item__number">120社+</div>
+      <div class="stat-item__label">累計支援実績</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-item__number">2週間</div>
+      <div class="stat-item__label">最短レポート納品</div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Flow -->
+<section class="process">
+  <div class="container">
+    <div class="section-label">進め方</div>
+    <h2 class="section-title">4ステップで、コスト最適化を実現</h2>
+    <p class="section-subtitle">お問い合わせから施策実行まで、シンプルなプロセスで進みます。</p>
+    <div class="process-grid">
+      <div class="process-step">
+        <div class="process-step__number">1</div>
+        <h3 class="process-step__title">無料相談</h3>
+        <p class="process-step__desc">現状の課題感をヒアリング。最適なプランと進め方をご提案します。</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step__number">2</div>
+        <h3 class="process-step__title">データ分析</h3>
+        <p class="process-step__desc">書類やデータをお預かりし、AIが自動でコスト構造を解析します。</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step__number">3</div>
+        <h3 class="process-step__title">提案・レポート</h3>
+        <p class="process-step__desc">専門コンサルタントが具体的な削減施策と実行プランをレポートで納品。</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step__number">4</div>
+        <h3 class="process-step__title">実行・効果測定</h3>
+        <p class="process-step__desc">施策の実行を支援し、削減効果を定量的に測定・報告します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Case Studies -->
+<section class="cases">
+  <div class="container">
+    <div class="section-label">事例</div>
+    <h2 class="section-title">導入企業の声</h2>
+    <p class="section-subtitle">業種・規模を問わず、多くの企業様でコスト削減を実現しています。</p>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-card__header">
+          <div class="case-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
+          </div>
+          <div class="case-card__meta">
+            <div class="case-card__industry">製造業 A社</div>
+            <div class="case-card__size">従業員80名 / 年商12億円</div>
+          </div>
+        </div>
+        <div class="case-card__body">
+          <div class="case-card__result">年間2,400万円削減</div>
+          <p class="case-card__detail">通信費・光熱費・オフィスサプライの3領域を分析。契約の見直しと調達先の最適化により、年間コストの約20%を削減しました。</p>
+          <div class="case-card__tags">
+            <span class="case-tag">通信費</span>
+            <span class="case-tag">光熱費</span>
+            <span class="case-tag">サプライ</span>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-card__header">
+          <div class="case-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+          </div>
+          <div class="case-card__meta">
+            <div class="case-card__industry">IT企業 B社</div>
+            <div class="case-card__size">従業員35名 / 年商4億円</div>
+          </div>
+        </div>
+        <div class="case-card__body">
+          <div class="case-card__result">年間840万円削減</div>
+          <p class="case-card__detail">SaaS利用料とクラウドインフラ費用を最適化。未使用ライセンスの整理とプラン変更で、IT関連コストの28%を削減しました。</p>
+          <div class="case-card__tags">
+            <span class="case-tag">SaaS</span>
+            <span class="case-tag">クラウド</span>
+            <span class="case-tag">ライセンス</span>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-card__header">
+          <div class="case-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.15c0 .415.336.75.75.75z" /></svg>
+          </div>
+          <div class="case-card__meta">
+            <div class="case-card__industry">小売業 C社</div>
+            <div class="case-card__size">従業員120名 / 年商20億円</div>
+          </div>
+        </div>
+        <div class="case-card__body">
+          <div class="case-card__result">年間3,600万円削減</div>
+          <p class="case-card__detail">物流コストと店舗運営費を包括的に分析。配送ルートの最適化と光熱費削減施策により、営業利益率が2ポイント改善しました。</p>
+          <div class="case-card__tags">
+            <span class="case-tag">物流</span>
+            <span class="case-tag">店舗運営</span>
+            <span class="case-tag">光熱費</span>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-card__header">
+          <div class="case-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+          </div>
+          <div class="case-card__meta">
+            <div class="case-card__industry">不動産業 D社</div>
+            <div class="case-card__size">従業員25名 / 年商8億円</div>
+          </div>
+        </div>
+        <div class="case-card__body">
+          <div class="case-card__result">年間1,200万円削減</div>
+          <p class="case-card__detail">広告費とシステム利用料を中心に分析。ポータルサイトの広告配分最適化と業務システムの統合で、固定費の大幅削減を実現しました。</p>
+          <div class="case-card__tags">
+            <span class="case-tag">広告費</span>
+            <span class="case-tag">システム</span>
+            <span class="case-tag">業務効率化</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Product Dev Note -->
+<section class="product-note">
+  <div class="container">
+    <div class="product-note__box">
+      <div class="product-note__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+      </div>
+      <div class="product-note__content">
+        <h3 class="product-note__title">コスト管理SaaSの開発もご相談いただけます</h3>
+        <p class="product-note__desc">コンサルティングで得られた知見をもとに、御社専用のコスト管理ツール（SaaS）の企画・開発もご支援しています。日常的なコスト可視化・アラート機能を備えたプロダクト開発について、お気軽にご相談ください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="cta-banner">
+  <div class="container">
+    <h2 class="cta-banner__title">まずは無料で、コストの健康診断を。</h2>
+    <p class="cta-banner__subtitle">お問い合わせから最短2営業日でAI解析レポートをお届けします。<br>まずはお気軽にご相談ください。</p>
+    <a href="#" class="btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>
+      無料相談を予約する
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="footer-logo">RAKUDA</div>
+    <div class="footer-links">
+      <a href="#">サービス</a>
+      <a href="#">進め方</a>
+      <a href="#">事例</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">特定商取引法に基づく表記</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 RAKUDA. All rights reserved.</div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // Pattern tab switching
+  var tabs = document.querySelectorAll('.pattern-tab');
+  var pages = document.querySelectorAll('.pattern-page');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = this.getAttribute('data-pattern');
+
+      // Update active tab
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+
+      // Update visible page
+      pages.forEach(function(p) { p.classList.remove('active'); });
+      var targetPage = document.getElementById(target);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+
+      // Scroll to top of hero
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // Smooth scroll for nav links (placeholder, since all are #)
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+    });
+  });
+
+  // Intersection Observer for fade-in animations
+  var observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  };
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // Apply fade-in to sections
+  var animElements = document.querySelectorAll('.feature-card, .process-step, .case-card, .product-note__box');
+  animElements.forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+})();
+</script>
+
+</body>
+</html>
