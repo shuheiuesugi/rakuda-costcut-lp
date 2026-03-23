@@ -174,17 +174,17 @@ nav a:hover { color: var(--ink); }
   position: relative;
 }
 .problem-card.old {
-  background: #FEF2F2; border-color: #FECACA;
+  background: var(--canvas); border-color: var(--border);
 }
 .problem-card.new {
-  background: #F0FDF4; border-color: #BBF7D0;
+  background: var(--surface); border-color: var(--accent); border-width: 1.5px;
 }
 .problem-card-label {
   font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
   text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
 }
-.problem-card.old .problem-card-label { color: #DC2626; }
-.problem-card.new .problem-card-label { color: var(--success); }
+.problem-card.old .problem-card-label { color: var(--ink-secondary); }
+.problem-card.new .problem-card-label { color: var(--accent); }
 .problem-card h3 {
   font-size: 18px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;
 }
@@ -196,10 +196,10 @@ nav a:hover { color: var(--ink); }
   padding: 6px 0 6px 24px; position: relative;
 }
 .problem-card.old li::before {
-  content: '✕'; position: absolute; left: 0; color: #EF4444; font-weight: 600; font-size: 12px;
+  content: '—'; position: absolute; left: 0; color: var(--ink-secondary); font-weight: 400; font-size: 13px;
 }
 .problem-card.new li::before {
-  content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 700; font-size: 13px;
+  content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 500; font-size: 13px;
 }
 
 /* ========== PROCESS SECTION ========== */
@@ -246,8 +246,8 @@ nav a:hover { color: var(--ink); }
   letter-spacing: 0.5px;
 }
 .compare-table thead th:first-child { background: var(--canvas); color: var(--ink-secondary); width: 28%; }
-.compare-table thead th:nth-child(2) { background: #FEF2F2; color: #991B1B; }
-.compare-table thead th:nth-child(3) { background: #F0FDF4; color: #166534; }
+.compare-table thead th:nth-child(2) { background: var(--canvas); color: var(--ink-secondary); }
+.compare-table thead th:nth-child(3) { background: var(--accent); color: #fff; }
 .compare-table tbody td {
   padding: 14px 20px; font-size: 14px; border-top: 1px solid var(--border);
   vertical-align: top; line-height: 1.6;
@@ -255,9 +255,9 @@ nav a:hover { color: var(--ink); }
 .compare-table tbody td:first-child {
   font-weight: 600; color: var(--ink); background: var(--canvas);
 }
-.compare-table tbody td:nth-child(2) { background: #FFFBFB; color: var(--ink-secondary); }
-.compare-table tbody td:nth-child(3) { background: #FAFFFC; }
-.compare-table .highlight { color: var(--success); font-weight: 600; }
+.compare-table tbody td:nth-child(2) { background: var(--surface); color: var(--ink-secondary); }
+.compare-table tbody td:nth-child(3) { background: var(--surface); }
+.compare-table .highlight { color: var(--accent); font-weight: 600; }
 
 /* ========== FEATURES ========== */
 .features-grid {
@@ -600,7 +600,7 @@ select.form-input { cursor: pointer; }
       <button class="btn-hero-secondary" onclick="openContact()" data-track="cta">詳しく聞いてみる</button>
     </div>
     <div class="hero-clients">
-      <div class="hero-clients-label">導入企業 500社以上</div>
+      <div class="hero-clients-label">導入企業 150社以上</div>
       <div class="hero-clients-logos">
         <span>製造業</span><span>IT・SaaS</span><span>小売</span><span>建設</span><span>医療</span>
       </div>
@@ -797,7 +797,7 @@ select.form-input { cursor: pointer; }
   <div class="section-inner">
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-num">500+</div>
+        <div class="stat-num">150+</div>
         <div class="stat-label">導入企業数</div>
       </div>
       <div class="stat-card">
