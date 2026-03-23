@@ -28,8 +28,12 @@ app.use(
         "http://127.0.0.1:5500",
       ].filter(Boolean);
 
-      if (!origin || allowedOrigins.includes(origin)) {
-        return origin || "*";
+      if (origin && allowedOrigins.includes(origin)) {
+        return origin;
+      }
+      // origin が無い場合（サーバー間リクエスト等）は許可しない
+      if (!origin) {
+        return allowedOrigins[0] || "";
       }
       return "";
     },

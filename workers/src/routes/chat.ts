@@ -26,8 +26,8 @@ function cleanupRateLimitMap(): void {
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
 
-  // Periodic cleanup (every 100 checks)
-  if (Math.random() < 0.01) {
+  // Periodic cleanup (every ~10 checks)
+  if (Math.random() < 0.1) {
     cleanupRateLimitMap();
   }
 
@@ -107,12 +107,22 @@ chatRoute.post("/", async (c) => {
     return c.json({ error: "messages is required and must be a non-empty array" }, 400);
   }
 
+  // Validate each message has proper role and content
+  for (const msg of messages) {
+    if (!msg || typeof msg.content !== "string") {
+      return c.json({ error: "各メッセージにはcontentが必要です" }, 400);
+    }
+    if (msg.role !== "user" && msg.role !== "assistant") {
+      return c.json({ error: "roleはuserまたはassistantのみ有効です" }, 400);
+    }
+  }
+
   // Validate page
   const systemPrompt = PAGE_PROMPTS[page] ?? PAGE_PROMPTS["p7"];
 
   // Sanitize messages: limit to last 20, strip HTML, truncate
   const sanitizedMessages = messages.slice(-20).map((msg) => ({
-    role: msg.role === "assistant" ? ("assistant" as const) : ("user" as const),
+    role: msg.role as "user" | "assistant",
     content: sanitizeMessage(msg.content),
   }));
 
@@ -148,12 +158,17 @@ chatRoute.post("/", async (c) => {
     return c.json({ error: "Empty response from AI API" }, 502);
   }
 
+  // SSEレスポンスのCORSヘッダーは明示的なオリジンのみ許可
+  const requestOrigin = c.req.header("origin") || "";
+  const allowedOrigin = c.env.ALLOWED_ORIGIN || "";
+  const corsOrigin = requestOrigin === allowedOrigin ? allowedOrigin : allowedOrigin;
+
   return new Response(responseBody, {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
-      "Access-Control-Allow-Origin": c.env.ALLOWED_ORIGIN || "*",
+      "Access-Control-Allow-Origin": corsOrigin,
     },
   });
 });

@@ -39,15 +39,18 @@ abRoute.post("/event", async (c) => {
 
   const { visitor_id, page, event, metadata } = body;
 
-  if (!visitor_id || typeof visitor_id !== "string") {
-    return c.json({ error: "visitor_id is required" }, 400);
+  if (!visitor_id || typeof visitor_id !== "string" || visitor_id.length > 64) {
+    return c.json({ error: "visitor_id is required (max 64 chars)" }, 400);
   }
-  if (!page || typeof page !== "string") {
-    return c.json({ error: "page is required" }, 400);
+  if (!page || typeof page !== "string" || page.length > 20) {
+    return c.json({ error: "page is required (max 20 chars)" }, 400);
   }
-  if (!event || typeof event !== "string") {
-    return c.json({ error: "event is required" }, 400);
+  if (!event || typeof event !== "string" || event.length > 50) {
+    return c.json({ error: "event is required (max 50 chars)" }, 400);
   }
+
+  // Metadata length limit (1KB max)
+  const trimmedMetadata = metadata ? String(metadata).slice(0, 1024) : null;
 
   try {
     await c.env.DB.prepare(
@@ -58,7 +61,7 @@ abRoute.post("/event", async (c) => {
         visitor_id.trim(),
         page.trim(),
         event.trim(),
-        metadata ?? null
+        trimmedMetadata
       )
       .run();
 

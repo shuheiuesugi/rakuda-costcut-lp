@@ -11,6 +11,9 @@ interface FreemiumRequestBody {
   source_page?: string;
 }
 
+// --- Validation ---
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const freemiumRoute = new Hono<{ Bindings: Bindings }>();
 
 freemiumRoute.post("/", async (c) => {
@@ -24,16 +27,20 @@ freemiumRoute.post("/", async (c) => {
   const { email, source_page } = body;
 
   // Validate required fields
-  if (!email || typeof email !== "string" || !email.includes("@")) {
+  if (!email || typeof email !== "string" || !EMAIL_REGEX.test(email)) {
     return c.json({ error: "有効なメールアドレスが必要です" }, 400);
   }
+
+  // Input length limits
+  const trimmedEmail = email.trim().slice(0, 254);
+  const trimmedSourcePage = source_page ? String(source_page).slice(0, 20) : null;
 
   try {
     await c.env.DB.prepare(
       `INSERT INTO leads (email, source_page, type)
        VALUES (?, ?, 'freemium')`
     )
-      .bind(email.trim(), source_page ?? null)
+      .bind(trimmedEmail, trimmedSourcePage)
       .run();
 
     return c.json({ success: true });

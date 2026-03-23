@@ -170,11 +170,14 @@
     // 重複チェック
     if (isEventSent(eventType)) return;
 
+    var meta = metadata || {};
+    var metaStr = typeof meta === 'string' ? meta : JSON.stringify(meta);
+
     var payload = JSON.stringify({
       visitor_id: _visitorId,
       page: _page,
       event: eventType,
-      metadata: JSON.stringify(metadata || {})
+      metadata: metaStr
     });
 
     var sent = false;
@@ -391,6 +394,14 @@
     // 5. カスタムイベントリスナー
     document.addEventListener('rakuda:form_submit', onFormSubmit);
     document.addEventListener('rakuda:chat_start', onChatStart);
+
+    // 6. ページ離脱時のクリーンアップ
+    window.addEventListener('pagehide', function () {
+      if (_modalObserver) {
+        _modalObserver.disconnect();
+        _modalObserver = null;
+      }
+    });
   }
 
   // DOMContentLoaded で自動初期化

@@ -16,6 +16,9 @@ interface ContactRequestBody {
   source_page?: string;
 }
 
+// --- Validation ---
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const contactRoute = new Hono<{ Bindings: Bindings }>();
 
 contactRoute.post("/", async (c) => {
@@ -29,9 +32,18 @@ contactRoute.post("/", async (c) => {
   const { email, company, name, phone, size, message, source_page } = body;
 
   // Validate required fields
-  if (!email || typeof email !== "string" || !email.includes("@")) {
+  if (!email || typeof email !== "string" || !EMAIL_REGEX.test(email)) {
     return c.json({ error: "有効なメールアドレスが必要です" }, 400);
   }
+
+  // Input length limits
+  const trimmedEmail = email.trim().slice(0, 254);
+  const trimmedCompany = company ? String(company).slice(0, 200) : null;
+  const trimmedName = name ? String(name).slice(0, 100) : null;
+  const trimmedPhone = phone ? String(phone).slice(0, 20) : null;
+  const trimmedSize = size ? String(size).slice(0, 50) : null;
+  const trimmedMessage = message ? String(message).slice(0, 2000) : null;
+  const trimmedSourcePage = source_page ? String(source_page).slice(0, 20) : null;
 
   try {
     const result = await c.env.DB.prepare(
@@ -39,13 +51,13 @@ contactRoute.post("/", async (c) => {
        VALUES (?, ?, ?, ?, ?, ?, ?, 'contact')`
     )
       .bind(
-        email.trim(),
-        company ?? null,
-        name ?? null,
-        phone ?? null,
-        size ?? null,
-        message ?? null,
-        source_page ?? null
+        trimmedEmail,
+        trimmedCompany,
+        trimmedName,
+        trimmedPhone,
+        trimmedSize,
+        trimmedMessage,
+        trimmedSourcePage
       )
       .run();
 

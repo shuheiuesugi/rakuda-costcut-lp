@@ -18,6 +18,9 @@
   /** メッセージ履歴の最大ターン数（user + assistant で1ターン） */
   var MAX_TURNS = 20;
 
+  /** クライアント側メッセージ最大文字数 */
+  var MAX_MESSAGE_LENGTH = 500;
+
   /** レートリミット: 1分間あたりの最大リクエスト数 */
   var RATE_LIMIT_PER_MIN = 3;
 
@@ -414,6 +417,7 @@
           }).catch(function (readErr) {
             // ストリーム読み取りエラー
             if (readErr.name === 'AbortError') return;
+            removeTypingIndicator();
             handleStreamError(userText, fullResponse);
           });
         }
@@ -495,6 +499,11 @@
 
     var text = _els.input.value.trim();
     if (!text) return;
+
+    // クライアント側文字数制限
+    if (text.length > MAX_MESSAGE_LENGTH) {
+      text = text.slice(0, MAX_MESSAGE_LENGTH);
+    }
 
     _els.input.value = '';
     streamResponse(text);
