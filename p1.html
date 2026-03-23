@@ -115,6 +115,21 @@
     }
     .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 
+    .btn-nav-secondary {
+      display: inline-flex;
+      align-items: center;
+      color: var(--ink) !important;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-left: 8px;
+    }
+    .btn-nav-secondary:hover { border-color: var(--accent); color: var(--accent) !important; }
+
     /* ===== HERO ===== */
     .hero {
       background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
@@ -1670,9 +1685,9 @@
       </a>
       <nav>
         <a href="#features">機能</a>
-        <a href="#" onclick="openBookingModal();return false;">面談予約</a>
-        <a href="#" class="btn-nav" onclick="openContactModal();return false;">
-          お問い合わせ
+        <a href="#" class="btn-nav-secondary" onclick="openContactModal();return false;">お問い合わせ</a>
+        <a href="#" class="btn-nav" onclick="openBookingModal();return false;">
+          初回面談を予約
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/>
             <polyline points="12 5 19 12 12 19"/>
@@ -1796,7 +1811,7 @@
               <text x="258" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">その他</text>
               <text x="34" y="20" text-anchor="middle" font-size="9" fill="#60A5FA" font-family="system-ui, sans-serif" font-weight="500">削減余地大</text>
             </svg>
-            <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">消耗品カテゴリに削減余地あり — 推定 <span class="countup-value" data-target="2.4" data-prefix="¥" data-suffix="M/年" style="color:#34D399; font-weight:700;">¥2.4M/年</span></p>
+            <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">消耗品カテゴリに削減余地あり — 推定 <span class="countup-value" data-target="240" data-prefix="" data-suffix="万円/年" style="color:#34D399; font-weight:700;">240万円/年</span></p>
           </div>
         </div>
 
@@ -1839,26 +1854,26 @@
               <tr>
                 <td class="action-category">消耗品調達</td>
                 <td>発注先を1社に集約しボリュームディスカウントを交渉。スポット購買を廃止</td>
-                <td class="savings-amount"><span class="countup-value" data-target="2.4" data-prefix="¥" data-suffix="M/年">¥2.4M/年</span></td>
+                <td class="savings-amount"><span class="countup-value" data-target="240" data-prefix="" data-suffix="万円/年">240万円/年</span></td>
                 <td><span class="status-badge status-high">優先度 高</span></td>
               </tr>
               <tr>
                 <td class="action-category">SaaS費用</td>
                 <td>未使用ライセンス14件を解約。重複機能ツール3種を1つに統合</td>
-                <td class="savings-amount"><span class="countup-value" data-target="1.8" data-prefix="¥" data-suffix="M/年">¥1.8M/年</span></td>
+                <td class="savings-amount"><span class="countup-value" data-target="180" data-prefix="" data-suffix="万円/年">180万円/年</span></td>
                 <td><span class="status-badge status-high">優先度 高</span></td>
               </tr>
               <tr>
                 <td class="action-category">外注費</td>
                 <td>定常業務の一部を内製化。発注単価の相見積もりを実施</td>
-                <td class="savings-amount"><span class="countup-value" data-target="900" data-prefix="¥" data-suffix="K/年">¥900K/年</span></td>
+                <td class="savings-amount"><span class="countup-value" data-target="90" data-prefix="" data-suffix="万円/年">90万円/年</span></td>
                 <td><span class="status-badge status-med">優先度 中</span></td>
               </tr>
             </tbody>
           </table>
           <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:space-between;">
             <p style="font-size:12px; color:rgba(255,255,255,0.3);">3件のアクション | 合計削減見込</p>
-            <p style="font-size:1.25rem; font-weight:700; color:#34D399; letter-spacing:-0.03em;"><span class="countup-value" data-target="5.1" data-prefix="¥" data-suffix="M / 年">¥5.1M / 年</span></p>
+            <p style="font-size:1.25rem; font-weight:700; color:#34D399; letter-spacing:-0.03em;"><span class="countup-value" data-target="510" data-prefix="" data-suffix="万円/年">510万円/年</span></p>
           </div>
         </div>
       </div>
@@ -2124,7 +2139,7 @@
     </div>
 
     <div class="chatbot-input">
-      <input type="text" id="chatInput" placeholder="メッセージを入力..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+      <input type="text" id="chatInput" placeholder="メッセージを入力...（⌘+Enterで送信）" onkeydown="if(event.key==='Enter'&&(event.metaKey||event.ctrlKey)){event.preventDefault();sendChatMessage()}">
       <button class="chatbot-send" onclick="sendChatMessage()" aria-label="送信">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="22" y1="2" x2="11" y2="13"/>

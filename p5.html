@@ -111,6 +111,21 @@
   }
   .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 
+  .btn-nav-secondary {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink) !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+  }
+  .btn-nav-secondary:hover { border-color: var(--accent); color: var(--accent) !important; }
+
   /* ── Buttons ── */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -190,7 +205,7 @@
   .saving-text { font-size: 14px; font-weight: 700; color: var(--success); text-align: right; }
   .saving-label { font-size: 11px; font-weight: 400; color: var(--ink-secondary); display: block; margin-bottom: 2px; }
 
-  /* Product card quantity input */
+  /* Product card quantity input (legacy, kept for bulk section) */
   .qty-row { display: flex; align-items: center; gap: 8px; }
   .qty-input {
     width: 72px; height: 32px; border: 1px solid var(--border); border-radius: 4px;
@@ -200,6 +215,174 @@
   .qty-label { font-size: 12px; color: var(--ink-secondary); }
   .annual-est { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 2px; text-align: right; }
   .bulk-saving-tag { font-size: 11px; color: var(--success); font-weight: 600; text-align: right; }
+
+  /* ═══════════════════════════════════
+     PRICE COMPARISON SIMULATOR
+  ═══════════════════════════════════ */
+  .sim-product-list { display: flex; flex-direction: column; gap: 20px; }
+
+  /* New product card layout for simulator */
+  .product-card-sim {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+  }
+  .product-card-sim:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: #D1D5DB; }
+
+  .product-card-sim .pc-inner {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* Product meta */
+  .pc-meta { display: flex; align-items: flex-start; gap: 14px; }
+  .pc-img { width: 56px; height: 56px; background: var(--canvas); border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+  .pc-info h3 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.4; }
+  .pc-sku { font-size: 11px; color: var(--ink-secondary); }
+
+  /* Cost controls */
+  .pc-controls { display: flex; flex-direction: column; gap: 14px; }
+  .pc-field-label { font-size: 12px; font-weight: 600; color: var(--ink-secondary); margin-bottom: 5px; display: block; }
+  .pc-select {
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ink);
+    background: white;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .pc-select:focus { border-color: var(--accent); }
+  .pc-custom-input {
+    margin-top: 6px;
+    width: 100%;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .pc-custom-input:focus { border-color: var(--accent); }
+
+  /* RAKUDA price display */
+  .pc-rakuda-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(37,99,235,0.04);
+    border: 1px solid rgba(37,99,235,0.12);
+    border-radius: 8px;
+  }
+  .pc-rakuda-label { font-size: 12px; color: var(--ink-secondary); white-space: nowrap; }
+  .pc-rakuda-price { font-size: 17px; font-weight: 700; color: var(--accent); margin-left: auto; }
+  .pc-rakuda-note { font-size: 10px; color: var(--ink-secondary); white-space: nowrap; }
+
+  /* Savings display */
+  .pc-savings { display: flex; flex-direction: column; gap: 12px; }
+  .pc-savings-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .pc-savings-key { font-size: 12px; color: var(--ink-secondary); }
+  .pc-savings-val { font-size: 15px; font-weight: 700; color: var(--success); }
+  .pc-savings-val.muted { color: var(--ink-secondary); font-weight: 400; font-size: 13px; }
+  .pc-savings-annual { font-size: 22px; font-weight: 700; color: var(--success); letter-spacing: -0.02em; }
+  .pc-savings-annual.muted { font-size: 15px; font-weight: 400; color: var(--ink-secondary); }
+
+  /* Comparison bar */
+  .pc-bar-wrap { display: flex; flex-direction: column; gap: 5px; }
+  .pc-bar-item { display: flex; align-items: center; gap: 8px; }
+  .pc-bar-track { flex: 1; height: 28px; background: var(--canvas); border-radius: 6px; overflow: hidden; position: relative; }
+  .pc-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: width 0.4s ease;
+  }
+  .pc-bar-fill.current { background: rgba(0,0,0,0.06); color: var(--ink-secondary); width: 100%; }
+  .pc-bar-fill.rakuda { background: linear-gradient(90deg, #2563EB, #3B82F6); color: white; }
+
+  /* Custom product card (4th) */
+  .product-card-custom {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    background: rgba(37,99,235,0.02);
+    transition: border-color 0.2s;
+  }
+  .product-card-custom:hover { border-color: var(--accent); }
+  .pc-product-select-row { display: flex; align-items: center; gap: 12px; }
+  .pc-product-select-label { font-size: 14px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .pc-product-dropdown {
+    flex: 1;
+    max-width: 360px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    background: white;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .pc-product-dropdown:focus { border-color: var(--accent); }
+  .pc-custom-body { margin-top: 20px; }
+
+  /* Total savings bar */
+  .total-savings-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--dark);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin-top: 24px;
+    z-index: 10;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  }
+  .total-savings-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; max-width: 1072px; margin: 0 auto; }
+  .total-left { display: flex; align-items: center; gap: 12px; }
+  .total-label { font-size: 14px; color: rgba(255,255,255,0.7); }
+  .total-count { font-size: 13px; font-weight: 700; color: var(--accent); background: rgba(37,99,235,0.2); padding: 3px 10px; border-radius: 20px; }
+  .total-right { display: flex; align-items: baseline; gap: 4px; }
+  .total-amount { font-size: 28px; font-weight: 700; color: #34D399; letter-spacing: -0.02em; }
+  .total-suffix { font-size: 15px; color: rgba(255,255,255,0.5); }
+
+  @media (max-width: 768px) {
+    .product-card-sim .pc-inner { grid-template-columns: 1fr; gap: 20px; }
+    .pc-product-select-row { flex-direction: column; align-items: flex-start; }
+    .pc-product-dropdown { max-width: 100%; }
+  }
 
   /* ── AI Analysis ── */
   .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
@@ -574,9 +757,9 @@
     <nav>
       <a href="#price-comparison">価格比較</a>
       <a href="#ai-analysis">AI分析</a>
-      <a href="#" onclick="openBookingModal();return false;">面談予約</a>
-      <a href="#" class="btn-nav" onclick="openContactModal();return false;">
-        お問い合わせ
+      <a href="#" class="btn-nav-secondary" onclick="openContactModal();return false;">お問い合わせ</a>
+      <a href="#" class="btn-nav" onclick="openBookingModal();return false;">
+        初回面談を予約
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"/>
           <polyline points="12 5 19 12 12 19"/>
@@ -626,98 +809,242 @@
 <section id="price-comparison" class="section fade-in-section" style="background:var(--surface); padding: 120px 0;">
   <div class="container">
     <span class="section-label">Price Comparison</span>
-    <h2>3プラットフォームを一括比較</h2>
+    <h2>購買コスト比較シミュレーター</h2>
+    <p style="font-size:15px; color:var(--ink-secondary); margin-bottom:40px; margin-top:-24px; max-width:600px;">現在の調達コストとRAKUDA価格を比較。品目ごとの年間削減効果をシミュレーションできます。</p>
 
-    <div class="product-list">
+    <div class="sim-product-list">
 
       <!-- Product 1: コピー用紙 -->
-      <div class="product-card" data-product="paper" data-unit-price="2180">
-        <div class="product-meta">
-          <div class="product-img"></div>
-          <div class="product-info">
-            <h3>コピー用紙A4<br>5000枚</h3>
-            <span class="product-sku">SKU: CP-A4-5000</span>
+      <div class="product-card-sim" data-rakuda-price="1890">
+        <div class="pc-inner">
+          <!-- Meta -->
+          <div class="pc-meta">
+            <div class="pc-img"></div>
+            <div class="pc-info">
+              <h3>コピー用紙A4<br>5000枚</h3>
+              <span class="pc-sku">SKU: CP-A4-5000</span>
+            </div>
           </div>
-        </div>
-        <table class="price-table">
-          <tr><td class="platform-name">Monotaro</td><td class="price-val">¥2,480</td><td></td></tr>
-          <tr><td class="platform-name best">Amazon Business</td><td class="price-val best">¥2,180</td><td><span class="tag-best">最安</span></td></tr>
-          <tr><td class="platform-name">Askul</td><td class="price-val">¥2,380</td><td></td></tr>
-        </table>
-        <div class="product-action">
-          <div>
-            <span class="saving-label">Amazon で最大</span>
-            <div class="saving-text">¥300 節約</div>
+          <!-- Controls -->
+          <div class="pc-controls">
+            <div>
+              <label class="pc-field-label">現在の調達コスト（税抜/個）</label>
+              <select class="pc-select cost-select" onchange="updateSavings(this)">
+                <option value="">選択してください</option>
+                <option value="2800">¥2,800（定価購入）</option>
+                <option value="2480">¥2,480（Monotaro等）</option>
+                <option value="2380">¥2,380（Askul等）</option>
+                <option value="2180">¥2,180（Amazon Business等）</option>
+                <option value="0">その他（手入力）</option>
+              </select>
+              <input type="number" class="pc-custom-input cost-custom" style="display:none" placeholder="現在の単価を入力" oninput="updateSavings(this.closest('.product-card-sim').querySelector('.cost-select'))">
+            </div>
+            <div class="pc-rakuda-row">
+              <span class="pc-rakuda-label">RAKUDA最適価格</span>
+              <span class="pc-rakuda-price">¥1,890</span>
+              <span class="pc-rakuda-note">※ 一括購買・価格交渉済み</span>
+            </div>
+            <div>
+              <label class="pc-field-label">月間発注数量</label>
+              <select class="pc-select qty-select" onchange="updateSavings(this)">
+                <option value="10">10個/月</option>
+                <option value="50">50個/月</option>
+                <option value="100" selected>100個/月</option>
+                <option value="300">300個/月</option>
+                <option value="500">500個/月</option>
+                <option value="1000">1,000個/月</option>
+              </select>
+            </div>
           </div>
-          <div class="qty-row">
-            <span class="qty-label">数量:</span>
-            <input type="number" class="qty-input" value="100" min="1" data-price="2180" onchange="updateProductEst(this)" oninput="updateProductEst(this)">
-            <span class="qty-label">個/月</span>
+          <!-- Savings -->
+          <div class="pc-savings">
+            <div class="pc-savings-row">
+              <span class="pc-savings-key">1個あたり</span>
+              <span class="pc-savings-val muted savings-per-unit-val">—</span>
+            </div>
+            <div class="pc-savings-row" style="align-items:flex-end;">
+              <span class="pc-savings-key">年間削減見込</span>
+              <span class="pc-savings-annual muted savings-annual-val">—</span>
+            </div>
+            <div class="pc-bar-wrap">
+              <div class="pc-bar-item">
+                <div class="pc-bar-track">
+                  <div class="pc-bar-fill current bar-current">現在のコスト</div>
+                </div>
+              </div>
+              <div class="pc-bar-item">
+                <div class="pc-bar-track">
+                  <div class="pc-bar-fill rakuda bar-rakuda" style="width:0%">RAKUDA</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="annual-est" data-annual-target="paper">年間見積: ¥2,616,000</div>
-          <div class="bulk-saving-tag" data-bulk-target="paper">バルク購入で年間 ¥130,800 節約</div>
         </div>
       </div>
 
       <!-- Product 2: トナーカートリッジ -->
-      <div class="product-card" data-product="toner" data-unit-price="3890">
-        <div class="product-meta">
-          <div class="product-img"></div>
-          <div class="product-info">
-            <h3>トナーカートリッジ<br>HP互換</h3>
-            <span class="product-sku">SKU: TN-HP-BK</span>
+      <div class="product-card-sim" data-rakuda-price="3200">
+        <div class="pc-inner">
+          <div class="pc-meta">
+            <div class="pc-img"></div>
+            <div class="pc-info">
+              <h3>トナーカートリッジ<br>HP互換</h3>
+              <span class="pc-sku">SKU: TN-HP-BK</span>
+            </div>
           </div>
-        </div>
-        <table class="price-table">
-          <tr><td class="platform-name">Monotaro</td><td class="price-val">¥4,980</td><td></td></tr>
-          <tr><td class="platform-name best">Amazon Business</td><td class="price-val best">¥3,890</td><td><span class="tag-best">最安</span></td></tr>
-          <tr><td class="platform-name">Askul</td><td class="price-val">¥5,200</td><td></td></tr>
-        </table>
-        <div class="product-action">
-          <div>
-            <span class="saving-label">Amazon で最大</span>
-            <div class="saving-text">¥1,310 節約</div>
+          <div class="pc-controls">
+            <div>
+              <label class="pc-field-label">現在の調達コスト（税抜/個）</label>
+              <select class="pc-select cost-select" onchange="updateSavings(this)">
+                <option value="">選択してください</option>
+                <option value="4500">¥4,500（定価購入）</option>
+                <option value="4180">¥4,180（Monotaro等）</option>
+                <option value="3890">¥3,890（Amazon Business等）</option>
+                <option value="3580">¥3,580（Askul等）</option>
+                <option value="0">その他（手入力）</option>
+              </select>
+              <input type="number" class="pc-custom-input cost-custom" style="display:none" placeholder="現在の単価を入力" oninput="updateSavings(this.closest('.product-card-sim').querySelector('.cost-select'))">
+            </div>
+            <div class="pc-rakuda-row">
+              <span class="pc-rakuda-label">RAKUDA最適価格</span>
+              <span class="pc-rakuda-price">¥3,200</span>
+              <span class="pc-rakuda-note">※ 一括購買・価格交渉済み</span>
+            </div>
+            <div>
+              <label class="pc-field-label">月間発注数量</label>
+              <select class="pc-select qty-select" onchange="updateSavings(this)">
+                <option value="10">10個/月</option>
+                <option value="50">50個/月</option>
+                <option value="100" selected>100個/月</option>
+                <option value="300">300個/月</option>
+                <option value="500">500個/月</option>
+                <option value="1000">1,000個/月</option>
+              </select>
+            </div>
           </div>
-          <div class="qty-row">
-            <span class="qty-label">数量:</span>
-            <input type="number" class="qty-input" value="100" min="1" data-price="3890" onchange="updateProductEst(this)" oninput="updateProductEst(this)">
-            <span class="qty-label">個/月</span>
+          <div class="pc-savings">
+            <div class="pc-savings-row">
+              <span class="pc-savings-key">1個あたり</span>
+              <span class="pc-savings-val muted savings-per-unit-val">—</span>
+            </div>
+            <div class="pc-savings-row" style="align-items:flex-end;">
+              <span class="pc-savings-key">年間削減見込</span>
+              <span class="pc-savings-annual muted savings-annual-val">—</span>
+            </div>
+            <div class="pc-bar-wrap">
+              <div class="pc-bar-item">
+                <div class="pc-bar-track">
+                  <div class="pc-bar-fill current bar-current">現在のコスト</div>
+                </div>
+              </div>
+              <div class="pc-bar-item">
+                <div class="pc-bar-track">
+                  <div class="pc-bar-fill rakuda bar-rakuda" style="width:0%">RAKUDA</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="annual-est" data-annual-target="toner">年間見積: ¥4,668,000</div>
-          <div class="bulk-saving-tag" data-bulk-target="toner">バルク購入で年間 ¥233,400 節約</div>
         </div>
       </div>
 
-      <!-- Product 3: ゴム手袋 -->
-      <div class="product-card" data-product="gloves" data-unit-price="890">
-        <div class="product-meta">
-          <div class="product-img"></div>
-          <div class="product-info">
-            <h3>ゴム手袋<br>100枚入</h3>
-            <span class="product-sku">SKU: GL-NBR-100</span>
+      <!-- Product 3: ニトリル手袋 -->
+      <div class="product-card-sim" data-rakuda-price="680">
+        <div class="pc-inner">
+          <div class="pc-meta">
+            <div class="pc-img"></div>
+            <div class="pc-info">
+              <h3>ニトリル手袋<br>100枚入</h3>
+              <span class="pc-sku">SKU: GL-NBR-100</span>
+            </div>
+          </div>
+          <div class="pc-controls">
+            <div>
+              <label class="pc-field-label">現在の調達コスト（税抜/個）</label>
+              <select class="pc-select cost-select" onchange="updateSavings(this)">
+                <option value="">選択してください</option>
+                <option value="1200">¥1,200（定価購入）</option>
+                <option value="980">¥980（Askul等）</option>
+                <option value="890">¥890（Monotaro等）</option>
+                <option value="850">¥850（Amazon Business等）</option>
+                <option value="0">その他（手入力）</option>
+              </select>
+              <input type="number" class="pc-custom-input cost-custom" style="display:none" placeholder="現在の単価を入力" oninput="updateSavings(this.closest('.product-card-sim').querySelector('.cost-select'))">
+            </div>
+            <div class="pc-rakuda-row">
+              <span class="pc-rakuda-label">RAKUDA最適価格</span>
+              <span class="pc-rakuda-price">¥680</span>
+              <span class="pc-rakuda-note">※ 一括購買・価格交渉済み</span>
+            </div>
+            <div>
+              <label class="pc-field-label">月間発注数量</label>
+              <select class="pc-select qty-select" onchange="updateSavings(this)">
+                <option value="10">10個/月</option>
+                <option value="50">50個/月</option>
+                <option value="100" selected>100個/月</option>
+                <option value="300">300個/月</option>
+                <option value="500">500個/月</option>
+                <option value="1000">1,000個/月</option>
+              </select>
+            </div>
+          </div>
+          <div class="pc-savings">
+            <div class="pc-savings-row">
+              <span class="pc-savings-key">1個あたり</span>
+              <span class="pc-savings-val muted savings-per-unit-val">—</span>
+            </div>
+            <div class="pc-savings-row" style="align-items:flex-end;">
+              <span class="pc-savings-key">年間削減見込</span>
+              <span class="pc-savings-annual muted savings-annual-val">—</span>
+            </div>
+            <div class="pc-bar-wrap">
+              <div class="pc-bar-item">
+                <div class="pc-bar-track">
+                  <div class="pc-bar-fill current bar-current">現在のコスト</div>
+                </div>
+              </div>
+              <div class="pc-bar-item">
+                <div class="pc-bar-track">
+                  <div class="pc-bar-fill rakuda bar-rakuda" style="width:0%">RAKUDA</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <table class="price-table">
-          <tr><td class="platform-name best">Monotaro</td><td class="price-val best">¥890</td><td><span class="tag-best">最安</span></td></tr>
-          <tr><td class="platform-name">Amazon Business</td><td class="price-val">¥980</td><td></td></tr>
-          <tr><td class="platform-name">Askul</td><td class="price-val">¥920</td><td></td></tr>
-        </table>
-        <div class="product-action">
-          <div>
-            <span class="saving-label">Monotaro で最大</span>
-            <div class="saving-text">¥90 節約</div>
-          </div>
-          <div class="qty-row">
-            <span class="qty-label">数量:</span>
-            <input type="number" class="qty-input" value="100" min="1" data-price="890" onchange="updateProductEst(this)" oninput="updateProductEst(this)">
-            <span class="qty-label">個/月</span>
-          </div>
-          <div class="annual-est" data-annual-target="gloves">年間見積: ¥1,068,000</div>
-          <div class="bulk-saving-tag" data-bulk-target="gloves">バルク購入で年間 ¥53,400 節約</div>
+      </div>
+
+      <!-- Product 4: Custom selection -->
+      <div class="product-card-sim product-card-custom" id="customCard">
+        <div class="pc-product-select-row">
+          <span class="pc-product-select-label">+ 追加品目を選択</span>
+          <select class="pc-product-dropdown" id="customProductSelect" onchange="loadCustomProduct(this.value)">
+            <option value="">品目を選んでください</option>
+            <option value="tissue">ティッシュペーパー 5箱パック</option>
+            <option value="marker">ホワイトボードマーカー 12本</option>
+            <option value="folder">クリアファイル A4 100枚</option>
+            <option value="battery">乾電池 単3 20本パック</option>
+            <option value="tape">梱包テープ 50m 6巻</option>
+            <option value="sanitizer">アルコール消毒液 1L</option>
+          </select>
         </div>
+        <div class="pc-custom-body" id="customProductBody" style="display:none"></div>
       </div>
 
     </div>
+
+    <!-- Total savings sticky bar -->
+    <div class="total-savings-bar">
+      <div class="total-savings-inner">
+        <div class="total-left">
+          <span class="total-label">選択品目の合計年間削減見込</span>
+          <span class="total-count" id="totalItemCount">0品目</span>
+        </div>
+        <div class="total-right">
+          <span class="total-amount" id="totalAnnualSavings">¥0</span>
+          <span class="total-suffix">/年</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1094,7 +1421,7 @@
     <div class="chat-msg bot">こんにちは！ RAKUDAへようこそ。購買コスト削減についてご質問はありますか？<br><br>以下のキーワードでお気軽にどうぞ：<br>・「料金」「価格」<br>・「機能」「できること」<br>・「導入」「始め方」<br>・「削減」「コスト」</div>
   </div>
   <div class="chat-input-row">
-    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力..." onkeydown="if(event.key==='Enter')sendChat()">
+    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力...（⌘+Enterで送信）" onkeydown="if(event.key==='Enter'&&(event.metaKey||event.ctrlKey)){event.preventDefault();sendChat()}">
     <button class="chat-send" onclick="sendChat()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
@@ -1508,43 +1835,175 @@
   calcSim();
 
   /* ═══════════════════════════════════
-     PRODUCT CARD QUANTITY CALC
+     PRICE COMPARISON SIMULATOR
   ═══════════════════════════════════ */
-  window.updateProductEst = function(input) {
-    var price = parseInt(input.getAttribute('data-price')) || 0;
-    var qty = parseInt(input.value) || 0;
-    var card = input.closest('.product-card');
-    var product = card.getAttribute('data-product');
-    var annual = price * qty * 12;
 
-    // Bulk discount
-    var discountRate = 0;
-    if (qty >= 1000) discountRate = 0.18;
-    else if (qty >= 500) discountRate = 0.12;
-    else if (qty >= 100) discountRate = 0.05;
-
-    var discounted = annual * (1 - discountRate);
-    var saving = annual - discounted;
-
-    var annualEl = card.querySelector('[data-annual-target="' + product + '"]');
-    var bulkEl = card.querySelector('[data-bulk-target="' + product + '"]');
-
-    if (annualEl) annualEl.textContent = '年間見積: ¥' + fmt(Math.round(discounted));
-    if (bulkEl) {
-      if (discountRate > 0) {
-        bulkEl.textContent = 'バルク購入で年間 ¥' + fmt(Math.round(saving)) + ' 節約 (' + (discountRate*100) + '%OFF)';
-        bulkEl.style.display = 'block';
-      } else {
-        bulkEl.textContent = '100個以上でバルク割引が適用されます';
-        bulkEl.style.display = 'block';
-      }
-    }
+  var customProducts = {
+    tissue:    { name:'ティッシュペーパー 5箱パック',   sku:'TS-5P',      rakudaPrice:280,  options:[{label:'¥450（定価）',value:450},{label:'¥380（Monotaro等）',value:380},{label:'¥320（Amazon等）',value:320}] },
+    marker:    { name:'ホワイトボードマーカー 12本',    sku:'WM-12',      rakudaPrice:720,  options:[{label:'¥1,100（定価）',value:1100},{label:'¥980（Monotaro等）',value:980},{label:'¥850（Amazon等）',value:850}] },
+    folder:    { name:'クリアファイル A4 100枚',        sku:'CF-A4-100',  rakudaPrice:1500, options:[{label:'¥2,200（定価）',value:2200},{label:'¥1,980（Monotaro等）',value:1980},{label:'¥1,800（Amazon等）',value:1800}] },
+    battery:   { name:'乾電池 単3 20本パック',          sku:'BT-AA-20',   rakudaPrice:680,  options:[{label:'¥1,100（定価）',value:1100},{label:'¥890（Monotaro等）',value:890},{label:'¥780（Amazon等）',value:780}] },
+    tape:      { name:'梱包テープ 50m 6巻',             sku:'PT-50-6',    rakudaPrice:520,  options:[{label:'¥850（定価）',value:850},{label:'¥720（Monotaro等）',value:720},{label:'¥650（Amazon等）',value:650}] },
+    sanitizer: { name:'アルコール消毒液 1L',            sku:'AS-1L',      rakudaPrice:450,  options:[{label:'¥780（定価）',value:780},{label:'¥650（Monotaro等）',value:650},{label:'¥580（Amazon等）',value:580}] }
   };
 
-  // Init product estimates
-  document.querySelectorAll('.qty-input').forEach(function(input) {
-    updateProductEst(input);
-  });
+  window.loadCustomProduct = function(key) {
+    var body = document.getElementById('customProductBody');
+    var card = document.getElementById('customCard');
+    if (!key) {
+      body.style.display = 'none';
+      card.dataset.rakudaPrice = '';
+      updateTotalSavings();
+      return;
+    }
+    var p = customProducts[key];
+    if (!p) return;
+
+    card.dataset.rakudaPrice = p.rakudaPrice;
+
+    var optionsHtml = '<option value="">選択してください</option>';
+    p.options.forEach(function(o) {
+      optionsHtml += '<option value="' + o.value + '">' + o.label + '</option>';
+    });
+    optionsHtml += '<option value="0">その他（手入力）</option>';
+
+    body.innerHTML =
+      '<div class="pc-inner" style="margin-top:20px;">' +
+        '<div class="pc-meta">' +
+          '<div class="pc-img"></div>' +
+          '<div class="pc-info"><h3>' + p.name + '</h3><span class="pc-sku">SKU: ' + p.sku + '</span></div>' +
+        '</div>' +
+        '<div class="pc-controls">' +
+          '<div>' +
+            '<label class="pc-field-label">現在の調達コスト（税抜/個）</label>' +
+            '<select class="pc-select cost-select" onchange="updateSavings(this)">' + optionsHtml + '</select>' +
+            '<input type="number" class="pc-custom-input cost-custom" style="display:none" placeholder="現在の単価を入力" oninput="updateSavings(this.closest(\'#customCard\').querySelector(\'.cost-select\'))">' +
+          '</div>' +
+          '<div class="pc-rakuda-row">' +
+            '<span class="pc-rakuda-label">RAKUDA最適価格</span>' +
+            '<span class="pc-rakuda-price">¥' + p.rakudaPrice.toLocaleString() + '</span>' +
+            '<span class="pc-rakuda-note">※ 一括購買・価格交渉済み</span>' +
+          '</div>' +
+          '<div>' +
+            '<label class="pc-field-label">月間発注数量</label>' +
+            '<select class="pc-select qty-select" onchange="updateSavings(this)">' +
+              '<option value="10">10個/月</option>' +
+              '<option value="50">50個/月</option>' +
+              '<option value="100" selected>100個/月</option>' +
+              '<option value="300">300個/月</option>' +
+              '<option value="500">500個/月</option>' +
+              '<option value="1000">1,000個/月</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="pc-savings">' +
+          '<div class="pc-savings-row"><span class="pc-savings-key">1個あたり</span><span class="pc-savings-val muted savings-per-unit-val">—</span></div>' +
+          '<div class="pc-savings-row" style="align-items:flex-end;"><span class="pc-savings-key">年間削減見込</span><span class="pc-savings-annual muted savings-annual-val">—</span></div>' +
+          '<div class="pc-bar-wrap">' +
+            '<div class="pc-bar-item"><div class="pc-bar-track"><div class="pc-bar-fill current bar-current">現在のコスト</div></div></div>' +
+            '<div class="pc-bar-item"><div class="pc-bar-track"><div class="pc-bar-fill rakuda bar-rakuda" style="width:0%">RAKUDA</div></div></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    body.style.display = 'block';
+    updateTotalSavings();
+  };
+
+  window.updateSavings = function(el) {
+    var card = el.closest('.product-card-sim');
+    if (!card) return;
+    var costSelect = card.querySelector('.cost-select');
+    var qtySelect  = card.querySelector('.qty-select');
+    var customInput = card.querySelector('.cost-custom');
+    if (!costSelect || !qtySelect) return;
+
+    var rakudaPrice = parseInt(card.dataset.rakudaPrice) || 0;
+    var qty = parseInt(qtySelect.value) || 0;
+
+    // Show/hide custom input
+    var currentCost = 0;
+    if (costSelect.value === '0') {
+      if (customInput) customInput.style.display = 'block';
+      currentCost = parseInt(customInput ? customInput.value : 0) || 0;
+    } else {
+      if (customInput) customInput.style.display = 'none';
+      currentCost = parseInt(costSelect.value) || 0;
+    }
+
+    var perUnit = currentCost - rakudaPrice;
+    var annual  = perUnit * qty * 12;
+
+    var perUnitEl  = card.querySelector('.savings-per-unit-val');
+    var annualEl   = card.querySelector('.savings-annual-val');
+    var barCurrent = card.querySelector('.bar-current');
+    var barRakuda  = card.querySelector('.bar-rakuda');
+
+    if (perUnitEl) {
+      if (perUnit > 0) {
+        perUnitEl.textContent = '¥' + perUnit.toLocaleString() + ' お得';
+        perUnitEl.className = 'pc-savings-val savings-per-unit-val';
+      } else if (currentCost > 0) {
+        perUnitEl.textContent = perUnit === 0 ? '変化なし' : '割高';
+        perUnitEl.className = 'pc-savings-val muted savings-per-unit-val';
+      } else {
+        perUnitEl.textContent = '—';
+        perUnitEl.className = 'pc-savings-val muted savings-per-unit-val';
+      }
+    }
+    if (annualEl) {
+      if (annual > 0) {
+        annualEl.textContent = '¥' + annual.toLocaleString();
+        annualEl.className = 'pc-savings-annual savings-annual-val';
+      } else {
+        annualEl.textContent = '—';
+        annualEl.className = 'pc-savings-annual muted savings-annual-val';
+      }
+    }
+
+    // Update bars
+    if (currentCost > 0 && barCurrent && barRakuda) {
+      var ratio = Math.max(0, Math.min(100, (rakudaPrice / currentCost * 100)));
+      barCurrent.textContent = '現在 ¥' + currentCost.toLocaleString();
+      barRakuda.style.width  = ratio + '%';
+      barRakuda.textContent  = 'RAKUDA ¥' + rakudaPrice.toLocaleString();
+    } else if (barCurrent && barRakuda) {
+      barCurrent.textContent = '現在のコスト';
+      barRakuda.style.width  = '0%';
+      barRakuda.textContent  = 'RAKUDA';
+    }
+
+    updateTotalSavings();
+  };
+
+  function updateTotalSavings() {
+    var total = 0;
+    var count = 0;
+    document.querySelectorAll('.product-card-sim').forEach(function(card) {
+      var costSelect  = card.querySelector('.cost-select');
+      var qtySelect   = card.querySelector('.qty-select');
+      var customInput = card.querySelector('.cost-custom');
+      if (!costSelect || !qtySelect) return;
+      var rakudaPrice = parseInt(card.dataset.rakudaPrice) || 0;
+      if (!rakudaPrice) return;
+      var currentCost = 0;
+      if (costSelect.value === '0') {
+        currentCost = parseInt(customInput ? customInput.value : 0) || 0;
+      } else {
+        currentCost = parseInt(costSelect.value) || 0;
+      }
+      var qty = parseInt(qtySelect.value) || 0;
+      var saving = (currentCost - rakudaPrice) * qty * 12;
+      if (saving > 0) { total += saving; count++; }
+    });
+    var totalEl = document.getElementById('totalAnnualSavings');
+    var countEl = document.getElementById('totalItemCount');
+    if (totalEl) totalEl.textContent = '¥' + total.toLocaleString();
+    if (countEl) countEl.textContent = count + '品目';
+  }
+
+  // Init total
+  updateTotalSavings();
 
 })();
 </script>

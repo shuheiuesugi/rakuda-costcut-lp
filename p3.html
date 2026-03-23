@@ -118,6 +118,21 @@ nav a:hover { color: var(--ink); }
 
 .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 
+.btn-nav-secondary {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink) !important;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+.btn-nav-secondary:hover { border-color: var(--accent); color: var(--accent) !important; }
+
 /* ── HERO ── */
 .hero {
   background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
@@ -287,10 +302,10 @@ nav a:hover { color: var(--ink); }
 .progress-node-label.is-active { color: var(--accent); }
 
 .progress-line {
-  width: 72px;
+  width: 48px;
   height: 1.5px;
   background: var(--border);
-  margin: 0 4px;
+  margin: 0 2px;
   margin-bottom: 26px;
   flex-shrink: 0;
 }
@@ -1111,8 +1126,8 @@ footer {
 }
 
 @media (max-width: 500px) {
-  .progress-line { width: 32px; }
-  .revenue-grid { grid-template-columns: 1fr; }
+  .progress-line { width: 16px; }
+  .revenue-grid { grid-template-columns: 1fr 1fr; }
   .cost-grid { grid-template-columns: 1fr; }
 }
 
@@ -1476,6 +1491,183 @@ footer {
   height: 32px;
   background: rgba(255,255,255,0.12);
 }
+
+/* ── STEP NAVIGATION ── */
+.diag-step { display: none; }
+.diag-step.is-active { display: block; }
+
+.step-header {
+  margin-bottom: 28px;
+}
+
+.step-num {
+  display: inline-block;
+  background: rgba(37,99,235,0.08);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.step-nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  align-items: center;
+}
+
+.btn-step-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.btn-step-back:hover { border-color: var(--ink-secondary); color: var(--ink); }
+
+.btn-step-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  flex: 1;
+  justify-content: center;
+}
+.btn-step-next:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* sub-section label inside a step */
+.subsection-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  margin-top: 24px;
+}
+.subsection-label:first-of-type { margin-top: 0; }
+
+/* Benchmark table */
+.benchmark-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 40px;
+  overflow-x: auto;
+}
+
+.benchmark-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+
+.benchmark-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.benchmark-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.benchmark-table th.col-you {
+  color: var(--accent);
+}
+
+.benchmark-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.benchmark-table tr:last-child td { border-bottom: none; }
+
+.benchmark-table td.metric-name {
+  font-weight: 500;
+  color: var(--ink-secondary);
+  font-size: 12px;
+}
+
+.bm-val-you {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.bm-bar-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.bm-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.bm-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+.bm-bar-fill.you { background: var(--accent); }
+.bm-bar-fill.avg { background: #9CA3AF; }
+.bm-bar-fill.top { background: var(--success); }
+
+@media (max-width: 768px) {
+  .step-nav { flex-direction: column-reverse; }
+  .btn-step-back { width: 100%; justify-content: center; }
+  .revenue-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .progress-line { width: 20px; }
+  .progress-circle { width: 28px; height: 28px; font-size: 11px; }
+  .progress-node-label { font-size: 9px; }
+}
 </style>
 </head>
 <body>
@@ -1497,9 +1689,9 @@ footer {
     <nav>
       <a href="#pricing">料金</a>
       <a href="#diagnosis">診断</a>
-      <a href="#" onclick="openBooking();return false;">面談予約</a>
-      <a href="#" class="btn-nav" onclick="openContact();return false;">
-        お問い合わせ
+      <a href="#" class="btn-nav-secondary" onclick="openContact();return false;">お問い合わせ</a>
+      <a href="#" class="btn-nav" onclick="openBooking();return false;">
+        初回面談を予約
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"/>
           <polyline points="12 5 19 12 12 19"/>
@@ -1514,7 +1706,7 @@ footer {
   <div class="hero-content">
     <div class="hero-label">COST HEALTH CHECK</div>
     <h1>30秒で、コスト体質を診断。</h1>
-    <p class="hero-sub">3つの質問に答えるだけ。AIが業界データと比較し、<br>改善ポイントを特定します。</p>
+    <p class="hero-sub">5つの質問に答えるだけ。AIが業界・規模・調達体制データと比較し、<br>改善ポイントを特定します。</p>
     <a href="#diagnosis" class="btn-hero">
       無料で診断する
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1536,52 +1728,54 @@ footer {
   <div class="diagnosis-inner">
     <div class="section-header">
       <div class="section-label">SELF-DIAGNOSIS</div>
-      <h2 class="section-title">3ステップで完了するコスト診断</h2>
-      <p class="section-sub">質問に答えるだけで、御社のコスト体質スコアをAIが算出します。</p>
+      <h2 class="section-title">5ステップで完了するコスト診断</h2>
+      <p class="section-sub">業種・規模・購買体制・調達体制・課題を入力するだけで、御社のコスト体質スコアをAIが業界ベンチマークと比較します。</p>
     </div>
 
     <!-- Progress indicator -->
-    <div class="progress-wrap">
+    <div class="progress-wrap" id="diagProgressWrap">
       <div class="progress-node">
-        <div class="progress-circle state-done">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <div class="progress-node-label">業種選択</div>
+        <div class="progress-circle state-active" id="pCircle1">1</div>
+        <div class="progress-node-label is-active" id="pLabel1">業種選択</div>
       </div>
-      <div class="progress-line is-filled"></div>
+      <div class="progress-line" id="pLine1"></div>
       <div class="progress-node">
-        <div class="progress-circle state-done">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <div class="progress-node-label">年商規模</div>
+        <div class="progress-circle state-idle" id="pCircle2">2</div>
+        <div class="progress-node-label" id="pLabel2">年商規模</div>
       </div>
-      <div class="progress-line"></div>
+      <div class="progress-line" id="pLine2"></div>
       <div class="progress-node">
-        <div class="progress-circle state-active">3</div>
-        <div class="progress-node-label is-active">コスト課題</div>
+        <div class="progress-circle state-idle" id="pCircle3">3</div>
+        <div class="progress-node-label" id="pLabel3">購買規模</div>
+      </div>
+      <div class="progress-line" id="pLine3"></div>
+      <div class="progress-node">
+        <div class="progress-circle state-idle" id="pCircle4">4</div>
+        <div class="progress-node-label" id="pLabel4">調達体制</div>
+      </div>
+      <div class="progress-line" id="pLine4"></div>
+      <div class="progress-node">
+        <div class="progress-circle state-idle" id="pCircle5">5</div>
+        <div class="progress-node-label" id="pLabel5">コスト課題</div>
       </div>
     </div>
 
     <!-- Progress bar (animation permitted per rules) -->
     <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="diagProgressBar" style="width:66%"></div>
+      <div class="progress-bar-fill" id="diagProgressBar" style="width:0%"></div>
     </div>
 
-    <!-- STEP 1 -->
-    <div class="step-block">
-      <div class="step-block-head">
-        <div class="step-tag">STEP 1 / 3 — 選択済み</div>
-        <div class="step-title">業種を選んでください</div>
-        <div class="step-sub">最も近い業種を1つ選択してください</div>
+    <!-- ═══ STEP 1: 業種選択 ═══ -->
+    <div class="diag-step is-active" data-step="1" id="diagStep1">
+      <div class="step-header">
+        <div class="step-num">STEP 1 / 5</div>
+        <h3 class="step-title">業種を選んでください</h3>
+        <p class="step-desc">最も近い業種を1つ選択してください。</p>
       </div>
       <div class="industry-grid">
 
         <!-- 製造業 -->
-        <div class="sel-card is-selected" data-group="industry" onclick="selectCard(this,'industry')">
+        <div class="sel-card" data-group="industry" onclick="selectCard(this,'industry')">
           <div class="sel-card-check">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -1657,16 +1851,17 @@ footer {
         </div>
 
       </div>
+      <div class="step-nav">
+        <button class="btn-step-next" onclick="goStep(2)">次のステップへ →</button>
+      </div>
     </div>
 
-    <div class="step-divider"></div>
-
-    <!-- STEP 2 -->
-    <div class="step-block">
-      <div class="step-block-head">
-        <div class="step-tag">STEP 2 / 3 — 選択済み</div>
-        <div class="step-title">年商の規模を教えてください</div>
-        <div class="step-sub">概算で問題ありません</div>
+    <!-- ═══ STEP 2: 年商規模 ═══ -->
+    <div class="diag-step" data-step="2" id="diagStep2">
+      <div class="step-header">
+        <div class="step-num">STEP 2 / 5</div>
+        <h3 class="step-title">年商の規模を教えてください</h3>
+        <p class="step-desc">概算で問題ありません。業界ベンチマークの精度に影響します。</p>
       </div>
       <div class="revenue-grid">
 
@@ -1686,7 +1881,7 @@ footer {
           <div class="rev-desc">成長期・中堅企業</div>
         </div>
 
-        <div class="rev-card is-selected" data-group="revenue" onclick="selectCard(this,'revenue')">
+        <div class="rev-card" data-group="revenue" onclick="selectCard(this,'revenue')">
           <div class="rev-card-check">
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -1703,21 +1898,199 @@ footer {
         </div>
 
       </div>
+      <div class="step-nav">
+        <button class="btn-step-back" onclick="goStep(1)">← 戻る</button>
+        <button class="btn-step-next" onclick="goStep(3)">次のステップへ →</button>
+      </div>
     </div>
 
-    <div class="step-divider"></div>
+    <!-- ═══ STEP 3: 従業員数・購買規模 ═══ -->
+    <div class="diag-step" data-step="3" id="diagStep3">
+      <div class="step-header">
+        <div class="step-num">STEP 3 / 5</div>
+        <h3 class="step-title">従業員数・購買規模</h3>
+        <p class="step-desc">より正確な業界ベンチマーク比較のために入力してください。</p>
+      </div>
 
-    <!-- STEP 3 -->
-    <div class="step-block">
-      <div class="step-block-head">
-        <div class="step-tag">STEP 3 / 3 — 複数選択可</div>
-        <div class="step-title">コスト課題はどれですか？</div>
-        <div class="step-sub">当てはまるものをすべて選んでください</div>
+      <div class="subsection-label">従業員数</div>
+      <div class="revenue-grid">
+
+        <div class="rev-card" data-group="employees" onclick="selectCard(this,'employees')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">〜30名</div>
+          <div class="rev-desc">小規模</div>
+        </div>
+
+        <div class="rev-card" data-group="employees" onclick="selectCard(this,'employees')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">30〜100名</div>
+          <div class="rev-desc">中規模</div>
+        </div>
+
+        <div class="rev-card" data-group="employees" onclick="selectCard(this,'employees')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">100〜500名</div>
+          <div class="rev-desc">中堅</div>
+        </div>
+
+        <div class="rev-card" data-group="employees" onclick="selectCard(this,'employees')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">500名〜</div>
+          <div class="rev-desc">大企業</div>
+        </div>
+
+      </div>
+
+      <div class="subsection-label" style="margin-top:24px">月間購買額</div>
+      <div class="revenue-grid">
+
+        <div class="rev-card" data-group="procurement" onclick="selectCard(this,'procurement')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">〜100万円</div>
+          <div class="rev-desc">月間購買額</div>
+        </div>
+
+        <div class="rev-card" data-group="procurement" onclick="selectCard(this,'procurement')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">100〜500万円</div>
+          <div class="rev-desc">月間購買額</div>
+        </div>
+
+        <div class="rev-card" data-group="procurement" onclick="selectCard(this,'procurement')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">500〜2,000万円</div>
+          <div class="rev-desc">月間購買額</div>
+        </div>
+
+        <div class="rev-card" data-group="procurement" onclick="selectCard(this,'procurement')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">2,000万円〜</div>
+          <div class="rev-desc">月間購買額</div>
+        </div>
+
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-step-back" onclick="goStep(2)">← 戻る</button>
+        <button class="btn-step-next" onclick="goStep(4)">次のステップへ →</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 4: 調達体制 ═══ -->
+    <div class="diag-step" data-step="4" id="diagStep4">
+      <div class="step-header">
+        <div class="step-num">STEP 4 / 5</div>
+        <h3 class="step-title">調達体制</h3>
+        <p class="step-desc">調達・購買部門の体制を教えてください。調達効率スコアの算出に使用します。</p>
+      </div>
+
+      <div class="subsection-label">調達担当者数</div>
+      <div class="revenue-grid">
+
+        <div class="rev-card" data-group="team" onclick="selectCard(this,'team')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">兼任1名</div>
+          <div class="rev-desc">他業務と兼任</div>
+        </div>
+
+        <div class="rev-card" data-group="team" onclick="selectCard(this,'team')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">専任1〜2名</div>
+          <div class="rev-desc">専任担当者あり</div>
+        </div>
+
+        <div class="rev-card" data-group="team" onclick="selectCard(this,'team')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">3〜5名チーム</div>
+          <div class="rev-desc">チーム体制</div>
+        </div>
+
+        <div class="rev-card" data-group="team" onclick="selectCard(this,'team')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">専門部門あり</div>
+          <div class="rev-desc">購買・調達部門</div>
+        </div>
+
+      </div>
+
+      <div class="subsection-label" style="margin-top:24px">主要取引先数</div>
+      <div class="revenue-grid">
+
+        <div class="rev-card" data-group="vendors" onclick="selectCard(this,'vendors')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">〜10社</div>
+          <div class="rev-desc">主要取引先数</div>
+        </div>
+
+        <div class="rev-card" data-group="vendors" onclick="selectCard(this,'vendors')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">10〜30社</div>
+          <div class="rev-desc">主要取引先数</div>
+        </div>
+
+        <div class="rev-card" data-group="vendors" onclick="selectCard(this,'vendors')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">30〜100社</div>
+          <div class="rev-desc">主要取引先数</div>
+        </div>
+
+        <div class="rev-card" data-group="vendors" onclick="selectCard(this,'vendors')">
+          <div class="rev-card-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="rev-amount">100社〜</div>
+          <div class="rev-desc">主要取引先数</div>
+        </div>
+
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-step-back" onclick="goStep(3)">← 戻る</button>
+        <button class="btn-step-next" onclick="goStep(5)">次のステップへ →</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 5: コスト課題 ═══ -->
+    <div class="diag-step" data-step="5" id="diagStep5">
+      <div class="step-header">
+        <div class="step-num">STEP 5 / 5 — 複数選択可</div>
+        <h3 class="step-title">コスト課題はどれですか？</h3>
+        <p class="step-desc">当てはまるものをすべて選んでください。優先改善ポイントの特定に使用します。</p>
       </div>
       <div class="cost-grid">
 
         <!-- 間接材 -->
-        <div class="cost-card is-selected" onclick="toggleCost(this)">
+        <div class="cost-card" onclick="toggleCost(this)">
           <div class="cost-card-check">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -1797,17 +2170,20 @@ footer {
 
       </div>
 
-      <button class="btn-diagnose" id="btnDiagnose" onclick="runDiagnosis()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        診断する
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </button>
+      <div class="step-nav">
+        <button class="btn-step-back" onclick="goStep(4)">← 戻る</button>
+        <button class="btn-diagnose" id="btnDiagnose" onclick="runDiagnosis()" style="flex:2;margin-top:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          診断する
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
   </div>
@@ -1911,6 +2287,24 @@ footer {
         <div class="improvements-title">改善ポイント（優先度順）</div>
         <!-- Dynamically populated by JS -->
       </div>
+    </div>
+
+    <!-- Benchmark Comparison Table -->
+    <div class="benchmark-block" id="benchmarkBlock">
+      <div class="benchmark-title">業界ベンチマーク比較</div>
+      <table class="benchmark-table">
+        <thead>
+          <tr>
+            <th style="width:30%">指標</th>
+            <th class="col-you">御社</th>
+            <th>同業種・同規模 平均</th>
+            <th>同業種 トップ10%</th>
+          </tr>
+        </thead>
+        <tbody id="benchmarkBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
     </div>
 
     <!-- Freemium Wall -->
@@ -2166,7 +2560,7 @@ footer {
     </div>
   </div>
   <div class="chatbot-input-area">
-    <input class="chatbot-input" id="chatInput" placeholder="メッセージを入力..." onkeydown="if(event.key==='Enter')sendChat()">
+    <input class="chatbot-input" id="chatInput" placeholder="メッセージを入力...（⌘+Enterで送信）" onkeydown="if(event.key==='Enter'&&(event.metaKey||event.ctrlKey)){event.preventDefault();sendChat()}">
     <button class="chatbot-send" onclick="sendChat()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -2177,28 +2571,91 @@ footer {
 
 <script>
 /* ========================================================
-   ORIGINAL FUNCTIONS (preserved & extended)
+   STEP NAVIGATION — 5 STEPS
+   ======================================================== */
+var currentStep = 1;
+var checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+function goStep(n) {
+  // Validate before going forward
+  if (n > currentStep) {
+    if (currentStep === 1 && !document.querySelector('[data-group="industry"].is-selected')) {
+      alert('業種を選択してください。'); return;
+    }
+    if (currentStep === 2 && !document.querySelector('[data-group="revenue"].is-selected')) {
+      alert('年商規模を選択してください。'); return;
+    }
+    if (currentStep === 3) {
+      if (!document.querySelector('[data-group="employees"].is-selected')) { alert('従業員数を選択してください。'); return; }
+      if (!document.querySelector('[data-group="procurement"].is-selected')) { alert('月間購買額を選択してください。'); return; }
+    }
+    if (currentStep === 4) {
+      if (!document.querySelector('[data-group="team"].is-selected')) { alert('調達担当者数を選択してください。'); return; }
+      if (!document.querySelector('[data-group="vendors"].is-selected')) { alert('主要取引先数を選択してください。'); return; }
+    }
+  }
+
+  // Hide current, show next
+  document.getElementById('diagStep' + currentStep).classList.remove('is-active');
+  currentStep = n;
+  document.getElementById('diagStep' + currentStep).classList.add('is-active');
+
+  updateProgressIndicator(n);
+  updateProgressBar(n);
+
+  // Smooth scroll to top of diagnosis
+  document.getElementById('diagnosis').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateProgressIndicator(step) {
+  for (var i = 1; i <= 5; i++) {
+    var circle = document.getElementById('pCircle' + i);
+    var label  = document.getElementById('pLabel' + i);
+    circle.className = 'progress-circle';
+    label.className  = 'progress-node-label';
+
+    if (i < step) {
+      circle.className += ' state-done';
+      circle.innerHTML = checkSvg;
+    } else if (i === step) {
+      circle.className += ' state-active';
+      circle.innerHTML = String(i);
+      label.className  += ' is-active';
+    } else {
+      circle.className += ' state-idle';
+      circle.innerHTML = String(i);
+    }
+
+    if (i < 5) {
+      var line = document.getElementById('pLine' + i);
+      line.className = 'progress-line' + (i < step ? ' is-filled' : '');
+    }
+  }
+}
+
+function updateProgressBar(step) {
+  var pct = Math.round((step - 1) / 4 * 100);
+  document.getElementById('diagProgressBar').style.width = pct + '%';
+}
+
+/* ========================================================
+   CARD SELECTION
    ======================================================== */
 function selectCard(el, group) {
   document.querySelectorAll('[data-group="' + group + '"]').forEach(function(c) {
     c.classList.remove('is-selected');
   });
   el.classList.add('is-selected');
-  updateProgress();
 }
 
 function toggleCost(el) {
   el.classList.toggle('is-selected');
-  updateProgress();
 }
 
+/* Legacy updateProgress (kept for retryDiagnosis) */
 var progressBar = document.getElementById('diagProgressBar');
 function updateProgress() {
-  var hasIndustry = document.querySelector('[data-group="industry"].is-selected') ? 1 : 0;
-  var hasRevenue  = document.querySelector('[data-group="revenue"].is-selected') ? 1 : 0;
-  var hasCost     = document.querySelector('.cost-card.is-selected') ? 1 : 0;
-  var pct = Math.round(((hasIndustry + hasRevenue + hasCost) / 3) * 100);
-  progressBar.style.width = pct + '%';
+  updateProgressBar(currentStep);
 }
 
 /* ========================================================
@@ -2436,6 +2893,22 @@ function getSelectedRevenue() {
   var sel = document.querySelector('[data-group="revenue"].is-selected .rev-amount');
   return sel ? sel.textContent.trim() : null;
 }
+function getSelectedEmployees() {
+  var sel = document.querySelector('[data-group="employees"].is-selected .rev-amount');
+  return sel ? sel.textContent.trim() : null;
+}
+function getSelectedProcurement() {
+  var sel = document.querySelector('[data-group="procurement"].is-selected .rev-amount');
+  return sel ? sel.textContent.trim() : null;
+}
+function getSelectedTeam() {
+  var sel = document.querySelector('[data-group="team"].is-selected .rev-amount');
+  return sel ? sel.textContent.trim() : null;
+}
+function getSelectedVendors() {
+  var sel = document.querySelector('[data-group="vendors"].is-selected .rev-amount');
+  return sel ? sel.textContent.trim() : null;
+}
 function getSelectedCosts() {
   var items = [];
   document.querySelectorAll('.cost-card.is-selected .cost-card-label').forEach(function(el) {
@@ -2447,13 +2920,20 @@ function getSelectedCosts() {
 function runDiagnosis() {
   var industry = getSelectedIndustry();
   var revenue = getSelectedRevenue();
+  var employees = getSelectedEmployees();
+  var procurement = getSelectedProcurement();
+  var team = getSelectedTeam();
+  var vendors = getSelectedVendors();
   var costs = getSelectedCosts();
-  if (!industry || !revenue || costs.length === 0) {
-    alert('すべてのステップを選択してから診断してください。');
+
+  if (!industry || !revenue || !employees || !procurement || !team || !vendors || costs.length === 0) {
+    alert('コスト課題を1つ以上選んでから診断してください。');
     return;
   }
+
   // Animate progress to 100%
   progressBar.style.width = '100%';
+  updateProgressIndicator(5);
 
   // Hide diagnosis section
   setTimeout(function() {
@@ -2463,7 +2943,12 @@ function runDiagnosis() {
     loading.classList.add('is-show');
     loading.scrollIntoView({ behavior: 'smooth' });
 
-    var texts = ['業界データを照合中...', 'ベンチマーク比較中...', '改善ポイント算出中...'];
+    var texts = [
+      '業界・規模データを照合中...',
+      '購買規模・調達体制を分析中...',
+      'ベンチマーク比較中...',
+      '改善ポイント算出中...'
+    ];
     var idx = 0;
     var loadText = document.getElementById('diagLoadingText');
     loadText.textContent = texts[0];
@@ -2476,26 +2961,36 @@ function runDiagnosis() {
           loadText.style.opacity = '1';
         }, 200);
       }
-    }, 1000);
+    }, 900);
 
-    // After 3 seconds, show results
+    // After 3.6 seconds, show results
     setTimeout(function() {
       clearInterval(interval);
       loading.classList.remove('is-show');
-      showResults(industry, revenue, costs);
-    }, 3200);
+      showResults(industry, revenue, employees, procurement, team, vendors, costs);
+    }, 3600);
   }, 400);
 }
 
-function showResults(industry, revenue, costs) {
+// Modifier tables for new inputs
+var employeeModifier = { '〜30名': 0.85, '30〜100名': 0.92, '100〜500名': 1.0, '500名〜': 1.08 };
+var procurementMultiplier = { '〜100万円': 0.7, '100〜500万円': 0.85, '500〜2,000万円': 1.0, '2,000万円〜': 1.25 };
+var teamEfficiency = { '兼任1名': 0.60, '専任1〜2名': 0.75, '3〜5名チーム': 0.88, '専門部門あり': 1.0 };
+var vendorConsolidation = { '〜10社': 0.90, '10〜30社': 0.80, '30〜100社': 0.70, '100社〜': 0.55 };
+
+function showResults(industry, revenue, employees, procurement, team, vendors, costs) {
   var indData = industryData[industry] || industryData['その他'];
   var mult = revMultiplier[revenue] || 1.0;
+  var empMod = employeeModifier[employees] || 1.0;
+  var procMult = procurementMultiplier[procurement] || 1.0;
+  var teamEff = teamEfficiency[team] || 0.8;
+  var vendorConsolidationScore = vendorConsolidation[vendors] || 0.75;
   var costCount = costs.length;
 
-  // Calculate score: base 85, minus 4 per cost issue, adjusted by industry
+  // Enhanced score calculation using all 5 inputs
   var baseScore = 85 - (costCount * 4);
   var avgRadar = indData.radarBias.reduce(function(a,b){return a+b;}, 0) / 5;
-  var score = Math.round(baseScore * avgRadar * (1 + (mult - 1) * 0.1));
+  var score = Math.round(baseScore * avgRadar * (1 + (mult - 1) * 0.1) * empMod * 0.5 + baseScore * 0.5);
   score = Math.max(30, Math.min(95, score));
 
   // Rank
@@ -2506,12 +3001,19 @@ function showResults(industry, revenue, costs) {
   else if (score >= 50) rank = 'C+';
   else rank = 'C';
 
-  // Savings estimate
+  // Savings estimate — influenced by procurement volume
   var baseSavings = { '〜5億円': 300, '5〜20億円': 600, '20〜100億円': 800, '100億円〜': 2500 };
-  var savings = (baseSavings[revenue] || 800) * (costCount > 3 ? 1.3 : 1.0);
+  var savings = (baseSavings[revenue] || 800) * procMult * (costCount > 3 ? 1.3 : 1.0);
 
   // Percentile
   var percentile = Math.max(5, Math.min(80, 100 - score));
+
+  // Adjusted radar biases using team/vendor data
+  var adjustedBias = indData.radarBias.map(function(b, i) {
+    if (i === 4) return Math.min(1, b * teamEff + 0.1); // 調達戦略 axis
+    if (i === 2) return Math.min(1, b * vendorConsolidationScore + 0.15); // 外注活用 axis
+    return b;
+  });
 
   // Update score display
   var resultSection = document.getElementById('result');
@@ -2536,10 +3038,57 @@ function showResults(industry, revenue, costs) {
   document.getElementById('scoreContextDesc').textContent = 'AIが業界ベンチマーク3,200社のデータと比較しました。' + indData.tip + ' 適切な対策で年間' + Math.round(savings) + '万円の削減が見込まれます。';
 
   // Animate radar chart
-  animateRadar(indData.radarBias);
+  animateRadar(adjustedBias);
 
   // Populate improvements
   populateImprovements(costs, indData, savings);
+
+  // Populate benchmark table
+  populateBenchmark(score, indData, teamEff, vendorConsolidationScore, procMult);
+}
+
+function populateBenchmark(score, indData, teamEff, vendorScore, procMult) {
+  var body = document.getElementById('benchmarkBody');
+  body.innerHTML = '';
+
+  // 購買コスト率 — lower is better (displayed as %)
+  // you: derived from score, avg: industry average, top: top 10%
+  var costRateYou = Math.round((100 - score) * 0.25 + 8);
+  var costRateAvg = Math.round(costRateYou * 1.15);
+  var costRateTop = Math.round(costRateYou * 0.72);
+  appendBenchmarkRow(body, '購買コスト率', costRateYou + '%', costRateAvg + '%', costRateTop + '%',
+    costRateYou, costRateAvg, costRateTop, false);
+
+  // 調達効率スコア — higher is better (0-100)
+  var effYou = Math.round(teamEff * 100 * 0.8 + score * 0.2);
+  var effAvg = 58;
+  var effTop = 87;
+  appendBenchmarkRow(body, '調達効率スコア', effYou + 'pt', effAvg + 'pt', effTop + 'pt',
+    effYou, effAvg, effTop, true);
+
+  // サプライヤー集約度 — higher is better (% of spend in top suppliers)
+  var consYou = Math.round(vendorScore * 85);
+  var consAvg = 62;
+  var consTop = 85;
+  appendBenchmarkRow(body, 'サプライヤー集約度', consYou + '%', consAvg + '%', consTop + '%',
+    consYou, consAvg, consTop, true);
+}
+
+function appendBenchmarkRow(body, metric, youVal, avgVal, topVal, youNum, avgNum, topNum, higherIsBetter) {
+  var maxVal = Math.max(youNum, avgNum, topNum);
+  var tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td class="metric-name">' + metric + '</td>' +
+    '<td><div class="bm-bar-wrap"><span class="bm-val-you">' + youVal + '</span>' +
+      '<div class="bm-bar"><div class="bm-bar-fill you" style="width:' + Math.round(youNum/maxVal*100) + '%"></div></div>' +
+    '</div></td>' +
+    '<td><div class="bm-bar-wrap"><span>' + avgVal + '</span>' +
+      '<div class="bm-bar"><div class="bm-bar-fill avg" style="width:' + Math.round(avgNum/maxVal*100) + '%"></div></div>' +
+    '</div></td>' +
+    '<td><div class="bm-bar-wrap"><span style="color:var(--success);font-weight:600">' + topVal + '</span>' +
+      '<div class="bm-bar"><div class="bm-bar-fill top" style="width:' + Math.round(topNum/maxVal*100) + '%"></div></div>' +
+    '</div></td>';
+  body.appendChild(tr);
 }
 
 function animateCount(el, from, to, duration) {
@@ -2627,7 +3176,12 @@ function retryDiagnosis() {
   // Reset freemium
   document.getElementById('freemiumForm').style.display = '';
   document.getElementById('freemiumDone').style.display = 'none';
-  updateProgress();
+  // Reset to step 1
+  document.getElementById('diagStep' + currentStep).classList.remove('is-active');
+  currentStep = 1;
+  document.getElementById('diagStep1').classList.add('is-active');
+  updateProgressIndicator(1);
+  updateProgressBar(1);
   document.getElementById('diagnosis').scrollIntoView({ behavior: 'smooth' });
 }
 
