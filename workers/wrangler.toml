@@ -1,0 +1,13 @@
+name = "rakuda-costcut-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://shuheiuesugi.github.io"
+
+# Set ANTHROPIC_API_KEY via `wrangler secret put ANTHROPIC_API_KEY`
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rakuda-costcut"
+database_id = "3f7d03e7-732a-4a1d-88c5-736b812bb537"

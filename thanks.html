@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご予約ありがとうございます | RAKUDA COSTCUT</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1E293B; --ink-secondary: #64748B; --surface: #FFFFFF;
+    --canvas: #F9FAFB; --border: #E2E8F0; --accent: #1E3A5F;
+    --dark: #0F172A; --green: #059669;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic Medium', Meiryo, sans-serif;
+    font-feature-settings: "palt"; color: var(--ink); background: var(--surface);
+    line-height: 1.8; -webkit-font-smoothing: antialiased;
+  }
+  header {
+    position: sticky; top: 0; z-index: 200; background: var(--surface);
+    border-bottom: 1px solid var(--border); height: 64px; display: flex;
+    align-items: center; padding: 0 32px;
+  }
+  .header-inner {
+    max-width: 960px; margin: 0 auto; width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark {
+    width: 32px; height: 32px; background: var(--dark); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .logo-text span { color: var(--accent); }
+  .main {
+    max-width: 600px; margin: 0 auto; padding: 80px 24px 120px;
+    text-align: center;
+  }
+  .checkmark {
+    width: 80px; height: 80px; border-radius: 50%; background: #ECFDF5;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 32px;
+  }
+  .checkmark svg { width: 40px; height: 40px; color: var(--green); }
+  .main h1 {
+    font-size: 1.75rem; font-weight: 700; margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .main .subtitle {
+    color: var(--ink-secondary); font-size: 15px; margin-bottom: 48px;
+    line-height: 1.8;
+  }
+  .steps {
+    text-align: left; max-width: 440px; margin: 0 auto 48px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .step {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .step-number {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--accent);
+    color: #fff; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content h3 {
+    font-size: 15px; font-weight: 600; margin-bottom: 4px;
+  }
+  .step-content p {
+    font-size: 14px; color: var(--ink-secondary); line-height: 1.6;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; background: var(--accent); color: #fff;
+    border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+    text-decoration: none; cursor: pointer; transition: background 0.2s;
+    font-family: inherit;
+  }
+  .back-btn:hover { background: #162d4a; }
+  .back-btn svg { width: 16px; height: 16px; }
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.5); padding: 32px;
+    text-align: center; font-size: 12px;
+  }
+  footer a { color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 12px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 100 40" fill="none"><path d="M5,35 C5,35 15,5 30,5 C43,5 35,30 45,30 C55,30 47,3 60,3 C75,3 85,35 85,35" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="logo-text">RAKUDA <span>COSTCUT</span></div>
+    </a>
+  </div>
+</header>
+
+<div class="main">
+  <div class="checkmark">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  </div>
+
+  <h1>ご予約ありがとうございます</h1>
+  <p class="subtitle">確認メールをお送りしました。<br>面談は30分のオンラインミーティングです。</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>確認メールをご確認ください</h3>
+        <p>ご登録のメールアドレスに予約確認メールをお送りしています。迷惑メールフォルダもあわせてご確認ください。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>面談当日にミーティングURLをクリック</h3>
+        <p>メールに記載されたミーティングURLから、予約時間になりましたらご参加ください。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>30分のオンライン面談</h3>
+        <p>御社のコスト構造をヒアリングし、AIによる削減シミュレーションの結果をご説明します。</p>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+    </svg>
+    トップページに戻る
+  </a>
+</div>
+
+<footer>
+  <a href="index.html">ホーム</a>
+  <a href="privacy.html">プライバシーポリシー</a>
+  <a href="terms.html">利用規約</a>
+  <a href="about.html">会社概要</a>
+  <div style="margin-top:16px;">&copy; 2024 RAKUDA Inc. All rights reserved.</div>
+</footer>
+</body>
+</html>

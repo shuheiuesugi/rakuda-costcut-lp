@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会社概要 | RAKUDA COSTCUT</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1E293B; --ink-secondary: #64748B; --surface: #FFFFFF;
+    --canvas: #F9FAFB; --border: #E2E8F0; --accent: #1E3A5F;
+    --dark: #0F172A;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic Medium', Meiryo, sans-serif;
+    font-feature-settings: "palt"; color: var(--ink); background: var(--surface);
+    line-height: 1.8; -webkit-font-smoothing: antialiased;
+  }
+  header {
+    position: sticky; top: 0; z-index: 200; background: var(--surface);
+    border-bottom: 1px solid var(--border); height: 64px; display: flex;
+    align-items: center; padding: 0 32px;
+  }
+  .header-inner {
+    max-width: 960px; margin: 0 auto; width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark {
+    width: 32px; height: 32px; background: var(--dark); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .logo-text span { color: var(--accent); }
+  .content { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  .content h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 32px; letter-spacing: -0.02em; }
+  .content h2 { font-size: 1.125rem; font-weight: 700; margin-top: 40px; margin-bottom: 12px; }
+  .content p { margin-bottom: 16px; color: var(--ink-secondary); font-size: 15px; }
+
+  .mission-block {
+    background: var(--canvas); border: 1px solid var(--border);
+    border-radius: 12px; padding: 32px; margin: 32px 0;
+    text-align: center;
+  }
+  .mission-block .label {
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;
+  }
+  .mission-block .statement {
+    font-size: 1.5rem; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1.5;
+  }
+
+  .info-table {
+    width: 100%; border-collapse: collapse; margin: 24px 0 32px;
+  }
+  .info-table th, .info-table td {
+    padding: 14px 16px; font-size: 15px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-table th {
+    width: 140px; font-weight: 600; color: var(--ink);
+    background: var(--canvas); white-space: nowrap;
+  }
+  .info-table td { color: var(--ink-secondary); }
+
+  .description-block {
+    background: var(--canvas); border-radius: 12px; padding: 32px;
+    margin: 32px 0; border: 1px solid var(--border);
+  }
+  .description-block p { margin-bottom: 0; }
+
+  .cta-section {
+    text-align: center; padding: 48px 0 16px;
+  }
+  .cta-section p {
+    font-size: 16px; color: var(--ink); font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; background: var(--accent); color: #fff;
+    border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+    text-decoration: none; cursor: pointer; transition: background 0.2s;
+    font-family: inherit;
+  }
+  .cta-btn:hover { background: #162d4a; }
+
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.5); padding: 32px;
+    text-align: center; font-size: 12px;
+  }
+  footer a { color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 12px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 100 40" fill="none"><path d="M5,35 C5,35 15,5 30,5 C43,5 35,30 45,30 C55,30 47,3 60,3 C75,3 85,35 85,35" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="logo-text">RAKUDA <span>COSTCUT</span></div>
+    </a>
+  </div>
+</header>
+
+<div class="content">
+  <h1>会社概要</h1>
+
+  <div class="mission-block">
+    <div class="label">Our Mission</div>
+    <div class="statement">AIでコスト管理を革新する</div>
+  </div>
+
+  <div class="description-block">
+    <p>RAKUDA株式会社は、企業のコスト構造をAIで可視化し、最適な削減施策を提案するプラットフォームを開発・運営しています。請求書や契約書をアップロードするだけで、AIが自動的にコスト分析を行い、業界ベンチマークとの比較や具体的な改善アクションを提示します。</p>
+  </div>
+
+  <h2>会社情報</h2>
+  <table class="info-table">
+    <tbody>
+      <tr>
+        <th>会社名</th>
+        <td>RAKUDA株式会社</td>
+      </tr>
+      <tr>
+        <th>設立</th>
+        <td>2024年</td>
+      </tr>
+      <tr>
+        <th>所在地</th>
+        <td>東京都</td>
+      </tr>
+      <tr>
+        <th>事業内容</th>
+        <td>AIコスト分析プラットフォームの開発・運営</td>
+      </tr>
+      <tr>
+        <th>サービス</th>
+        <td>RAKUDA COSTCUT - AIコスト削減プラットフォーム</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>事業について</h2>
+  <p>日本企業の間接費は年間約100兆円と言われています。しかし多くの企業では、コスト構造の可視化が不十分なまま、属人的な交渉や慣習的な取引が続いています。</p>
+  <p>RAKUDA COSTCUTは、AIを活用してこの課題を解決します。請求書データを自動解析し、カテゴリ別のコスト構造を可視化。業界ベンチマークとの比較により削減余地を特定し、具体的なアクションプランまで提案します。</p>
+
+  <div class="cta-section">
+    <p>コスト削減のご相談はお気軽にどうぞ</p>
+    <a href="index.html" class="cta-btn">お問い合わせ</a>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html">ホーム</a>
+  <a href="privacy.html">プライバシーポリシー</a>
+  <a href="terms.html">利用規約</a>
+  <div style="margin-top:16px;">&copy; 2024 RAKUDA Inc. All rights reserved.</div>
+</footer>
+</body>
+</html>

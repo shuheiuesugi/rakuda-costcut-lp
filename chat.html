@@ -1,0 +1,2670 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAKUDA – 聞くだけで、コストの問題点がわかる。</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="AIチャットでコスト削減の無料診断。業種と売上を伝えるだけで、業界平均との乖離や改善余地を即座に分析します。">
+  <meta name="rakuda-page" content="p2">
+  <meta property="og:title" content="RAKUDA COSTCUT – AIチャットでコスト診断">
+  <meta property="og:description" content="聞くだけで、コストの問題点がわかる。AIチャットで無料コスト診断。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shuheiuesugi.github.io/rakuda-costcut-lp/chat.html">
+  <meta property="og:image" content="https://shuheiuesugi.github.io/rakuda-costcut-lp/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif; font-feature-settings: "palt";
+      color: #0A0A0B;
+      background: #FFFFFF;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --ink: #1E293B;
+      --ink-secondary: #64748B;
+      --surface: #FFFFFF;
+      --canvas: #F9FAFB;
+      --border: #E2E8F0;
+      --accent: #1E3A5F;
+      --accent-hover: #162E4A;
+      --success: #059669;
+      --dark: #0F172A;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+      --danger: #DC2626;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--dark);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.3px;
+    }
+    .logo-text span { color: var(--accent); }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    nav a {
+      color: var(--ink-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+    nav a:hover { color: var(--ink); }
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--surface) !important;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      margin-left: 8px;
+    }
+    .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .btn-nav-secondary {
+      display: inline-flex;
+      align-items: center;
+      color: var(--ink) !important;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-left: 8px;
+    }
+    .btn-nav-secondary:hover { border-color: var(--accent); color: var(--accent) !important; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
+      padding: 140px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(30,58,95,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+    }
+    .hero-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      color: #FFFFFF;
+      margin-bottom: 24px;
+      white-space: pre-line;
+    }
+    .hero-subtitle {
+      font-size: 1.0625rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 500px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 13px 24px;
+      background: #FFFFFF;
+      color: var(--ink);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-text-link {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .btn-text-link:hover { color: rgba(255,255,255,0.85); }
+
+    /* ===== CHAT DEMO SECTION ===== */
+    .chat-section {
+      background: var(--canvas);
+      padding: 120px 0;
+    }
+    .chat-section-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    @media (max-width: 820px) {
+      .chat-section-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+    .chat-section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .chat-section h2 {
+      margin-bottom: 32px;
+      color: var(--ink);
+    }
+    .chat-points {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .chat-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .chat-point-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--ink-secondary);
+    }
+    .chat-point-text h3 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .chat-point-text p {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+
+    /* ===== CHAT UI CARD ===== */
+    .chat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .chat-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .chat-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .chat-card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .chat-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--success);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+      min-height: 280px;
+      max-height: 440px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    /* Bubbles */
+    .bubble-ai {
+      align-self: flex-start;
+      max-width: 80%;
+    }
+    .bubble-user {
+      align-self: flex-end;
+      max-width: 80%;
+    }
+    .bubble-ai .bubble-inner {
+      background: #F3F4F6;
+      color: var(--ink);
+      border-radius: 12px 12px 12px 4px;
+      padding: 12px 16px;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .bubble-user .bubble-inner {
+      background: var(--dark);
+      color: #FFFFFF;
+      border-radius: 12px 12px 4px 12px;
+      padding: 12px 16px;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    /* Result card inside bubble */
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 2px;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      margin-bottom: 10px;
+    }
+    .result-table td {
+      padding: 5px 0;
+      color: var(--ink);
+    }
+    .result-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+    }
+    .result-table tr:not(:last-child) td {
+      border-bottom: 1px solid var(--border);
+    }
+    .result-diff {
+      color: var(--accent);
+    }
+    .result-note {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--success);
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Chat input */
+    .chat-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: var(--canvas);
+    }
+    .chat-input-row input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--ink);
+      outline: none;
+    }
+    .chat-input-row input::placeholder {
+      color: var(--ink-secondary);
+    }
+    .chat-send-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .chat-send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+    }
+    .typing-indicator span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ink-secondary);
+      animation: typingBounce 1.4s infinite ease-in-out;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* Bubble appear animation */
+    .bubble-appear {
+      animation: bubbleIn 0.3s ease-out;
+    }
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== USE CASES ===== */
+    .usecases-section {
+      background: var(--surface);
+      padding: 80px 0;
+    }
+    .section-header {
+      margin-bottom: 56px;
+    }
+    .section-header h2 {
+      margin-bottom: 0;
+    }
+    .usecases-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .usecase-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .usecase-item:first-child {
+      border-top: 1px solid var(--border);
+    }
+    .usecase-icon-wrap {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: #F3F4F6;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-secondary);
+    }
+    .usecase-body {
+      flex: 1;
+    }
+    .usecase-q {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .usecase-a {
+      font-size: 0.9375rem;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .usecase-a-arrow {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing-section {
+      background: var(--canvas);
+      padding: 80px 0 96px;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 720px;
+    }
+    @media (max-width: 640px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .plan-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .plan-card.featured {
+      border-color: var(--ink);
+      border-width: 2px;
+      border-top: 3px solid var(--accent);
+      box-shadow: var(--shadow-md);
+    }
+    .plan-card.featured:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    .plan-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .plan-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+    .plan-price span {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--ink-secondary);
+      letter-spacing: 0;
+    }
+    .plan-tagline {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      margin-bottom: 24px;
+    }
+    .plan-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 20px;
+    }
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-bottom: 28px;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: var(--ink);
+    }
+    .plan-features li.off {
+      color: var(--ink-secondary);
+    }
+    .plan-features li svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .btn-plan {
+      display: block;
+      text-align: center;
+      padding: 11px 20px;
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-plan-dark {
+      background: var(--ink);
+      color: #fff;
+    }
+    .btn-plan-dark:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,58,95,0.25); }
+    .btn-plan-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .btn-plan-outline:hover { border-color: #9CA3AF; transform: translateY(-1px); }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      background: var(--dark);
+      padding: 96px 0;
+    }
+    .cta-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+      max-width: 560px;
+    }
+    .cta-section h2 {
+      color: #FFFFFF;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+    }
+    .cta-section p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: -16px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0D0D10;
+      padding: 40px 32px;
+    }
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      font-weight: 400;
+    }
+
+    @media (max-width: 768px) {
+      nav a:not(.btn-nav) { display: none; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      .hero { padding: 96px 0 64px; }
+      .chat-section { padding: 64px 0; }
+      .usecases-section { padding: 64px 0; }
+      .pricing-section { padding: 64px 0; }
+      .cta-section { padding: 64px 0; }
+    }
+
+    /* ===== LOGO BAND ===== */
+    .logo-band {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .logo-band-inner {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .logo-band-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .logo-band-logos {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+    .logo-text { font-size: 14px; font-weight: 600; color: #C0C4CC; letter-spacing: 0.02em; }
+
+    /* ===== SCROLL FADE-IN ===== */
+    .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in-section.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== MODAL SHARED ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-overlay.active .modal-container {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .modal-container {
+      background: var(--surface);
+      border-radius: 16px;
+      max-width: 860px;
+      width: 92%;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--ink-secondary);
+      transition: all 0.15s;
+      z-index: 2;
+    }
+    .modal-close:hover { color: var(--ink); background: var(--border); }
+    body.modal-open { overflow: hidden; }
+
+    /* ===== CONTACT MODAL ===== */
+    .contact-modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 540px;
+    }
+    @media (max-width: 700px) {
+      .contact-modal-body { grid-template-columns: 1fr; }
+      .contact-left { display: none; }
+    }
+    .contact-left {
+      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
+      padding: 48px 40px;
+      border-radius: 16px 0 0 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .contact-left h3 {
+      color: #fff;
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      letter-spacing: -0.02em;
+    }
+    .contact-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .contact-feature-icon {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(30,58,95,0.15);
+      border-radius: 8px;
+      color: var(--accent);
+    }
+    .contact-feature-text h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .contact-feature-text p {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    .contact-right {
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .contact-right h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .contact-right .form-subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .form-group label .req {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--ink);
+      background: var(--surface);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(30,58,95,0.1);
+    }
+    .form-group input.error,
+    .form-group select.error,
+    .form-group textarea.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    }
+    .form-error-msg {
+      font-size: 0.75rem;
+      color: var(--danger);
+      margin-top: 4px;
+      display: none;
+    }
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 700px) {
+      .form-row { grid-template-columns: 1fr; }
+      .contact-right { padding: 36px 24px; }
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 13px 24px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* Contact success */
+    .contact-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 40px;
+      min-height: 400px;
+    }
+    .contact-success.active {
+      display: flex;
+    }
+    .success-check {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(5,150,105,0.1);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .success-check svg {
+      width: 36px; height: 36px;
+      stroke: var(--success);
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: checkDraw 0.6s 0.3s ease forwards;
+    }
+    @keyframes checkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+    .success-check-circle {
+      animation: circleScale 0.4s ease forwards;
+    }
+    @keyframes circleScale {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .contact-success h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .contact-success p {
+      font-size: 0.9375rem;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+
+    /* ===== BOOKING MODAL ===== */
+    .booking-modal .modal-container {
+      max-width: 560px;
+    }
+    .booking-body {
+      padding: 48px 40px;
+    }
+    @media (max-width: 600px) {
+      .booking-body { padding: 32px 20px; }
+    }
+    .booking-body h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .booking-body .booking-subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* Progress bar */
+    .booking-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      white-space: nowrap;
+    }
+    .progress-step.active {
+      color: var(--accent);
+    }
+    .progress-step.done {
+      color: var(--success);
+    }
+    .progress-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--canvas);
+      border: 2px solid var(--border);
+      transition: all 0.3s;
+    }
+    .progress-step.active .progress-num {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .progress-step.done .progress-num {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+    .progress-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-line-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+    .progress-line.filled .progress-line-fill {
+      width: 100%;
+    }
+
+    /* Booking steps */
+    .booking-step {
+      display: none;
+    }
+    .booking-step.active {
+      display: block;
+      animation: fadeSlideUp 0.3s ease;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Calendar grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .calendar-header {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      text-align: center;
+      padding: 8px 0;
+    }
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 2px solid transparent;
+      color: var(--ink);
+    }
+    .calendar-day:hover:not(.disabled):not(.empty) {
+      background: rgba(30,58,95,0.08);
+    }
+    .calendar-day.selected {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .calendar-day.disabled {
+      color: #D1D5DB;
+      cursor: default;
+    }
+    .calendar-day.today {
+      border-color: var(--accent);
+    }
+    .calendar-day.empty {
+      cursor: default;
+    }
+
+    /* Time slots */
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 400px) {
+      .time-slots { grid-template-columns: repeat(2, 1fr); }
+    }
+    .time-slot {
+      padding: 12px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .time-slot:hover {
+      border-color: var(--accent);
+      background: rgba(30,58,95,0.04);
+    }
+    .time-slot.selected {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Booking buttons */
+    .booking-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .btn-booking-back {
+      padding: 11px 20px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.15s;
+    }
+    .btn-booking-back:hover { border-color: #9CA3AF; color: var(--ink); }
+    .btn-booking-next {
+      flex: 1;
+      padding: 11px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-booking-next:hover { background: var(--accent-hover); }
+    .btn-booking-next:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Booking confirmation */
+    .booking-confirm-card {
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .booking-confirm-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 0.875rem;
+    }
+    .booking-confirm-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+    .booking-confirm-label {
+      color: var(--ink-secondary);
+    }
+    .booking-confirm-value {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Booking success */
+    .booking-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .booking-success.active {
+      display: flex;
+    }
+
+    /* ===== CHATBOT WIDGET ===== */
+    .chatbot-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(30,58,95,0.35);
+      transition: all 0.3s ease;
+    }
+    .chatbot-fab:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(30,58,95,0.45); }
+    .chatbot-fab.active { transform: rotate(90deg); }
+    .chatbot-fab svg { transition: transform 0.3s; }
+
+    .chatbot-window {
+      position: fixed;
+      bottom: 92px;
+      right: 24px;
+      width: 360px;
+      height: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .chatbot-window.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    @media (max-width: 420px) {
+      .chatbot-window {
+        width: calc(100vw - 16px);
+        right: 8px;
+        bottom: 84px;
+        height: 420px;
+      }
+    }
+    .chatbot-header {
+      padding: 16px 20px;
+      background: var(--dark);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .chatbot-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chatbot-header-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .chatbot-header-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .chatbot-header-status .status-dot {
+      width: 6px;
+      height: 6px;
+    }
+    .chatbot-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      transition: color 0.15s;
+    }
+    .chatbot-close:hover { color: #fff; }
+
+    .chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+    .chatbot-messages .bubble-ai,
+    .chatbot-messages .bubble-user {
+      max-width: 85%;
+    }
+    .chatbot-messages .bubble-ai .bubble-inner {
+      font-size: 0.8125rem;
+      padding: 10px 14px;
+    }
+    .chatbot-messages .bubble-user .bubble-inner {
+      font-size: 0.8125rem;
+      padding: 10px 14px;
+    }
+
+    .chatbot-quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-self: flex-start;
+    }
+    .chatbot-quick-btn {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(30,58,95,0.08);
+      color: var(--accent);
+      border: 1px solid rgba(30,58,95,0.2);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chatbot-quick-btn:hover {
+      background: rgba(30,58,95,0.15);
+    }
+
+    .chatbot-input {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .chatbot-input input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      color: var(--ink);
+      outline: none;
+      background: var(--canvas);
+    }
+    .chatbot-input input:focus {
+      border-color: var(--accent);
+    }
+    .chatbot-input input::placeholder {
+      color: var(--ink-secondary);
+    }
+    .chatbot-send {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .chatbot-send:hover { background: var(--accent-hover); }
+  </style>
+<script>window.RAKUDA_API_BASE = 'https://rakuda-costcut-api.rakuda-costcut.workers.dev';</script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 40" height="20">
+          <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1a1a2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1a1a2e" letter-spacing="3">RAKUDA COSTCUT</text>
+        </svg>
+      </a>
+      <nav>
+        <a href="#features">特徴</a>
+        <a href="#cases">導入事例</a>
+        <a href="#pricing">料金</a>
+        <a href="javascript:void(0)" class="btn-nav-secondary" onclick="openContactModal();return false;">お問い合わせ</a>
+        <a href="javascript:void(0)" class="btn-nav" onclick="openBookingModal();return false;" data-track="cta">
+          無料で相談する
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <span class="hero-label">AI COST ADVISOR</span>
+        <h1>聞くだけで、&#13;&#10;コストの問題点がわかる。</h1>
+        <p class="hero-subtitle">専門用語不要。日本語で質問するだけで、AIがコスト構造を診断します。</p>
+        <div class="hero-actions">
+          <a href="javascript:void(0)" class="btn-primary" onclick="openContactModal()" data-track="cta">
+            お問い合わせ
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#demo" class="btn-text-link">仕組みを見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO BAND -->
+  <div class="logo-band">
+    <div class="container">
+      <div class="logo-band-inner" style="justify-content:center;">
+        <p class="logo-band-label" style="font-size:14px; letter-spacing:0; text-transform:none; line-height:1.6; max-width:640px; text-align:center;">無料のAI診断ツールをはじめ、コスト構造の可視化から削減施策の実行支援まで一気通貫で提供します</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT DEMO SECTION -->
+  <section class="chat-section" id="demo">
+    <div class="container">
+      <div class="chat-section-inner">
+
+        <!-- Left: text -->
+        <div>
+          <span class="chat-section-label">CONVERSATION</span>
+          <h2>対話するだけで、<br>ここまでわかる</h2>
+          <div class="chat-points">
+
+            <div class="chat-point">
+              <div class="chat-point-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9h18M9 21V9"/>
+                </svg>
+              </div>
+              <div class="chat-point-text">
+                <h3>業種・規模からベンチマーク即時比較</h3>
+                <p>業種と売上規模を伝えるだけで、業界平均と自社の乖離を瞬時に算出します。</p>
+              </div>
+            </div>
+
+            <div class="chat-point">
+              <div class="chat-point-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+              </div>
+              <div class="chat-point-text">
+                <h3>ファイルアップロードで詳細分析にシフト</h3>
+                <p>ExcelやCSVを添付すると、対話から数値ベースの精密な分析へ切り替わります。</p>
+              </div>
+            </div>
+
+            <div class="chat-point">
+              <div class="chat-point-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </div>
+              <div class="chat-point-text">
+                <h3>5-8ターンで具体的なアクションプランまで</h3>
+                <p>課題特定から改善施策の優先順位付けまで、短い会話で完結します。</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: chat UI (interactive) -->
+        <div class="chat-card" id="demoChatCard">
+          <div class="chat-card-header">
+            <span class="chat-card-title">RAKUDA AI</span>
+            <span class="chat-status">
+              <span class="status-dot"></span>
+              オンライン
+            </span>
+          </div>
+
+          <div class="chat-messages" id="demoChatMessages">
+            <!-- Initial AI message -->
+            <div class="bubble-ai">
+              <div class="bubble-inner">
+                こんにちは。御社のコスト構造について、いくつか教えてください。まずはお気軽にメッセージをどうぞ。
+              </div>
+            </div>
+          </div>
+
+          <!-- Input (interactive) -->
+          <div class="chat-input-row" id="demoChatInputRow">
+            <input type="text" id="demoChatInput" placeholder="コストについて質問..." autocomplete="off">
+            <button class="chat-send-btn" id="demoChatSend" aria-label="送信">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASES -->
+  <section class="usecases-section" id="usecases">
+    <div class="container">
+      <div class="section-header">
+        <h2>こんな質問にAIが答えます</h2>
+      </div>
+      <div class="usecases-list">
+
+        <div class="usecase-item">
+          <div class="usecase-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="20" x2="12" y2="10"/>
+              <line x1="18" y1="20" x2="18" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="16"/>
+            </svg>
+          </div>
+          <div class="usecase-body">
+            <p class="usecase-q">「うちの販管費率、高すぎる？」</p>
+            <p class="usecase-a">
+              <span class="usecase-a-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+              業界ベンチマーク即時比較で判定
+            </p>
+          </div>
+        </div>
+
+        <div class="usecase-item">
+          <div class="usecase-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12V22H4V12"/>
+              <path d="M22 7H2v5h20V7z"/>
+              <path d="M12 22V7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+          </div>
+          <div class="usecase-body">
+            <p class="usecase-q">「Monotaroの価格、適正？」</p>
+            <p class="usecase-a">
+              <span class="usecase-a-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+              Amazon / Askul自動比較で最安値検出
+            </p>
+          </div>
+        </div>
+
+        <div class="usecase-item">
+          <div class="usecase-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="usecase-body">
+            <p class="usecase-q">「外注費を下げたい」</p>
+            <p class="usecase-a">
+              <span class="usecase-a-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+              内製化シミュレーションを即時生成
+            </p>
+          </div>
+        </div>
+
+        <div class="usecase-item">
+          <div class="usecase-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="usecase-body">
+            <p class="usecase-q">「来期の予算、何を削る？」</p>
+            <p class="usecase-a">
+              <span class="usecase-a-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+              AI優先順位付けでTop5提案
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="cta-inner">
+        <h2>まずはお気軽に<br>ご相談ください</h2>
+        <p>AIツールを活用したコスト診断・削減施策のご提案から実行支援まで、御社に最適なプランをご案内します。</p>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <a href="javascript:void(0)" class="btn-primary" style="background:#1E3A5F; color:#fff;" onclick="openContactModal()" data-track="cta">
+            お問い合わせ
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="javascript:void(0)" class="btn-primary" style="background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.2);" onclick="openBookingModal()" data-track="cta">
+            無料で相談する
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </a>
+        </div>
+        <p style="margin-top:-16px; font-size:0.8125rem; color:rgba(255,255,255,0.35);">初回無料相談 / オンラインMTG対応</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#0F172A;color:rgba(255,255,255,0.7);padding:48px 32px 32px;">
+    <div style="max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <div style="width:28px;height:28px;background:#1E3A5F;border-radius:5px;display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 100 40" fill="none"><path d="M5,35 C5,35 15,5 30,5 C43,5 35,30 45,30 C55,30 47,3 60,3 C75,3 85,35 85,35" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <span style="font-size:14px;font-weight:700;color:#fff;">RAKUDA COSTCUT</span>
+        </div>
+        <p style="font-size:13px;line-height:1.8;">AIでコスト構造を可視化し、<br>最適な削減施策を提案します。</p>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;">サービス</div>
+        <a href="chat.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">AIチャット診断</a>
+        <a href="shindan.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">コスト体質診断</a>
+        <a href="visual.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">ビジュアル分析</a>
+        <a href="simple.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">かんたん診断</a>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;">会社情報</div>
+        <a href="about.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">会社概要</a>
+        <a href="privacy.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">プライバシーポリシー</a>
+        <a href="terms.html" style="display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;margin-bottom:8px;">利用規約</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1);margin-top:32px;padding-top:24px;text-align:center;font-size:12px;color:rgba(255,255,255,0.4);">
+      &copy; 2024 RAKUDA Inc. All rights reserved.
+    </div>
+  </footer>
+
+
+  <!-- ======================== -->
+  <!-- CONTACT MODAL            -->
+  <!-- ======================== -->
+  <div class="modal-overlay" id="contactModal" onclick="handleOverlayClick(event, 'contactModal')">
+    <div class="modal-container" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('contactModal')" aria-label="閉じる">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <!-- Form view -->
+      <div class="contact-modal-body" id="contactFormView">
+        <div class="contact-left">
+          <h3>AIコスト診断で<br>御社の課題を可視化</h3>
+          <div class="contact-feature">
+            <div class="contact-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="contact-feature-text">
+              <h4>対話型AI診断</h4>
+              <p>専門用語不要。チャットで質問するだけで、コスト構造の問題点を特定します。</p>
+            </div>
+          </div>
+          <div class="contact-feature">
+            <div class="contact-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+            </div>
+            <div class="contact-feature-text">
+              <h4>業界ベンチマーク比較</h4>
+              <p>同業種・同規模の企業データと比較し、改善余地を数値で提示します。</p>
+            </div>
+          </div>
+          <div class="contact-feature">
+            <div class="contact-feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="contact-feature-text">
+              <h4>実行支援まで一気通貫</h4>
+              <p>診断結果をもとに、具体的な削減施策の策定から実行までサポートします。</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right">
+          <h3>無料相談のお申し込み</h3>
+          <p class="form-subtitle">以下のフォームにご記入ください。担当者よりご連絡いたします。</p>
+          <form id="contactForm" onsubmit="return handleContactSubmit(event)" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label>会社名<span class="req">*</span></label>
+                <input type="text" name="company" required placeholder="株式会社RAKUDA">
+                <div class="form-error-msg">会社名を入力してください</div>
+              </div>
+              <div class="form-group">
+                <label>氏名<span class="req">*</span></label>
+                <input type="text" name="name" required placeholder="山田 太郎">
+                <div class="form-error-msg">氏名を入力してください</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>メールアドレス<span class="req">*</span></label>
+                <input type="email" name="email" required placeholder="taro@example.com">
+                <div class="form-error-msg">正しいメールアドレスを入力してください</div>
+              </div>
+              <div class="form-group">
+                <label>電話番号</label>
+                <input type="tel" name="phone" placeholder="03-1234-5678">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>従業員規模<span class="req">*</span></label>
+              <select name="scale" required>
+                <option value="">選択してください</option>
+                <option value="~50">~50名</option>
+                <option value="50-200">50-200名</option>
+                <option value="200-1000">200-1000名</option>
+                <option value="1000~">1000名~</option>
+              </select>
+              <div class="form-error-msg">従業員規模を選択してください</div>
+            </div>
+            <div class="form-group">
+              <label>ご相談内容</label>
+              <textarea name="message" placeholder="コスト構造の見直しを検討しています..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">無料相談を予約する</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Success view -->
+      <div class="contact-success" id="contactSuccess">
+        <div class="success-check success-check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3>お問い合わせを受け付けました</h3>
+        <p>担当より<strong>1営業日以内</strong>にご連絡いたします。<br>しばらくお待ちください。</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================== -->
+  <!-- BOOKING MODAL            -->
+  <!-- ======================== -->
+  <div class="modal-overlay booking-modal" id="bookingModal" onclick="handleOverlayClick(event, 'bookingModal')">
+    <div class="modal-container" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('bookingModal')" aria-label="閉じる">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="booking-body" id="bookingFormView">
+        <h3>無料で相談する</h3>
+        <p class="booking-subtitle">ご都合の良い日時をお選びください<br><span style="font-size:12px;color:#64748B;">※ 営業電話は一切しません</span></p>
+
+        <!-- Progress bar -->
+        <div class="booking-progress">
+          <div class="progress-step active" id="bkStep1Indicator">
+            <span class="progress-num">1</span>
+            <span>日付</span>
+          </div>
+          <div class="progress-line" id="bkLine1">
+            <div class="progress-line-fill"></div>
+          </div>
+          <div class="progress-step" id="bkStep2Indicator">
+            <span class="progress-num">2</span>
+            <span>時間</span>
+          </div>
+          <div class="progress-line" id="bkLine2">
+            <div class="progress-line-fill"></div>
+          </div>
+          <div class="progress-step" id="bkStep3Indicator">
+            <span class="progress-num">3</span>
+            <span>確認</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Date -->
+        <div class="booking-step active" id="bkStep1">
+          <div id="calendarMonth" style="font-size:0.9375rem; font-weight:700; margin-bottom:16px; color:var(--ink);"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="booking-nav">
+            <button class="btn-booking-next" id="bkNext1" disabled onclick="goBookingStep(2)">時間帯を選ぶ</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Time -->
+        <div class="booking-step" id="bkStep2">
+          <p style="font-size:0.875rem; color:var(--ink-secondary); margin-bottom:16px;" id="selectedDateLabel"></p>
+          <div class="time-slots" id="timeSlots"></div>
+          <div class="booking-nav">
+            <button class="btn-booking-back" onclick="goBookingStep(1)">戻る</button>
+            <button class="btn-booking-next" id="bkNext2" disabled onclick="goBookingStep(3)">情報入力へ</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Info + Confirm -->
+        <div class="booking-step" id="bkStep3">
+          <div class="booking-confirm-card" id="bookingConfirmCard"></div>
+          <form id="bookingForm" onsubmit="return handleBookingSubmit(event)" novalidate>
+            <div class="form-group">
+              <label>会社名<span class="req">*</span></label>
+              <input type="text" name="bk_company" required placeholder="株式会社RAKUDA">
+              <div class="form-error-msg">会社名を入力してください</div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>氏名<span class="req">*</span></label>
+                <input type="text" name="bk_name" required placeholder="山田 太郎">
+                <div class="form-error-msg">氏名を入力してください</div>
+              </div>
+              <div class="form-group">
+                <label>メールアドレス<span class="req">*</span></label>
+                <input type="email" name="bk_email" required placeholder="taro@example.com">
+                <div class="form-error-msg">正しいメールアドレスを入力してください</div>
+              </div>
+            </div>
+            <div class="booking-nav">
+              <button type="button" class="btn-booking-back" onclick="goBookingStep(2)">戻る</button>
+              <button type="submit" class="btn-booking-next">予約を確定する</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Booking success -->
+      <div class="booking-success" id="bookingSuccess">
+        <div class="success-check success-check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3>ご予約を承りました</h3>
+        <p id="bookingSuccessDetail" style="font-size:0.9375rem; color:var(--ink-secondary); line-height:1.6; margin-top:8px;"></p>
+        <p style="font-size:0.875rem; color:var(--ink-secondary); margin-top:16px;">確認メールをお送りしました。<br>当日のMTGリンクは前日までにご連絡いたします。</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================== -->
+  <!-- CHATBOT WIDGET           -->
+  <!-- ======================== -->
+  <button class="chatbot-fab" id="chatbotFab" aria-label="チャットサポート" onclick="toggleChatbot()">
+    <svg id="chatbotIconChat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <svg id="chatbotIconClose" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+      <div class="chatbot-header-left">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <div>
+          <div class="chatbot-header-title">RAKUDA AI</div>
+          <div class="chatbot-header-status">
+            <span class="status-dot" style="background:var(--success);"></span>
+            オンライン
+          </div>
+        </div>
+      </div>
+      <button class="chatbot-close" onclick="toggleChatbot()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="bubble-ai bubble-appear">
+        <div class="bubble-inner">
+          こんにちは!RAKUDAへようこそ。コスト削減についてお気軽にご質問ください。
+        </div>
+      </div>
+      <div class="chatbot-quick-actions">
+        <button class="chatbot-quick-btn" onclick="sendChatbotQuick('AI診断について教えて')">AI診断について</button>
+        <button class="chatbot-quick-btn" onclick="sendChatbotQuick('料金プランを知りたい')">料金プラン</button>
+        <button class="chatbot-quick-btn" onclick="sendChatbotQuick('導入事例はありますか？')">導入事例</button>
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatbotInput" placeholder="メッセージを入力...（⌘+Enterで送信）" autocomplete="off">
+      <button class="chatbot-send" onclick="sendChatbotMessage()" aria-label="送信">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+
+<script src="js/ab-tracker.js"></script>
+<script>
+/* ==============================================
+   SHARED UTILITY
+   ============================================== */
+
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  document.body.classList.add('modal-open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+function handleOverlayClick(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
+
+// ESC key closes modals
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    ['contactModal', 'bookingModal'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.classList.contains('active')) closeModal(id);
+    });
+  }
+});
+
+
+/* ==============================================
+   1. CONTACT MODAL
+   ============================================== */
+
+function openContactModal() {
+  // Reset form
+  var form = document.getElementById('contactForm');
+  form.reset();
+  form.querySelectorAll('.error').forEach(function(el) { el.classList.remove('error'); });
+  form.querySelectorAll('.form-error-msg').forEach(function(el) { el.style.display = 'none'; });
+  document.getElementById('contactFormView').style.display = '';
+  document.getElementById('contactSuccess').classList.remove('active');
+  openModal('contactModal');
+}
+
+function handleContactSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var valid = true;
+
+  // Validate required fields
+  form.querySelectorAll('[required]').forEach(function(input) {
+    var errEl = input.parentElement.querySelector('.form-error-msg');
+    var isValid = true;
+
+    if (input.type === 'email') {
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+    } else if (input.tagName === 'SELECT') {
+      isValid = input.value !== '';
+    } else {
+      isValid = input.value.trim() !== '';
+    }
+
+    if (!isValid) {
+      input.classList.add('error');
+      if (errEl) errEl.style.display = 'block';
+      valid = false;
+    } else {
+      input.classList.remove('error');
+      if (errEl) errEl.style.display = 'none';
+    }
+  });
+
+  if (!valid) return false;
+
+  // Send to API
+  var formData = {
+    email: form.querySelector('[name="email"]').value || form.querySelector('#email')?.value || '',
+    company: form.querySelector('[name="company"]')?.value || '',
+    name: form.querySelector('[name="name"]')?.value || '',
+    phone: form.querySelector('[name="phone"]')?.value || '',
+    size: form.querySelector('[name="size"]')?.value || '',
+    message: form.querySelector('[name="message"]')?.value || '',
+    source_page: 'p2',
+    type: 'contact'
+  };
+  fetch((window.RAKUDA_API_BASE || '') + '/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  }).catch(function(){});
+  // Fire AB tracking event
+  if (typeof window.abTrack === 'function') window.abTrack('form_submit');
+
+  // Show success
+  document.getElementById('contactFormView').style.display = 'none';
+  document.getElementById('contactSuccess').classList.add('active');
+  return false;
+}
+
+
+/* ==============================================
+   2. BOOKING MODAL
+   ============================================== */
+
+var bookingState = {
+  selectedDate: null,
+  selectedTime: null,
+  currentStep: 1
+};
+
+function openBookingModal() {
+  bookingState = { selectedDate: null, selectedTime: null, currentStep: 1 };
+  document.getElementById('bookingFormView').style.display = '';
+  document.getElementById('bookingSuccess').classList.remove('active');
+  var form = document.getElementById('bookingForm');
+  form.reset();
+  form.querySelectorAll('.error').forEach(function(el) { el.classList.remove('error'); });
+  form.querySelectorAll('.form-error-msg').forEach(function(el) { el.style.display = 'none'; });
+  buildCalendar();
+  goBookingStep(1);
+  openModal('bookingModal');
+}
+
+function buildCalendar() {
+  var grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+  var today = new Date();
+  var dayNames = ['日','月','火','水','木','金','土'];
+
+  // Header
+  dayNames.forEach(function(d) {
+    var h = document.createElement('div');
+    h.className = 'calendar-header';
+    h.textContent = d;
+    grid.appendChild(h);
+  });
+
+  // Month label
+  var monthLabel = document.getElementById('calendarMonth');
+  monthLabel.textContent = today.getFullYear() + '年' + (today.getMonth()+1) + '月';
+
+  // Start from today, show 14 days
+  var startDate = new Date(today);
+  // Fill empty cells for the first week alignment
+  var firstDow = startDate.getDay();
+  for (var i = 0; i < firstDow; i++) {
+    var empty = document.createElement('div');
+    empty.className = 'calendar-day empty';
+    grid.appendChild(empty);
+  }
+
+  for (var d = 0; d < 14; d++) {
+    var date = new Date(today);
+    date.setDate(today.getDate() + d);
+    var cell = document.createElement('div');
+    cell.className = 'calendar-day';
+    cell.textContent = date.getDate();
+    var dow = date.getDay();
+
+    if (d === 0) cell.classList.add('today');
+    if (dow === 0 || dow === 6) {
+      cell.classList.add('disabled');
+    } else {
+      (function(dt) {
+        cell.addEventListener('click', function() {
+          grid.querySelectorAll('.calendar-day').forEach(function(c) { c.classList.remove('selected'); });
+          cell.classList.add('selected');
+          bookingState.selectedDate = dt;
+          document.getElementById('bkNext1').disabled = false;
+        });
+      })(new Date(date));
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function buildTimeSlots() {
+  var container = document.getElementById('timeSlots');
+  container.innerHTML = '';
+  var times = ['10:00','11:00','12:00','14:00','15:00','16:00'];
+  times.forEach(function(t) {
+    var slot = document.createElement('div');
+    slot.className = 'time-slot';
+    slot.textContent = t;
+    slot.addEventListener('click', function() {
+      container.querySelectorAll('.time-slot').forEach(function(s) { s.classList.remove('selected'); });
+      slot.classList.add('selected');
+      bookingState.selectedTime = t;
+      document.getElementById('bkNext2').disabled = false;
+    });
+    container.appendChild(slot);
+  });
+}
+
+function goBookingStep(step) {
+  bookingState.currentStep = step;
+
+  // Steps
+  for (var i = 1; i <= 3; i++) {
+    var el = document.getElementById('bkStep' + i);
+    if (i === step) { el.classList.add('active'); } else { el.classList.remove('active'); }
+  }
+
+  // Progress indicators
+  for (var i = 1; i <= 3; i++) {
+    var ind = document.getElementById('bkStep' + i + 'Indicator');
+    ind.classList.remove('active', 'done');
+    if (i < step) ind.classList.add('done');
+    else if (i === step) ind.classList.add('active');
+  }
+
+  // Lines
+  var l1 = document.getElementById('bkLine1');
+  var l2 = document.getElementById('bkLine2');
+  if (step > 1) l1.classList.add('filled'); else l1.classList.remove('filled');
+  if (step > 2) l2.classList.add('filled'); else l2.classList.remove('filled');
+
+  // Step-specific
+  if (step === 2) {
+    var d = bookingState.selectedDate;
+    var dayNames = ['日','月','火','水','木','金','土'];
+    document.getElementById('selectedDateLabel').textContent =
+      d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + dayNames[d.getDay()] + '）の空き時間';
+    bookingState.selectedTime = null;
+    document.getElementById('bkNext2').disabled = true;
+    buildTimeSlots();
+  }
+
+  if (step === 3) {
+    var d = bookingState.selectedDate;
+    var dayNames = ['日','月','火','水','木','金','土'];
+    var dateStr = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + dayNames[d.getDay()] + '）';
+    var card = document.getElementById('bookingConfirmCard');
+    card.innerHTML =
+      '<div class="booking-confirm-row"><span class="booking-confirm-label">日時</span><span class="booking-confirm-value">' + dateStr + ' ' + bookingState.selectedTime + '</span></div>' +
+      '<div class="booking-confirm-row"><span class="booking-confirm-label">形式</span><span class="booking-confirm-value">オンラインMTG（約30分）</span></div>';
+  }
+}
+
+function handleBookingSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var valid = true;
+
+  form.querySelectorAll('[required]').forEach(function(input) {
+    var errEl = input.parentElement.querySelector('.form-error-msg');
+    var isValid = true;
+    if (input.type === 'email') {
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+    } else {
+      isValid = input.value.trim() !== '';
+    }
+    if (!isValid) {
+      input.classList.add('error');
+      if (errEl) errEl.style.display = 'block';
+      valid = false;
+    } else {
+      input.classList.remove('error');
+      if (errEl) errEl.style.display = 'none';
+    }
+  });
+
+  if (!valid) return false;
+
+  // Send to API
+  var bookData = {
+    date: bookingState.selectedDate.toISOString().split('T')[0],
+    time: bookingState.selectedTime,
+    name: form.querySelector('[name="bk_name"]')?.value || document.getElementById('bkName')?.value || '',
+    email: form.querySelector('[name="bk_email"]')?.value || document.getElementById('bkEmail')?.value || '',
+    company: form.querySelector('[name="bk_company"]')?.value || '',
+    source_page: 'p2'
+  };
+  fetch((window.RAKUDA_API_BASE || '') + '/api/booking', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(bookData)
+  }).catch(function(){});
+  if (typeof window.abTrack === 'function') window.abTrack('form_submit');
+
+  // Show success
+  var d = bookingState.selectedDate;
+  var dayNames = ['日','月','火','水','木','金','土'];
+  var dateStr = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + dayNames[d.getDay()] + '）';
+  document.getElementById('bookingSuccessDetail').innerHTML =
+    '<strong>' + dateStr + ' ' + bookingState.selectedTime + '</strong> で予約を承りました。';
+
+  document.getElementById('bookingFormView').style.display = 'none';
+  document.getElementById('bookingSuccess').classList.add('active');
+  return false;
+}
+
+
+/* ==============================================
+   3. CHATBOT WIDGET — Claude API Connected
+   ============================================== */
+var chatHistory = [];
+var chatRateCount = 0;
+var chatRateReset = 0;
+
+function toggleChatbot() {
+  var win = document.getElementById('chatbotWindow');
+  var fab = document.getElementById('chatbotFab');
+  var iconChat = document.getElementById('chatbotIconChat');
+  var iconClose = document.getElementById('chatbotIconClose');
+  var isOpen = win.classList.contains('open');
+  if (isOpen) {
+    win.classList.remove('open');
+    fab.classList.remove('active');
+    iconChat.style.display = '';
+    iconClose.style.display = 'none';
+  } else {
+    win.classList.add('open');
+    fab.classList.add('active');
+    iconChat.style.display = 'none';
+    iconClose.style.display = '';
+    document.getElementById('chatbotInput').focus();
+    if (typeof window.abTrack === 'function') window.abTrack('chat_start');
+  }
+}
+
+function sendChatbotQuick(text) {
+  var qa = document.querySelector('.chatbot-quick-actions');
+  if (qa) qa.remove();
+  sendToAPI(text);
+}
+
+function sendChatbotMessage() {
+  var input = document.getElementById('chatbotInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  var qa = document.querySelector('.chatbot-quick-actions');
+  if (qa) qa.remove();
+  sendToAPI(text);
+}
+
+function sendToAPI(text) {
+  // Rate limit check
+  var now = Date.now();
+  if (now > chatRateReset) { chatRateCount = 0; chatRateReset = now + 60000; }
+  chatRateCount++;
+  if (chatRateCount > 3) {
+    addChatbotAIMsg('申し訳ございません。1分間に3回までご質問いただけます。少々お待ちください。');
+    return;
+  }
+
+  addChatbotUserMsg(text);
+  chatHistory.push({ role: 'user', content: text });
+  if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+
+  // Show typing
+  var msgs = document.getElementById('chatbotMessages');
+  var typing = document.createElement('div');
+  typing.className = 'bubble-ai bubble-appear';
+  typing.id = 'chatbotTyping';
+  typing.innerHTML = '<div class="bubble-inner"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  var API_BASE = window.RAKUDA_API_BASE || '';
+  fetch(API_BASE + '/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: chatHistory, page: 'p2' })
+  }).then(function(res) {
+    if (!res.ok) throw new Error('API error');
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var aiText = '';
+    var t = document.getElementById('chatbotTyping');
+    if (t) t.remove();
+    // Create AI message bubble for streaming
+    var aiDiv = document.createElement('div');
+    aiDiv.className = 'bubble-ai bubble-appear';
+    var inner = document.createElement('div');
+    inner.className = 'bubble-inner';
+    aiDiv.appendChild(inner);
+    msgs.appendChild(aiDiv);
+
+    function read() {
+      reader.read().then(function(result) {
+        if (result.done) {
+          chatHistory.push({ role: 'assistant', content: aiText });
+          return;
+        }
+        var chunk = decoder.decode(result.value, { stream: true });
+        var lines = chunk.split('\n');
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (line.startsWith('data: ')) {
+            var data = line.slice(6);
+            if (data === '[DONE]') continue;
+            try {
+              var parsed = JSON.parse(data);
+              if (parsed.text) {
+                aiText += parsed.text;
+                inner.textContent = aiText;
+                msgs.scrollTop = msgs.scrollHeight;
+              }
+            } catch(e) {}
+          }
+        }
+        read();
+      });
+    }
+    read();
+  }).catch(function(err) {
+    var t = document.getElementById('chatbotTyping');
+    if (t) t.remove();
+    var fallback = getFallbackReply(text);
+    addChatbotAIMsg(fallback);
+    chatHistory.push({ role: 'assistant', content: fallback });
+  });
+}
+
+function getFallbackReply(text) {
+  var t = text.toLowerCase();
+  if (t.includes('診断') || t.includes('分析')) return 'RAKUDAのAI診断は、チャットで質問するだけで御社のコスト構造を可視化します。';
+  if (t.includes('料金') || t.includes('価格')) return '初回のAI診断は完全無料です。詳しくはお問い合わせください。';
+  if (t.includes('事例') || t.includes('実績')) return '製造業で年間1.2億円、IT企業で販管費率5.6pt改善の実績があります。';
+  return 'ご質問ありがとうございます。詳しくはお問い合わせフォームからご連絡ください。';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('chatbotInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); sendChatbotMessage(); }
+  });
+});
+
+function addChatbotUserMsg(text) {
+  var msgs = document.getElementById('chatbotMessages');
+  var div = document.createElement('div');
+  div.className = 'bubble-user bubble-appear';
+  div.innerHTML = '<div class="bubble-inner">' + escapeHtml(text) + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addChatbotAIMsg(text) {
+  var msgs = document.getElementById('chatbotMessages');
+  var div = document.createElement('div');
+  div.className = 'bubble-ai bubble-appear';
+  div.innerHTML = '<div class="bubble-inner">' + escapeHtml(text) + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+
+/* ==============================================
+   4. INTERACTIVE CHAT DEMO — Claude API Connected
+   ============================================== */
+
+var demoState = {
+  turn: 0,
+  industry: '',
+  revenue: '',
+  chatHistory: []
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  var input = document.getElementById('demoChatInput');
+  var sendBtn = document.getElementById('demoChatSend');
+
+  sendBtn.addEventListener('click', function() { handleDemoSend(); });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); handleDemoSend(); }
+  });
+});
+
+function handleDemoSend() {
+  var input = document.getElementById('demoChatInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.disabled = true;
+
+  demoState.turn++;
+  addDemoBubble('user', escapeHtml(text));
+
+  var turn = demoState.turn;
+
+  if (turn === 1) {
+    // Turn 1: Ask for industry (client-side)
+    showDemoTyping(function() {
+      addDemoBubble('ai', 'ありがとうございます。業種を教えていただけますか？（例：製造業、IT、小売など）');
+      input.disabled = false;
+      input.focus();
+    });
+  } else if (turn === 2) {
+    // Turn 2: Save industry, ask revenue (client-side)
+    demoState.industry = text;
+    showDemoTyping(function() {
+      addDemoBubble('ai', escapeHtml(text) + 'ですね。年商規模はどのくらいですか？');
+      input.disabled = false;
+      input.focus();
+    });
+  } else if (turn === 3) {
+    // Turn 3: Save revenue, send to Claude API for analysis
+    demoState.revenue = text;
+    addDemoBubble('ai', '了解しました。<strong>' + escapeHtml(demoState.industry) + '</strong>・<strong>' + escapeHtml(demoState.revenue) + '</strong>の企業で典型的な課題をAIが分析中です...');
+
+    // Build context messages for API
+    demoState.chatHistory = [
+      { role: 'user', content: '業種は' + demoState.industry + 'で、年商は' + demoState.revenue + 'です。コスト構造を診断してください。' }
+    ];
+
+    var API_BASE = window.RAKUDA_API_BASE || '';
+    var msgs = document.getElementById('demoChatMessages');
+
+    // Show typing indicator
+    var typing = document.createElement('div');
+    typing.className = 'bubble-ai bubble-appear';
+    typing.id = 'demoTypingAPI';
+    typing.innerHTML = '<div class="bubble-inner"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    fetch(API_BASE + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: demoState.chatHistory, page: 'p2', context: { industry: demoState.industry, revenue: demoState.revenue } })
+    }).then(function(res) {
+      if (!res.ok) throw new Error('API error');
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var aiText = '';
+      var t = document.getElementById('demoTypingAPI');
+      if (t) t.remove();
+
+      // Create AI message bubble for streaming
+      var aiDiv = document.createElement('div');
+      aiDiv.className = 'bubble-ai bubble-appear';
+      var inner = document.createElement('div');
+      inner.className = 'bubble-inner';
+      aiDiv.appendChild(inner);
+      msgs.appendChild(aiDiv);
+
+      function read() {
+        reader.read().then(function(result) {
+          if (result.done) {
+            demoState.chatHistory.push({ role: 'assistant', content: aiText });
+            // After streaming completes, also show result card
+            addDemoResultCard(demoState.industry, demoState.revenue);
+            input.disabled = false;
+            input.focus();
+            return;
+          }
+          var chunk = decoder.decode(result.value, { stream: true });
+          var lines = chunk.split('\n');
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (line.startsWith('data: ')) {
+              var data = line.slice(6);
+              if (data === '[DONE]') continue;
+              try {
+                var parsed = JSON.parse(data);
+                if (parsed.text) {
+                  aiText += parsed.text;
+                  inner.textContent = aiText;
+                  msgs.scrollTop = msgs.scrollHeight;
+                }
+              } catch(e) {}
+            }
+          }
+          read();
+        });
+      }
+      read();
+    }).catch(function(err) {
+      var t = document.getElementById('demoTypingAPI');
+      if (t) t.remove();
+      // Fallback to static result card
+      addDemoResultCard(demoState.industry, demoState.revenue);
+      input.disabled = false;
+      input.focus();
+    });
+  } else {
+    // Turn 4+: Send follow-up to Claude API
+    demoState.chatHistory.push({ role: 'user', content: text });
+    if (demoState.chatHistory.length > 20) demoState.chatHistory = demoState.chatHistory.slice(-20);
+
+    var API_BASE = window.RAKUDA_API_BASE || '';
+    var msgs = document.getElementById('demoChatMessages');
+
+    var typing = document.createElement('div');
+    typing.className = 'bubble-ai bubble-appear';
+    typing.id = 'demoTypingAPI';
+    typing.innerHTML = '<div class="bubble-inner"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    fetch(API_BASE + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: demoState.chatHistory, page: 'p2', context: { industry: demoState.industry, revenue: demoState.revenue } })
+    }).then(function(res) {
+      if (!res.ok) throw new Error('API error');
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var aiText = '';
+      var t = document.getElementById('demoTypingAPI');
+      if (t) t.remove();
+
+      var aiDiv = document.createElement('div');
+      aiDiv.className = 'bubble-ai bubble-appear';
+      var inner = document.createElement('div');
+      inner.className = 'bubble-inner';
+      aiDiv.appendChild(inner);
+      msgs.appendChild(aiDiv);
+
+      function read() {
+        reader.read().then(function(result) {
+          if (result.done) {
+            demoState.chatHistory.push({ role: 'assistant', content: aiText });
+            input.disabled = false;
+            input.focus();
+            return;
+          }
+          var chunk = decoder.decode(result.value, { stream: true });
+          var lines = chunk.split('\n');
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (line.startsWith('data: ')) {
+              var data = line.slice(6);
+              if (data === '[DONE]') continue;
+              try {
+                var parsed = JSON.parse(data);
+                if (parsed.text) {
+                  aiText += parsed.text;
+                  inner.textContent = aiText;
+                  msgs.scrollTop = msgs.scrollHeight;
+                }
+              } catch(e) {}
+            }
+          }
+          read();
+        });
+      }
+      read();
+    }).catch(function(err) {
+      var t = document.getElementById('demoTypingAPI');
+      if (t) t.remove();
+      addDemoBubble('ai', 'より詳しい分析をご希望の場合は、決算書データをお送りいただければ精密な診断が可能です。<a href="javascript:void(0)" onclick="openContactModal()" style="color:var(--accent);font-weight:600;">お問い合わせフォーム</a>からご連絡ください。');
+      input.disabled = false;
+      input.focus();
+    });
+  }
+}
+
+function addDemoBubble(type, html) {
+  var msgs = document.getElementById('demoChatMessages');
+  var div = document.createElement('div');
+  div.className = (type === 'ai' ? 'bubble-ai' : 'bubble-user') + ' bubble-appear';
+  div.innerHTML = '<div class="bubble-inner">' + html + '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showDemoTyping(callback) {
+  var msgs = document.getElementById('demoChatMessages');
+  var typing = document.createElement('div');
+  typing.className = 'bubble-ai bubble-appear';
+  typing.id = 'demoTyping';
+  typing.innerHTML = '<div class="bubble-inner"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(function() {
+    var t = document.getElementById('demoTyping');
+    if (t) t.remove();
+    callback();
+  }, 1200 + Math.random() * 400);
+}
+
+function addDemoResultCard(industry, revenue) {
+  var msgs = document.getElementById('demoChatMessages');
+  var div = document.createElement('div');
+  div.className = 'bubble-ai bubble-appear';
+  div.style.maxWidth = '100%';
+  div.innerHTML =
+    '<div class="result-card">' +
+      '<table class="result-table"><tbody>' +
+        '<tr><td>業種</td><td>' + escapeHtml(industry) + '</td></tr>' +
+        '<tr><td>推定販管費率</td><td style="font-size:0.9375rem;">24.8%</td></tr>' +
+        '<tr><td>業界平均</td><td>19.2%</td></tr>' +
+        '<tr><td>差分</td><td class="result-diff">+5.6pt</td></tr>' +
+      '</tbody></table>' +
+      '<p class="result-note">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>' +
+        '年間約8,400万円の改善余地があります' +
+      '</p>' +
+    '</div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+
+/* ==============================================
+   UTILITY
+   ============================================== */
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+
+/* ==============================================
+   SCROLL FADE-IN (original)
+   ============================================== */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('section:not(.hero)').forEach(function(s) { s.classList.add('fade-in-section'); });
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-section').forEach(function(s) { obs.observe(s); });
+});
+</script>
+<script src="js/rakuda-chat.js"></script>
+</body>
+</html>
