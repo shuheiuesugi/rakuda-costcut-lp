@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAKUDA COSTCUT | コスト分析ダッシュボード デモ</title>
+  <title>RAKUDA コストカット | コスト分析ダッシュボード デモ</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --ink: #0A0A0B;
-      --ink-secondary: #6B7280;
+      --ink: #1E293B;
+      --ink-secondary: #64748B;
       --surface: #FFFFFF;
-      --canvas: #FAFAFA;
-      --border: #E5E7EB;
-      --accent: #2563EB;
+      --canvas: #F9FAFB;
+      --border: #E2E8F0;
+      --accent: #1E3A5F;
+      --accent-hover: #162E4A;
       --success: #059669;
-      --warning: #D97706;
+      --dark: #0F172A;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
       --danger: #DC2626;
-      --dark: #111113;
-      --dark-surface: #1A1A1F;
-      --dark-border: rgba(255,255,255,0.08);
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1);
-      --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
     }
     html { scroll-behavior: smooth; }
     body {
@@ -135,7 +133,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
+      background: linear-gradient(180deg, rgba(30,58,95,0.06) 0%, transparent 60%);
       pointer-events: none;
     }
     .hero-label {
@@ -897,7 +895,7 @@
     .contact-left h3 { font-size:22px; font-weight:700; margin-bottom:28px; line-height:1.35; }
     .contact-step-list { display:flex; flex-direction:column; gap:20px; }
     .contact-step-item { display:flex; gap:14px; align-items:flex-start; }
-    .contact-step-num { width:28px; height:28px; border-radius:50%; background:rgba(37,99,235,0.2); color:var(--accent); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .contact-step-num { width:28px; height:28px; border-radius:50%; background:rgba(30,58,95,0.2); color:var(--accent); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .contact-step-text { font-size:14px; color:rgba(255,255,255,0.75); line-height:1.5; }
     .contact-step-text strong { color:var(--surface); font-weight:600; }
     .contact-right { padding:40px 32px; }
@@ -932,7 +930,7 @@
     .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; margin-bottom:20px; }
     .cal-header { font-size:11px; color:var(--ink-secondary); font-weight:500; padding:4px 0; }
     .cal-day { padding:8px 4px; border-radius:6px; font-size:13px; cursor:pointer; transition:background 0.15s, color 0.15s; color:var(--ink); }
-    .cal-day:hover { background:rgba(37,99,235,0.08); }
+    .cal-day:hover { background:rgba(30,58,95,0.08); }
     .cal-day.disabled { color:var(--border); pointer-events:none; }
     .cal-day.selected { background:var(--accent); color:var(--surface); font-weight:600; }
     .cal-day.today { font-weight:700; color:var(--accent); }
@@ -956,8 +954,8 @@
     .booking-complete.is-show { display:block; }
     .booking-steps-area.is-hide { display:none; }
     /* CHATBOT */
-    .chatbot-fab { position:fixed; bottom:24px; right:24px; z-index:900; width:56px; height:56px; border-radius:50%; background:var(--accent); color:var(--surface); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(37,99,235,0.35); transition:transform 0.2s, box-shadow 0.2s; }
-    .chatbot-fab:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(37,99,235,0.45); }
+    .chatbot-fab { position:fixed; bottom:24px; right:24px; z-index:900; width:56px; height:56px; border-radius:50%; background:var(--accent); color:var(--surface); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(30,58,95,0.35); transition:transform 0.2s, box-shadow 0.2s; }
+    .chatbot-fab:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(30,58,95,0.45); }
     .chatbot-fab .fab-close { display:none; }
     .chatbot-fab.is-open .fab-open { display:none; }
     .chatbot-fab.is-open .fab-close { display:block; }
@@ -977,7 +975,7 @@
     .chat-msg.user .chat-bubble { background:var(--accent); color:var(--surface); border-bottom-right-radius:4px; }
     .chat-quick-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
     .chat-quick-btn { padding:6px 12px; border:1px solid var(--border); border-radius:20px; background:var(--surface); font-size:12px; color:var(--accent); cursor:pointer; font-family:inherit; font-weight:500; transition:background 0.15s, border-color 0.15s; }
-    .chat-quick-btn:hover { border-color:var(--accent); background:rgba(37,99,235,0.04); }
+    .chat-quick-btn:hover { border-color:var(--accent); background:rgba(30,58,95,0.04); }
     .chat-typing { display:flex; gap:4px; padding:10px 14px; align-self:flex-start; }
     .chat-typing span { width:6px; height:6px; border-radius:50%; background:var(--ink-secondary); animation:typingDot 1.4s infinite; }
     .chat-typing span:nth-child(2) { animation-delay:0.2s; }
@@ -1008,7 +1006,7 @@
     }
     .bar-tooltip.visible { opacity: 1; }
     .bar-tooltip-month { font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
-    .bar-tooltip-current { color: #60A5FA; }
+    .bar-tooltip-current { color: #93B4D4; }
     .bar-tooltip-prev { color: rgba(255,255,255,0.45); }
     .bar-tooltip-yoy.pos { color: #059669; }
     .bar-tooltip-yoy.neg { color: #DC2626; }
@@ -1115,9 +1113,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(37,99,235,0.15);
-      border: 1px solid rgba(37,99,235,0.35);
-      color: #60A5FA;
+      background: rgba(30,58,95,0.15);
+      border: 1px solid rgba(30,58,95,0.35);
+      color: #93B4D4;
       border-radius: 6px;
       padding: 6px 12px;
       font-size: 12px;
@@ -1127,8 +1125,8 @@
       transition: background 0.2s, border-color 0.2s;
     }
     .btn-export:hover {
-      background: rgba(37,99,235,0.28);
-      border-color: rgba(37,99,235,0.6);
+      background: rgba(30,58,95,0.28);
+      border-color: rgba(30,58,95,0.6);
     }
 
     /* Export toast */
@@ -1185,8 +1183,8 @@
   <div class="header-inner">
     <a class="logo" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 40" height="20">
-        <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1a1a2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1a1a2e" letter-spacing="3">RAKUDA COSTCUT</text>
+        <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1E293B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1E293B" letter-spacing="3">RAKUDA コストカット</text>
       </svg>
     </a>
     <nav>
@@ -1211,7 +1209,7 @@
   <h1>画面で体験してください。</h1>
   <p>サンプル企業データで、コスト分析ダッシュボードを操作できます</p>
   <div style="text-align:center;">
-    <div style="display:inline-flex; align-items:center; gap:8px; margin-top:16px; margin-bottom:24px; padding:8px 16px; background:rgba(37,99,235,0.08); border-radius:20px; font-size:13px; color:rgba(255,255,255,0.7);">
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-top:16px; margin-bottom:24px; padding:8px 16px; background:rgba(30,58,95,0.08); border-radius:20px; font-size:13px; color:rgba(255,255,255,0.7);">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
       サンプルデータによるデモ画面です — 御社データでのカスタム構築が可能です
     </div>
@@ -1312,7 +1310,7 @@
                 前期
               </div>
               <div class="legend-item">
-                <div class="legend-dot" style="background:#2563EB;"></div>
+                <div class="legend-dot" style="background:#1E3A5F;"></div>
                 今期
               </div>
               <div style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3);" id="barChartAvg">平均削減率 <span style="color:#059669;font-weight:500;">-8.4%</span></div>
@@ -1417,7 +1415,7 @@
           <tr>
             <th class="col-item" style="width:200px;">比較項目</th>
             <th class="col-before">Excel管理（従来）</th>
-            <th class="col-after">RAKUDA COSTCUT</th>
+            <th class="col-after">RAKUDA コストカット</th>
           </tr>
         </thead>
         <tbody>
@@ -1477,7 +1475,7 @@
   <div style="max-width: 960px; margin: 0 auto;">
     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px;">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20">
-        <path d="M10,75 C10,75 22,25 38,25 C52,25 44,65 56,65 C68,65 60,20 74,20 C90,20 100,75 100,75" stroke="#1A1A2E" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M10,75 C10,75 22,25 38,25 C52,25 44,65 56,65 C68,65 60,20 74,20 C90,20 100,75 100,75" stroke="#1E293B" stroke-width="7" fill="none" stroke-linecap="round"/>
       </svg>
       <span style="font-size: 14px; font-weight: 300; letter-spacing: 0.15em; color: #111;">RAKUDA AI</span>
     </div>
@@ -1514,7 +1512,7 @@
     </button>
     <div class="contact-grid">
       <div class="contact-left">
-        <div class="contact-left-label">RAKUDA COSTCUT</div>
+        <div class="contact-left-label">RAKUDA コストカット</div>
         <h3>AIコスト診断から<br>実行支援まで</h3>
         <div class="contact-step-list">
           <div class="contact-step-item"><div class="contact-step-num">1</div><div class="contact-step-text"><strong>AI診断</strong><br>30秒のセルフ診断で改善余地を特定</div></div>
@@ -1571,7 +1569,7 @@
 <div class="chatbot-window" id="chatWindow">
   <div class="chatbot-header"><div class="chatbot-avatar">R</div><div class="chatbot-header-info"><div class="chatbot-header-name">RAKUDA AI</div><div class="chatbot-header-status">オンライン</div></div></div>
   <div class="chatbot-messages" id="chatMessages">
-    <div class="chat-msg bot"><div class="chat-bubble">こんにちは! RAKUDA COSTCUTのAIアシスタントです。コスト削減について何でもお気軽にご質問ください。</div></div>
+    <div class="chat-msg bot"><div class="chat-bubble">こんにちは! RAKUDA コストカットのAIアシスタントです。コスト削減について何でもお気軽にご質問ください。</div></div>
     <div class="chat-quick-actions" id="chatQuickActions"><button class="chat-quick-btn" onclick="sendQuickChat('サービスについて教えて')">サービスについて</button><button class="chat-quick-btn" onclick="sendQuickChat('料金体系を知りたい')">料金体系</button><button class="chat-quick-btn" onclick="sendQuickChat('ダッシュボードの機能を教えて')">機能について</button></div>
   </div>
   <div class="chatbot-input-area"><input class="chatbot-input" id="chatInput" placeholder="メッセージを入力...（⌘+Enterで送信）" onkeydown="if(event.key==='Enter'&&(event.metaKey||event.ctrlKey)){event.preventDefault();sendChat()}"><button class="chatbot-send" onclick="sendChat()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
@@ -1639,13 +1637,13 @@ var tabKPIData = {
 
 var barChartData = {
   fy2526: {
-    summary: { heading:'月次コスト推移', sub:'前期比較 / 単位: 百万円', avg:'平均削減率 <span style="color:#059669;font-weight:500;">-8.4%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#2563EB', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[66,72,76,80,84,92,96,100,110,90,84,80], curr:[62,68,72,76,79,86,90,94,104,84,78,74] },
+    summary: { heading:'月次コスト推移', sub:'前期比較 / 単位: 百万円', avg:'平均削減率 <span style="color:#059669;font-weight:500;">-8.4%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#1E3A5F', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[66,72,76,80,84,92,96,100,110,90,84,80], curr:[62,68,72,76,79,86,90,94,104,84,78,74] },
     tail:    { heading:'テールスペンド月次推移', sub:'前期比較 / 単位: 百万円', avg:'平均削減率 <span style="color:#059669;font-weight:500;">-5.8%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#8B5CF6', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[11,12,13,14,12,15,13,14,16,11,10,12], curr:[10,11,12,13,11,14,12,13,15,10,9,11] },
     sga:     { heading:'販管費月次推移', sub:'売上比率トレンド / 単位: 百万円', avg:'平均改善 <span style="color:#059669;font-weight:500;">-2.1%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#10B981', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[32,33,35,34,36,38,37,36,40,32,30,31], curr:[30,31,33,32,34,36,35,34,38,30,28,29] },
     dept:    { heading:'部門別コスト（今期累計）', sub:'上位6部門 / 単位: 百万円', avg:'部門間格差 <span style="color:#D97706;font-weight:500;">2.4x</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#F59E0B', months:['営業部','製造部','管理部','IT部','人事部','物流部'], prev:[220,180,130,80,60,50], curr:[210,175,125,75,58,47] }
   },
   fy2425: {
-    summary: { heading:'月次コスト推移', sub:'前期比較 / 単位: 百万円', avg:'平均変化率 <span style="color:#D97706;font-weight:500;">+1.4%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#2563EB', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[64,70,74,78,82,90,94,98,108,88,82,78], curr:[66,72,76,80,84,92,96,100,110,90,84,80] },
+    summary: { heading:'月次コスト推移', sub:'前期比較 / 単位: 百万円', avg:'平均変化率 <span style="color:#D97706;font-weight:500;">+1.4%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#1E3A5F', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[64,70,74,78,82,90,94,98,108,88,82,78], curr:[66,72,76,80,84,92,96,100,110,90,84,80] },
     tail:    { heading:'テールスペンド月次推移', sub:'前期比較 / 単位: 百万円', avg:'平均変化率 <span style="color:#D97706;font-weight:500;">+2.1%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#8B5CF6', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[10,11,12,13,11,14,12,13,15,10,9,11], curr:[11,12,13,14,12,15,13,14,16,11,10,12] },
     sga:     { heading:'販管費月次推移', sub:'売上比率トレンド / 単位: 百万円', avg:'平均変化率 <span style="color:#D97706;font-weight:500;">+0.8%</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#10B981', months:['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'], prev:[30,31,33,32,34,36,35,34,38,30,28,29], curr:[32,33,35,34,36,38,37,36,40,32,30,31] },
     dept:    { heading:'部門別コスト（今期累計）', sub:'上位6部門 / 単位: 百万円', avg:'部門間格差 <span style="color:#D97706;font-weight:500;">2.7x</span>', prevColor:'rgba(255,255,255,0.12)', currColor:'#F59E0B', months:['営業部','製造部','管理部','IT部','人事部','物流部'], prev:[200,165,120,72,55,46], curr:[220,180,130,80,60,50] }
@@ -1654,16 +1652,16 @@ var barChartData = {
 
 var donutData = {
   fy2526: {
-    summary: { total:'¥8.4億', segments:[ {name:'人件費',pct:42,color:'#2563EB',subs:[{name:'正社員',pct:28},{name:'派遣',pct:9},{name:'業務委託',pct:5}]}, {name:'外注費',pct:23,color:'#3B82F6',subs:[{name:'システム開発',pct:12},{name:'デザイン',pct:6},{name:'その他',pct:5}]}, {name:'間接材',pct:18,color:'#8B5CF6',subs:[{name:'事務用品',pct:8},{name:'MRO',pct:6},{name:'消耗品',pct:4}]}, {name:'その他',pct:17,color:'#10B981',subs:[{name:'通信費',pct:7},{name:'交通費',pct:5},{name:'雑費',pct:5}]} ] },
+    summary: { total:'¥8.4億', segments:[ {name:'人件費',pct:42,color:'#1E3A5F',subs:[{name:'正社員',pct:28},{name:'派遣',pct:9},{name:'業務委託',pct:5}]}, {name:'外注費',pct:23,color:'#3B82F6',subs:[{name:'システム開発',pct:12},{name:'デザイン',pct:6},{name:'その他',pct:5}]}, {name:'間接材',pct:18,color:'#8B5CF6',subs:[{name:'事務用品',pct:8},{name:'MRO',pct:6},{name:'消耗品',pct:4}]}, {name:'その他',pct:17,color:'#10B981',subs:[{name:'通信費',pct:7},{name:'交通費',pct:5},{name:'雑費',pct:5}]} ] },
     tail:    { total:'¥1.2億', segments:[ {name:'事務用品',pct:35,color:'#8B5CF6',subs:[{name:'紙・印刷',pct:18},{name:'文具',pct:10},{name:'梱包材',pct:7}]}, {name:'MRO',pct:28,color:'#EC4899',subs:[{name:'工具',pct:14},{name:'保守部品',pct:9},{name:'安全用品',pct:5}]}, {name:'IT消耗品',pct:22,color:'#3B82F6',subs:[{name:'トナー',pct:12},{name:'ケーブル',pct:6},{name:'メディア',pct:4}]}, {name:'その他',pct:15,color:'#10B981',subs:[{name:'清掃用品',pct:8},{name:'飲料',pct:4},{name:'雑品',pct:3}]} ] },
-    sga:     { total:'¥3.6億', segments:[ {name:'人件費',pct:48,color:'#2563EB',subs:[{name:'営業',pct:28},{name:'マーケ',pct:13},{name:'管理',pct:7}]}, {name:'広告費',pct:26,color:'#F59E0B',subs:[{name:'デジタル',pct:14},{name:'紙媒体',pct:8},{name:'イベント',pct:4}]}, {name:'賃借料',pct:16,color:'#8B5CF6',subs:[{name:'オフィス',pct:12},{name:'駐車場',pct:4}]}, {name:'その他',pct:10,color:'#10B981',subs:[{name:'通信',pct:5},{name:'交通',pct:3},{name:'雑費',pct:2}]} ] },
-    dept:    { total:'¥8.4億', segments:[ {name:'営業部',pct:25,color:'#2563EB',subs:[{name:'人件費',pct:15},{name:'交通費',pct:6},{name:'その他',pct:4}]}, {name:'製造部',pct:21,color:'#10B981',subs:[{name:'材料費',pct:12},{name:'外注',pct:6},{name:'その他',pct:3}]}, {name:'管理部',pct:15,color:'#8B5CF6',subs:[{name:'人件費',pct:9},{name:'システム',pct:4},{name:'その他',pct:2}]}, {name:'その他',pct:39,color:'#F59E0B',subs:[{name:'IT部',pct:16},{name:'人事部',pct:13},{name:'物流部',pct:10}]} ] }
+    sga:     { total:'¥3.6億', segments:[ {name:'人件費',pct:48,color:'#1E3A5F',subs:[{name:'営業',pct:28},{name:'マーケ',pct:13},{name:'管理',pct:7}]}, {name:'広告費',pct:26,color:'#F59E0B',subs:[{name:'デジタル',pct:14},{name:'紙媒体',pct:8},{name:'イベント',pct:4}]}, {name:'賃借料',pct:16,color:'#8B5CF6',subs:[{name:'オフィス',pct:12},{name:'駐車場',pct:4}]}, {name:'その他',pct:10,color:'#10B981',subs:[{name:'通信',pct:5},{name:'交通',pct:3},{name:'雑費',pct:2}]} ] },
+    dept:    { total:'¥8.4億', segments:[ {name:'営業部',pct:25,color:'#1E3A5F',subs:[{name:'人件費',pct:15},{name:'交通費',pct:6},{name:'その他',pct:4}]}, {name:'製造部',pct:21,color:'#10B981',subs:[{name:'材料費',pct:12},{name:'外注',pct:6},{name:'その他',pct:3}]}, {name:'管理部',pct:15,color:'#8B5CF6',subs:[{name:'人件費',pct:9},{name:'システム',pct:4},{name:'その他',pct:2}]}, {name:'その他',pct:39,color:'#F59E0B',subs:[{name:'IT部',pct:16},{name:'人事部',pct:13},{name:'物流部',pct:10}]} ] }
   },
   fy2425: {
-    summary: { total:'¥8.7億', segments:[ {name:'人件費',pct:40,color:'#2563EB',subs:[{name:'正社員',pct:27},{name:'派遣',pct:9},{name:'業務委託',pct:4}]}, {name:'外注費',pct:25,color:'#3B82F6',subs:[{name:'システム開発',pct:13},{name:'デザイン',pct:7},{name:'その他',pct:5}]}, {name:'間接材',pct:19,color:'#8B5CF6',subs:[{name:'事務用品',pct:9},{name:'MRO',pct:6},{name:'消耗品',pct:4}]}, {name:'その他',pct:16,color:'#10B981',subs:[{name:'通信費',pct:7},{name:'交通費',pct:5},{name:'雑費',pct:4}]} ] },
+    summary: { total:'¥8.7億', segments:[ {name:'人件費',pct:40,color:'#1E3A5F',subs:[{name:'正社員',pct:27},{name:'派遣',pct:9},{name:'業務委託',pct:4}]}, {name:'外注費',pct:25,color:'#3B82F6',subs:[{name:'システム開発',pct:13},{name:'デザイン',pct:7},{name:'その他',pct:5}]}, {name:'間接材',pct:19,color:'#8B5CF6',subs:[{name:'事務用品',pct:9},{name:'MRO',pct:6},{name:'消耗品',pct:4}]}, {name:'その他',pct:16,color:'#10B981',subs:[{name:'通信費',pct:7},{name:'交通費',pct:5},{name:'雑費',pct:4}]} ] },
     tail:    { total:'¥1.4億', segments:[ {name:'事務用品',pct:37,color:'#8B5CF6',subs:[{name:'紙・印刷',pct:20},{name:'文具',pct:11},{name:'梱包材',pct:6}]}, {name:'MRO',pct:26,color:'#EC4899',subs:[{name:'工具',pct:13},{name:'保守部品',pct:9},{name:'安全用品',pct:4}]}, {name:'IT消耗品',pct:21,color:'#3B82F6',subs:[{name:'トナー',pct:12},{name:'ケーブル',pct:5},{name:'メディア',pct:4}]}, {name:'その他',pct:16,color:'#10B981',subs:[{name:'清掃用品',pct:9},{name:'飲料',pct:4},{name:'雑品',pct:3}]} ] },
-    sga:     { total:'¥3.8億', segments:[ {name:'人件費',pct:46,color:'#2563EB',subs:[{name:'営業',pct:27},{name:'マーケ',pct:13},{name:'管理',pct:6}]}, {name:'広告費',pct:28,color:'#F59E0B',subs:[{name:'デジタル',pct:13},{name:'紙媒体',pct:10},{name:'イベント',pct:5}]}, {name:'賃借料',pct:15,color:'#8B5CF6',subs:[{name:'オフィス',pct:11},{name:'駐車場',pct:4}]}, {name:'その他',pct:11,color:'#10B981',subs:[{name:'通信',pct:5},{name:'交通',pct:4},{name:'雑費',pct:2}]} ] },
-    dept:    { total:'¥8.7億', segments:[ {name:'営業部',pct:26,color:'#2563EB',subs:[{name:'人件費',pct:16},{name:'交通費',pct:6},{name:'その他',pct:4}]}, {name:'製造部',pct:21,color:'#10B981',subs:[{name:'材料費',pct:12},{name:'外注',pct:6},{name:'その他',pct:3}]}, {name:'管理部',pct:15,color:'#8B5CF6',subs:[{name:'人件費',pct:9},{name:'システム',pct:4},{name:'その他',pct:2}]}, {name:'その他',pct:38,color:'#F59E0B',subs:[{name:'IT部',pct:15},{name:'人事部',pct:13},{name:'物流部',pct:10}]} ] }
+    sga:     { total:'¥3.8億', segments:[ {name:'人件費',pct:46,color:'#1E3A5F',subs:[{name:'営業',pct:27},{name:'マーケ',pct:13},{name:'管理',pct:6}]}, {name:'広告費',pct:28,color:'#F59E0B',subs:[{name:'デジタル',pct:13},{name:'紙媒体',pct:10},{name:'イベント',pct:5}]}, {name:'賃借料',pct:15,color:'#8B5CF6',subs:[{name:'オフィス',pct:11},{name:'駐車場',pct:4}]}, {name:'その他',pct:11,color:'#10B981',subs:[{name:'通信',pct:5},{name:'交通',pct:4},{name:'雑費',pct:2}]} ] },
+    dept:    { total:'¥8.7億', segments:[ {name:'営業部',pct:26,color:'#1E3A5F',subs:[{name:'人件費',pct:16},{name:'交通費',pct:6},{name:'その他',pct:4}]}, {name:'製造部',pct:21,color:'#10B981',subs:[{name:'材料費',pct:12},{name:'外注',pct:6},{name:'その他',pct:3}]}, {name:'管理部',pct:15,color:'#8B5CF6',subs:[{name:'人件費',pct:9},{name:'システム',pct:4},{name:'その他',pct:2}]}, {name:'その他',pct:38,color:'#F59E0B',subs:[{name:'IT部',pct:15},{name:'人事部',pct:13},{name:'物流部',pct:10}]} ] }
   }
 };
 

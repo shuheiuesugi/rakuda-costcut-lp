@@ -3,24 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAKUDA COSTCUT — コスト体質診断</title>
+<title>RAKUDA コストカット — コスト体質診断</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --ink: #0A0A0B;
-  --ink-secondary: #6B7280;
+  --ink: #1E293B;
+  --ink-secondary: #64748B;
   --surface: #FFFFFF;
-  --canvas: #FAFAFA;
-  --border: #E5E7EB;
-  --accent: #2563EB;
-  --accent-hover: #1D4ED8;
+  --canvas: #F9FAFB;
+  --border: #E2E8F0;
+  --accent: #1E3A5F;
+  --accent-hover: #162E4A;
   --success: #059669;
-  --dark: #111113;
+  --dark: #0F172A;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  --danger: #DC2626;
 }
 
 html { scroll-behavior: smooth; }
@@ -147,7 +148,7 @@ nav a:hover { color: var(--ink); }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
+  background: linear-gradient(180deg, rgba(30,58,95,0.06) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -340,7 +341,7 @@ nav a:hover { color: var(--ink); }
 
 .step-tag {
   display: inline-block;
-  background: rgba(37,99,235,0.08);
+  background: rgba(30,58,95,0.08);
   color: var(--accent);
   font-size: 11px;
   font-weight: 500;
@@ -382,7 +383,7 @@ nav a:hover { color: var(--ink); }
 }
 
 .sel-card:hover {
-  border-color: rgba(37,99,235,0.5);
+  border-color: rgba(30,58,95,0.5);
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
@@ -446,7 +447,7 @@ nav a:hover { color: var(--ink); }
 }
 
 .rev-card:hover {
-  border-color: rgba(37,99,235,0.5);
+  border-color: rgba(30,58,95,0.5);
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
@@ -505,7 +506,7 @@ nav a:hover { color: var(--ink); }
 }
 
 .cost-card:hover {
-  border-color: rgba(37,99,235,0.5);
+  border-color: rgba(30,58,95,0.5);
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
@@ -978,7 +979,7 @@ nav a:hover { color: var(--ink); }
 }
 
 .feat-icon.ok { background: rgba(5,150,105,0.1); color: var(--success); }
-.feat-icon.ok-accent { background: rgba(37,99,235,0.1); color: var(--accent); }
+.feat-icon.ok-accent { background: rgba(30,58,95,0.1); color: var(--accent); }
 .feat-icon.no { background: var(--canvas); color: var(--border); }
 
 .btn-plan {
@@ -1009,7 +1010,7 @@ nav a:hover { color: var(--ink); }
   color: var(--surface);
 }
 
-.btn-plan-paid:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
+.btn-plan-paid:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,58,95,0.25); }
 
 /* ── CTA SECTION ── */
 .cta-section {
@@ -1057,7 +1058,7 @@ nav a:hover { color: var(--ink); }
   transition: all 0.2s ease;
 }
 
-.btn-cta:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
+.btn-cta:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,58,95,0.25); }
 
 .cta-note {
   margin-top: 16px;
@@ -1218,7 +1219,7 @@ footer {
 .contact-step-item { display: flex; gap: 14px; align-items: flex-start; }
 .contact-step-num {
   width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(37,99,235,0.2); color: var(--accent);
+  background: rgba(30,58,95,0.2); color: var(--accent);
   font-size: 12px; font-weight: 700;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
@@ -1278,7 +1279,7 @@ footer {
   padding: 8px 4px; border-radius: 6px; font-size: 13px; cursor: pointer;
   transition: background 0.15s, color 0.15s; color: var(--ink);
 }
-.cal-day:hover { background: rgba(37,99,235,0.08); }
+.cal-day:hover { background: rgba(30,58,95,0.08); }
 .cal-day.disabled { color: var(--border); pointer-events: none; }
 .cal-day.selected { background: var(--accent); color: var(--surface); font-weight: 600; }
 .cal-day.today { font-weight: 700; color: var(--accent); }
@@ -1324,10 +1325,10 @@ footer {
   background: var(--accent); color: var(--surface);
   border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+  box-shadow: 0 4px 16px rgba(30,58,95,0.35);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.chatbot-fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+.chatbot-fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(30,58,95,0.45); }
 .chatbot-fab .fab-close { display: none; }
 .chatbot-fab.is-open .fab-open { display: none; }
 .chatbot-fab.is-open .fab-close { display: block; }
@@ -1376,7 +1377,7 @@ footer {
   cursor: pointer; font-family: inherit; font-weight: 500;
   transition: background 0.15s, border-color 0.15s;
 }
-.chat-quick-btn:hover { border-color: var(--accent); background: rgba(37,99,235,0.04); }
+.chat-quick-btn:hover { border-color: var(--accent); background: rgba(30,58,95,0.04); }
 .chat-typing { display: flex; gap: 4px; padding: 10px 14px; align-self: flex-start; }
 .chat-typing span {
   width: 6px; height: 6px; border-radius: 50%; background: var(--ink-secondary);
@@ -1503,7 +1504,7 @@ footer {
 
 .step-num {
   display: inline-block;
-  background: rgba(37,99,235,0.08);
+  background: rgba(30,58,95,0.08);
   color: var(--accent);
   font-size: 11px;
   font-weight: 500;
@@ -1678,8 +1679,8 @@ footer {
   <div class="header-inner">
     <a class="logo" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 40" height="20">
-        <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1a1a2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1a1a2e" letter-spacing="3">RAKUDA COSTCUT</text>
+        <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1E293B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1E293B" letter-spacing="3">RAKUDA コストカット</text>
       </svg>
     </a>
     <nav>
@@ -2190,7 +2191,7 @@ footer {
 <div class="diag-loading" id="diagLoading">
   <div class="diag-spinner"></div>
   <div class="diag-loading-text" id="diagLoadingText">AIが分析中...</div>
-  <div class="diag-loading-sub">業界3,200社のデータと照合しています</div>
+  <div class="diag-loading-sub">業界データベースと照合しています</div>
 </div>
 
 <section class="result-section is-hidden" id="result">
@@ -2205,7 +2206,7 @@ footer {
       <div class="score-context">
         <div class="score-context-tag">DIAGNOSIS COMPLETE</div>
         <div class="score-context-title" id="scoreContextTitle">製造業・年商20〜100億円のうち<br>上位32%に位置します</div>
-        <div class="score-context-desc" id="scoreContextDesc">AIが業界ベンチマーク3,200社のデータと比較しました。間接材コストに改善余地があり、適切な対策で年間800万円の削減が見込まれます。</div>
+        <div class="score-context-desc" id="scoreContextDesc">AIが業界データベースの平均値と比較しました。間接材コストに改善余地があり、適切な対策で年間800万円の削減が見込まれます。</div>
       </div>
     </div>
 
@@ -2246,17 +2247,17 @@ footer {
             <!-- You: dynamic polygon -->
             <polygon id="radarPoly"
               points="0,0 0,0 0,0 0,0 0,0"
-              fill="rgba(37,99,235,0.1)"
-              stroke="#2563EB"
+              fill="rgba(30,58,95,0.1)"
+              stroke="#1E3A5F"
               stroke-width="2"
               class="radar-poly-anim"/>
 
             <!-- Dots -->
-            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
-            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
-            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
-            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
-            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#2563EB" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#1E3A5F" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#1E3A5F" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#1E3A5F" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#1E3A5F" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
+            <circle class="radar-dot" cx="0" cy="0" r="3.5" fill="#1E3A5F" style="transition:all 1s cubic-bezier(0.4,0,0.2,1)"/>
 
             <!-- Axis Labels -->
             <text x="0" y="-98" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6B7280" font-weight="500">間接材効率</text>
@@ -2272,7 +2273,7 @@ footer {
             <span>業界平均</span>
           </div>
           <div class="legend-item">
-            <div class="legend-line" style="background:#2563EB;"></div>
+            <div class="legend-line" style="background:#1E3A5F;"></div>
             <span>あなたの会社</span>
           </div>
         </div>
@@ -2308,32 +2309,23 @@ footer {
       <div class="freemium-inner" id="freemiumForm">
         <div class="freemium-icon-wrap">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
         </div>
-        <div class="freemium-title">詳細レポートをメールで受け取る</div>
-        <div class="freemium-sub">改善施策の具体的ステップ・類似事例・ROIシミュレーションをPDFで送付します。無料・スパムなし。</div>
-        <div class="email-row">
-          <input class="email-input" id="freemiumEmail" type="email" placeholder="ビジネスメールアドレスを入力">
-          <button class="btn-report" onclick="submitFreemium()">レポートを受け取る
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-left:4px">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </button>
-        </div>
-        <div class="freemium-note">いつでも配信停止可能。個人情報は第三者に提供しません。</div>
+        <div class="freemium-title">さらに詳しい診断結果を知りたい方へ</div>
+        <div class="freemium-sub">専門コンサルタントが御社の診断結果を踏まえ、具体的な改善ステップをご提案します。</div>
+        <button class="btn-report" onclick="openBooking()" style="width:auto; padding:12px 32px; margin-top:12px; cursor:pointer;">
+          無料相談を予約する
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-left:4px">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
       </div>
       <div class="freemium-inner" id="freemiumDone" style="display:none">
-        <div class="check-anim">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="freemium-title">レポートを送信しました</div>
-        <div class="freemium-sub">ご入力いただいたメールアドレスに詳細レポートをお送りしました。<br>数分以内に届かない場合は迷惑メールフォルダをご確認ください。</div>
       </div>
     </div>
 
@@ -2409,7 +2401,7 @@ footer {
     </button>
     <div class="contact-grid">
       <div class="contact-left">
-        <div class="contact-left-label">RAKUDA COSTCUT</div>
+        <div class="contact-left-label">RAKUDA コストカット</div>
         <h3>AIコスト診断から<br>実行支援まで</h3>
         <div class="contact-step-list">
           <div class="contact-step-item">
@@ -2568,7 +2560,7 @@ footer {
   </div>
   <div class="chatbot-messages" id="chatMessages">
     <div class="chat-msg bot">
-      <div class="chat-bubble">こんにちは! RAKUDA COSTCUTのAIアシスタントです。コスト削減について何でもお気軽にご質問ください。</div>
+      <div class="chat-bubble">こんにちは! RAKUDA コストカットのAIアシスタントです。コスト削減について何でもお気軽にご質問ください。</div>
     </div>
     <div class="chat-quick-actions" id="chatQuickActions">
       <button class="chat-quick-btn" onclick="sendQuickChat('サービスについて教えて')">サービスについて</button>
@@ -3052,7 +3044,7 @@ function showResults(industry, revenue, employees, procurement, team, vendors, c
 
   // Update context
   document.getElementById('scoreContextTitle').innerHTML = indData.label + '・年商' + (revLabels[revenue] || revenue) + 'のうち<br>上位' + percentile + '%に位置します';
-  document.getElementById('scoreContextDesc').textContent = 'AIが業界ベンチマーク3,200社のデータと比較しました。' + indData.tip + ' 適切な対策で年間' + Math.round(savings) + '万円の削減が見込まれます。';
+  document.getElementById('scoreContextDesc').textContent = 'AIが業界データベースの平均値と比較しました。' + indData.tip + ' 適切な対策で年間' + Math.round(savings) + '万円の削減が見込まれます。';
 
   // Animate radar chart
   animateRadar(adjustedBias);

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAKUDA COSTCUT — LP パターン比較</title>
+<title>RAKUDA コストカット — LP パターン比較</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', 'Yu Gothic', Meiryo, sans-serif;
     font-feature-settings: "palt";
-    background: #F5F5F5;
-    color: #0A0A0B;
+    background: #F1F5F9;
+    color: #1E293B;
   }
   .toolbar {
     position: fixed;
@@ -21,7 +21,7 @@
     z-index: 1000;
     height: 56px;
     background: #FFFFFF;
-    border-bottom: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E2E8F0;
     display: flex;
     align-items: center;
     padding: 0 24px;
@@ -31,10 +31,10 @@
   .toolbar-title {
     font-size: 14px;
     font-weight: 700;
-    color: #0A0A0B;
+    color: #1E293B;
     white-space: nowrap;
   }
-  .toolbar-title span { color: #2563EB; }
+  .toolbar-title span { color: #1E3A5F; }
   .tab-group {
     display: flex;
     gap: 4px;
@@ -44,7 +44,7 @@
     padding: 8px 16px;
     font-size: 13px;
     font-weight: 500;
-    color: #6B7280;
+    color: #64748B;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 6px;
@@ -53,11 +53,11 @@
     transition: all 0.15s;
     white-space: nowrap;
   }
-  .tab-btn:hover { color: #0A0A0B; background: #F3F4F6; }
+  .tab-btn:hover { color: #1E293B; background: #F3F4F6; }
   .tab-btn.active {
-    color: #2563EB;
-    background: #EFF6FF;
-    border-color: #BFDBFE;
+    color: #1E3A5F;
+    background: #E0E7FF;
+    border-color: #C7D2FE;
   }
   .toolbar-links {
     margin-left: auto;
@@ -67,10 +67,10 @@
   }
   .toolbar-links a {
     font-size: 12px;
-    color: #6B7280;
+    color: #64748B;
     text-decoration: none;
   }
-  .toolbar-links a:hover { color: #0A0A0B; }
+  .toolbar-links a:hover { color: #1E293B; }
   .iframe-wrap {
     margin-top: 56px;
     height: calc(100vh - 56px);
@@ -91,8 +91,8 @@
 <body>
 <div class="toolbar">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 40" height="18" style="flex-shrink:0;">
-    <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1a1a2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-    <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1a1a2e" letter-spacing="3">RAKUDA COSTCUT</text>
+    <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1E293B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1E293B" letter-spacing="3">RAKUDA コストカット</text>
   </svg>
   <div class="tab-group">
     <button class="tab-btn active" data-src="p1.html">P1 Upload</button>

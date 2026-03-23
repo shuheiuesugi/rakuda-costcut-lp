@@ -13,15 +13,15 @@
     }
 
     :root {
-      --ink: #0A0A0B;
-      --ink-secondary: #6B7280;
+      --ink: #1E293B;
+      --ink-secondary: #64748B;
       --surface: #FFFFFF;
-      --canvas: #FAFAFA;
-      --border: #E5E7EB;
-      --accent: #2563EB;
-      --accent-hover: #1D4ED8;
+      --canvas: #F9FAFB;
+      --border: #E2E8F0;
+      --accent: #1E3A5F;
+      --accent-hover: #162E4A;
       --success: #059669;
-      --dark: #111113;
+      --dark: #0F172A;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
       --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
@@ -133,7 +133,7 @@
 
     /* ===== HERO ===== */
     .hero {
-      background: linear-gradient(160deg, #111113 0%, #0F1729 100%);
+      background: linear-gradient(160deg, #0F172A 0%, #0F1729 100%);
       padding: 160px 0 120px;
       position: relative;
       overflow: hidden;
@@ -146,7 +146,7 @@
       right: 0;
       width: 55%;
       height: 100%;
-      background: linear-gradient(180deg, rgba(37,99,235,0.06) 0%, transparent 60%);
+      background: linear-gradient(180deg, rgba(30,58,95,0.06) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -322,7 +322,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(37,99,235,0.08);
+      background: rgba(30,58,95,0.08);
       border-radius: 50%;
       letter-spacing: 0;
       flex-shrink: 0;
@@ -364,12 +364,12 @@
     .upload-card.drag-over {
       border-color: var(--accent);
       box-shadow: var(--shadow-md);
-      background: rgba(37,99,235,0.02);
+      background: rgba(30,58,95,0.02);
     }
 
     .upload-card.drag-over {
       border-style: solid;
-      background: rgba(37,99,235,0.04);
+      background: rgba(30,58,95,0.04);
     }
 
     .upload-icon-wrap {
@@ -441,7 +441,7 @@
 
     .file-type-badge.xlsx { background: #059669; }
     .file-type-badge.pdf { background: #DC2626; }
-    .file-type-badge.csv { background: #2563EB; }
+    .file-type-badge.csv { background: #1E3A5F; }
     .file-type-badge.other { background: #6B7280; }
 
     .upload-file-name {
@@ -510,15 +510,24 @@
     }
 
     @keyframes analysisGlow {
-      0% { box-shadow: 0 0 0 0 rgba(37,99,235,0.4); }
-      50% { box-shadow: 0 0 20px 4px rgba(37,99,235,0.2); }
-      100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+      0% { box-shadow: 0 0 0 0 rgba(30,58,95,0.4); }
+      50% { box-shadow: 0 0 20px 4px rgba(30,58,95,0.2); }
+      100% { box-shadow: 0 0 0 0 rgba(30,58,95,0); }
     }
 
     /* ===== ANALYSIS RESULTS ===== */
     .analysis {
       background: var(--dark);
       padding: 120px 0;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none;
+    }
+    .analysis.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .analysis-inner {
@@ -633,8 +642,8 @@
     }
 
     .status-high {
-      background: rgba(37,99,235,0.15);
-      color: #60A5FA;
+      background: rgba(30,58,95,0.15);
+      color: #93B4D4;
     }
 
     .status-med {
@@ -852,7 +861,7 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: rgba(37,99,235,0.2);
+      background: rgba(30,58,95,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -912,7 +921,7 @@
 
     .form-input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+      box-shadow: 0 0 0 3px rgba(30,58,95,0.1);
     }
 
     .form-input.error {
@@ -1136,8 +1145,8 @@
     }
 
     .calendar-day:hover:not(.disabled):not(.empty) {
-      background: rgba(37,99,235,0.06);
-      border-color: rgba(37,99,235,0.15);
+      background: rgba(30,58,95,0.06);
+      border-color: rgba(30,58,95,0.15);
     }
 
     .calendar-day.selected {
@@ -1189,7 +1198,7 @@
 
     .time-slot:hover {
       border-color: var(--accent);
-      background: rgba(37,99,235,0.04);
+      background: rgba(30,58,95,0.04);
     }
 
     .time-slot.selected {
@@ -1326,13 +1335,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+      box-shadow: 0 4px 16px rgba(30,58,95,0.35);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .chatbot-trigger:hover {
       transform: scale(1.08);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.45);
+      box-shadow: 0 6px 20px rgba(30,58,95,0.45);
     }
 
     .chatbot-trigger svg {
@@ -1515,8 +1524,8 @@
       font-size: 12px;
       font-weight: 500;
       color: var(--accent);
-      background: rgba(37,99,235,0.06);
-      border: 1px solid rgba(37,99,235,0.15);
+      background: rgba(30,58,95,0.06);
+      border: 1px solid rgba(30,58,95,0.15);
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -1524,7 +1533,7 @@
     }
 
     .chat-quick-btn:hover {
-      background: rgba(37,99,235,0.12);
+      background: rgba(30,58,95,0.12);
       border-color: var(--accent);
     }
 
@@ -1675,8 +1684,8 @@
     <div class="header-inner">
       <a class="logo" href="#">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 40" height="20">
-          <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1a1a2e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1a1a2e" letter-spacing="3">RAKUDA COSTCUT</text>
+          <path d="M4,32 C4,32 12,6 24,6 C34,6 28,28 36,28 C44,28 38,4 48,4 C60,4 68,32 68,32" stroke="#1E293B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <text x="80" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" fill="#1E293B" letter-spacing="3">RAKUDA コストカット</text>
         </svg>
       </a>
       <nav>
@@ -1779,8 +1788,8 @@
   <section class="analysis" id="analysis">
     <div class="analysis-inner">
       <div class="analysis-header">
-        <h2 class="analysis-h2">アップロードするだけで、ここまで見える</h2>
-        <p class="analysis-subtitle">AIが自動分類・比較・優先度付けまで完了します</p>
+        <h2 class="analysis-h2">分析結果</h2>
+        <p class="analysis-subtitle">AIがコスト構造を分析し、削減ポイントを特定しました</p>
       </div>
 
       <div class="analysis-grid">
@@ -1794,7 +1803,7 @@
               <line x1="0" y1="82" x2="320" y2="82" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
               <line x1="0" y1="54" x2="320" y2="54" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
               <line x1="0" y1="26" x2="320" y2="26" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-              <rect x="16" y="26" width="36" height="84" rx="3" fill="#2563EB" opacity="0.9"/>
+              <rect x="16" y="26" width="36" height="84" rx="3" fill="#3B82C8" opacity="0.9"/>
               <rect x="72" y="48" width="36" height="62" rx="3" fill="rgba(255,255,255,0.2)"/>
               <rect x="128" y="62" width="36" height="48" rx="3" fill="rgba(255,255,255,0.2)"/>
               <rect x="184" y="78" width="36" height="32" rx="3" fill="rgba(255,255,255,0.2)"/>
@@ -1805,7 +1814,7 @@
               <text x="146" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">通信費</text>
               <text x="202" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">備品</text>
               <text x="258" y="126" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui, sans-serif">その他</text>
-              <text x="34" y="20" text-anchor="middle" font-size="9" fill="#60A5FA" font-family="system-ui, sans-serif" font-weight="500">削減余地大</text>
+              <text x="34" y="20" text-anchor="middle" font-size="9" fill="#93B4D4" font-family="system-ui, sans-serif" font-weight="500">削減余地大</text>
             </svg>
             <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">消耗品カテゴリに削減余地あり — 推定 <span class="countup-value" data-target="240" data-prefix="" data-suffix="万円/年" style="color:#34D399; font-weight:700;">240万円/年</span></p>
           </div>
@@ -1818,7 +1827,7 @@
           <div class="chart-container">
             <svg width="100%" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
               <text x="0" y="30" font-size="10" fill="rgba(255,255,255,0.5)" font-family="system-ui, sans-serif">自社</text>
-              <rect x="56" y="16" width="220" height="20" rx="3" fill="#2563EB" opacity="0.85"/>
+              <rect x="56" y="16" width="220" height="20" rx="3" fill="#3B82C8" opacity="0.85"/>
               <text x="284" y="30" font-size="10" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-weight="500" class="countup-value" data-target="32" data-suffix="%">32%</text>
               <text x="0" y="74" font-size="10" fill="rgba(255,255,255,0.5)" font-family="system-ui, sans-serif">業界平均</text>
               <rect x="56" y="60" width="148" height="20" rx="3" fill="rgba(255,255,255,0.18)"/>
@@ -1826,8 +1835,8 @@
               <line x1="204" y1="36" x2="204" y2="60" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3,2"/>
               <line x1="276" y1="36" x2="276" y2="60" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3,2"/>
               <text x="162" y="96" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.4)" font-family="system-ui, sans-serif">+11pt 超過</text>
-              <rect x="56" y="90" width="72" height="16" rx="3" fill="rgba(37,99,235,0.15)"/>
-              <text x="92" y="102" text-anchor="middle" font-size="9" fill="#60A5FA" font-family="system-ui, sans-serif" font-weight="500">業界比 超過分</text>
+              <rect x="56" y="90" width="72" height="16" rx="3" fill="rgba(30,58,95,0.15)"/>
+              <text x="92" y="102" text-anchor="middle" font-size="9" fill="#93B4D4" font-family="system-ui, sans-serif" font-weight="500">業界比 超過分</text>
             </svg>
             <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">販管費率が業界平均を 11pt 上回っています — 要注意</p>
           </div>
@@ -1895,7 +1904,7 @@
     <div style="max-width: 960px; margin: 0 auto;">
       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20">
-          <path d="M10,75 C10,75 22,25 38,25 C52,25 44,65 56,65 C68,65 60,20 74,20 C90,20 100,75 100,75" stroke="#1A1A2E" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M10,75 C10,75 22,25 38,25 C52,25 44,65 56,65 C68,65 60,20 74,20 C90,20 100,75 100,75" stroke="#1E293B" stroke-width="7" fill="none" stroke-linecap="round"/>
         </svg>
         <span style="font-size: 14px; font-weight: 300; letter-spacing: 0.15em; color: #111;">RAKUDA AI</span>
       </div>
@@ -1935,19 +1944,19 @@
           <p>RAKUDAは、AIと専門コンサルタントの力で御社のコスト構造を最適化します。まずは無料相談で、どれくらいの削減が可能かお確かめください。</p>
           <ul class="contact-merits">
             <li>
-              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#93B4D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
               初回相談は完全無料
             </li>
             <li>
-              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#93B4D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
               平均12%のコスト削減を実現
             </li>
             <li>
-              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#93B4D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
               成果報酬型だからリスクゼロ
             </li>
             <li>
-              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="merit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#93B4D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
               1営業日以内にご連絡
             </li>
           </ul>
@@ -2172,7 +2181,7 @@
    SECTION FADE-IN (existing)
    =================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('section:not(.hero)').forEach(s => s.classList.add('fade-in-section'));
+  document.querySelectorAll('section:not(.hero):not(.analysis)').forEach(s => s.classList.add('fade-in-section'));
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
   }, { threshold: 0.1 });
@@ -2668,9 +2677,12 @@ function handleFiles(files) {
         uploadStatusText.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 分析完了';
         uploadMainText.textContent = '分析が完了しました';
 
+        // Show analysis section
+        const analysisSection = document.getElementById('analysis');
+        analysisSection.classList.add('is-visible');
+
         // Scroll to analysis section
         setTimeout(() => {
-          const analysisSection = document.getElementById('analysis');
           analysisSection.scrollIntoView({ behavior: 'smooth' });
 
           // Highlight analysis cards
